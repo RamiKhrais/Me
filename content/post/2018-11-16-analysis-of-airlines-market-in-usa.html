@@ -127,7 +127,7 @@ market_snapshot</code></pre>
 ggplot(market_snapshot, aes(x = reorder(Carrier, flights), y = flights)) + 
   geom_bar(stat = &quot;identity&quot;, aes(fill = highest)) + 
   scale_fill_manual(values = c(&quot;#F98866&quot;,&quot;#FF420E&quot;)) + coord_flip() +
-  geom_text(aes(y= flights, x = seq(15,1), label = paste0(round(flights),&quot;&quot;)), nudge_y = 4500, color=&quot;black&quot;, size = 5) + 
+  geom_text(aes(y= flights, x = seq(15,1), label = paste0(round(flights),&quot;&quot;)), nudge_y = 4700, color=&quot;black&quot;, size = 5) + 
   theme_minimal() +
   theme(axis.title.x = element_blank(),
         axis.title.y = element_blank(),
