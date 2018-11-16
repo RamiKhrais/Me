@@ -126,7 +126,7 @@ ggplot(two_largest_daily, aes(x= DayOfWeek, y= flights, col = Carrier)) +
     theme(legend.title = element_blank()) + 
     theme(legend.text = element_text(size = 12, colour = "black", face = "bold")) +
     labs(title = "The Two Largest Players in the Market", subtitle = "Daily Flights in a Week") + 
-    theme(plot.title = element_text(size = 15, face = "bold"))
+    theme(plot.title = element_text(size = 15))
 ```
     
 
@@ -166,7 +166,7 @@ ggplot(two_largest_daily_month, aes(x= DayofMonth, y= flights, col= Carrier)) +
   theme(legend.title = element_blank()) + 
   theme(legend.text = element_text(size = 12, face = "bold", colour = "black")) +
   labs(title = "The Two Largest Players in the Market", subtitle = "Daily Flights in a Month") + 
-  theme(plot.title = element_text(size = 15, face = "bold"))
+  theme(plot.title = element_text(size = 15))
 ```
 
 
