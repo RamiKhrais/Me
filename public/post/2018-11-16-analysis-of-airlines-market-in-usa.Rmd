@@ -405,7 +405,7 @@ ggplot(Cancelled_Carr, aes(x=reorder(Carrier, cancelledflights), y=cancelledflig
   theme(axis.title.x = element_blank()) + 
   theme(axis.title.y = element_text(size = 12, colour = "black", face = "bold", margin = margin(r=30))) +
   labs(title = "The Carriers with Highest Level of Cancelled Flights") +
-  theme(plot.title = element_text(size = 16, colour = "black", margin = margin(0,0,30,0)))
+  theme(plot.title = element_text(size = 15, colour = "black", margin = margin(0,0,30,0)))
 ```
 
 
@@ -436,7 +436,7 @@ ggplot(Carrier_arrdelay, aes(x = reorder(Carrier, avg), y = avg)) +
   theme(axis.title.y = element_text(size = 12, face = "bold", colour = "black", margin = margin(r=30))) +
   theme(panel.grid.major.x = element_blank()) +
   labs(title = "The Average of Arrival Delay for each Carrier", subtitle = "Minutes") +
-  theme(plot.title = element_text(size = 16, colour = "black"))
+  theme(plot.title = element_text(size = 15, colour = "black"))
 ```
 
 
@@ -468,7 +468,7 @@ ggplot(Carrier_depdelay, aes(x = reorder(Carrier, avg), y = avg)) +
   theme(axis.title.y = element_text(size = 12, face = "bold", colour = "black", margin = margin(r=30))) +
   theme(panel.grid.major.x = element_blank()) +
   labs(title = "The Average of Departure Delay for each Carrier", subtitle = "Minutes") +
-  theme(plot.title = element_text(size = 16, colour = "black"))
+  theme(plot.title = element_text(size = 15, colour = "black"))
 ```
 
 
