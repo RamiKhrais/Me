@@ -263,7 +263,7 @@ two_largest_daily</code></pre>
     theme(legend.title = element_blank()) + 
     theme(legend.text = element_text(size = 12, colour = &quot;black&quot;, face = &quot;bold&quot;)) +
     labs(title = &quot;The Two Largest Players in the Market&quot;, subtitle = &quot;Daily Flights in a Week&quot;) + 
-    theme(plot.title = element_text(size = 16.5, face = &quot;bold&quot;))</code></pre>
+    theme(plot.title = element_text(size = 15, face = &quot;bold&quot;))</code></pre>
 <p><img src="/post/2018-11-16-analysis-of-airlines-market-in-usa_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p style="text-align: justify;">
 <span style="color:#2A3132"><strong>How do ExpressJet and Continental perform daily within one month?</strong>
@@ -416,14 +416,14 @@ two_largest_monthly</code></pre>
   theme(legend.position = &quot;bottom&quot;) +
   theme(legend.text = element_text(size= 12, face = &quot;bold&quot;, colour= &quot;black&quot;)) + 
   theme(legend.title = element_blank()) +
-  labs(title = &quot;The Largest Players in the Market&quot;, subtitle = &quot;Monhtly Flights&quot;) +
+  labs(title = &quot;The Largest Players in the Market&quot;, subtitle = &quot;Monthly Flights&quot;) +
   theme(plot.title = element_text(size = 15, colour = &quot;black&quot;, face = &quot;bold&quot;))</code></pre>
 <p><img src="/post/2018-11-16-analysis-of-airlines-market-in-usa_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div id="more-insights-ahead" class="section level2">
 <h2>More Insights Ahead!</h2>
 <p style="text-align: justify;">
-Everthing looks good so far. Let’s try now to get some spatial insights by aaking: What is the most active departure airport for each carrier in weekend?
+Everthing looks good so far. Let’s try now to get some spatial insights by aaking: <strong>What is the most active departure airport for each carrier in the weekend?</strong>
 </p>
 <pre class="r"><code>Origin_carr &lt;- hflights %&gt;%
   filter(DayOfWeek %in% c(6, 7)) %&gt;%
@@ -485,7 +485,7 @@ Dest_carr</code></pre>
 ## 14 Alaska             SEA       105     1
 ## 15 Mesa               CLT        31     1</code></pre>
 <p style="text-align: justify;">
-<strong>What is the most active airline routes in the Weekend?</strong>
+<strong>What are the most active airline routes in the weekend?</strong>
 </p>
 <pre class="r"><code>Airline_route &lt;- hflights %&gt;%
   filter(DayOfWeek %in% c(6, 7)) %&gt;%
@@ -700,7 +700,7 @@ Cancelled_Carr</code></pre>
   theme(axis.title.x = element_blank()) + 
   theme(axis.title.y = element_text(size = 12, colour = &quot;black&quot;, face = &quot;bold&quot;, margin = margin(r=30))) +
   labs(title = &quot;The Carriers with Highest Level of Cancelled Flights&quot;) +
-  theme(plot.title = element_text(size = 14, face = &quot;bold&quot;, colour = &quot;black&quot;, margin = margin(0,0,30,0)))</code></pre>
+  theme(plot.title = element_text(size = 16, colour = &quot;black&quot;, margin = margin(0,0,30,0)))</code></pre>
 <p><img src="/post/2018-11-16-analysis-of-airlines-market-in-usa_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p style="text-align: justify;">
 <strong>Which carrier has the highest average of arrival delay?</strong>
@@ -743,7 +743,7 @@ Carrier_arrdelay</code></pre>
   theme(axis.title.y = element_text(size = 12, face = &quot;bold&quot;, colour = &quot;black&quot;, margin = margin(r=30))) +
   theme(panel.grid.major.x = element_blank()) +
   labs(title = &quot;The Average of Arrival Delay for each Carrier&quot;, subtitle = &quot;Minutes&quot;) +
-  theme(plot.title = element_text(size = 16, face = &quot;bold&quot;, colour = &quot;black&quot;))</code></pre>
+  theme(plot.title = element_text(size = 16, colour = &quot;black&quot;))</code></pre>
 <p><img src="/post/2018-11-16-analysis-of-airlines-market-in-usa_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p style="text-align: justify;">
 <strong>Which carrier has the highest average of departure delay?</strong>
@@ -786,7 +786,7 @@ Carrier_depdelay</code></pre>
   theme(axis.title.y = element_text(size = 12, face = &quot;bold&quot;, colour = &quot;black&quot;, margin = margin(r=30))) +
   theme(panel.grid.major.x = element_blank()) +
   labs(title = &quot;The Average of Departure Delay for each Carrier&quot;, subtitle = &quot;Minutes&quot;) +
-  theme(plot.title = element_text(size = 16, face = &quot;bold&quot;, colour = &quot;black&quot;))</code></pre>
+  theme(plot.title = element_text(size = 16, colour = &quot;black&quot;))</code></pre>
 <p><img src="/post/2018-11-16-analysis-of-airlines-market-in-usa_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <div id="conclusion1" class="section level3">
 <h3>Conclusion1:</h3>

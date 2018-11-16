@@ -126,7 +126,7 @@ ggplot(two_largest_daily, aes(x= DayOfWeek, y= flights, col = Carrier)) +
     theme(legend.title = element_blank()) + 
     theme(legend.text = element_text(size = 12, colour = "black", face = "bold")) +
     labs(title = "The Two Largest Players in the Market", subtitle = "Daily Flights in a Week") + 
-    theme(plot.title = element_text(size = 16.5, face = "bold"))
+    theme(plot.title = element_text(size = 15, face = "bold"))
 ```
     
 
@@ -205,14 +205,14 @@ ggplot(two_largest_monthly, aes(x= Month, y= flights, col = Carrier)) +
   theme(legend.position = "bottom") +
   theme(legend.text = element_text(size= 12, face = "bold", colour= "black")) + 
   theme(legend.title = element_blank()) +
-  labs(title = "The Largest Players in the Market", subtitle = "Monhtly Flights") +
+  labs(title = "The Largest Players in the Market", subtitle = "Monthly Flights") +
   theme(plot.title = element_text(size = 15, colour = "black", face = "bold"))
 ```
 
 
 ##More Insights Ahead!
 
-<p style='text-align: justify;'>Everthing looks good so far. Let's try now to get some spatial insights by aaking: What is the most active departure airport for each carrier in weekend?</p>
+<p style='text-align: justify;'>Everthing looks good so far. Let's try now to get some spatial insights by aaking: **What is the most active departure airport for each carrier in the weekend?**</p>
 
 
 ```{r}
@@ -244,7 +244,7 @@ Dest_carr
 ```
 
 
-<p style='text-align: justify;'>**What is the most active airline routes in the Weekend?**</p>
+<p style='text-align: justify;'>**What are the most active airline routes in the weekend?**</p>
 
 ```{r}
 Airline_route <- hflights %>%
@@ -405,7 +405,7 @@ ggplot(Cancelled_Carr, aes(x=reorder(Carrier, cancelledflights), y=cancelledflig
   theme(axis.title.x = element_blank()) + 
   theme(axis.title.y = element_text(size = 12, colour = "black", face = "bold", margin = margin(r=30))) +
   labs(title = "The Carriers with Highest Level of Cancelled Flights") +
-  theme(plot.title = element_text(size = 14, face = "bold", colour = "black", margin = margin(0,0,30,0)))
+  theme(plot.title = element_text(size = 16, colour = "black", margin = margin(0,0,30,0)))
 ```
 
 
@@ -436,7 +436,7 @@ ggplot(Carrier_arrdelay, aes(x = reorder(Carrier, avg), y = avg)) +
   theme(axis.title.y = element_text(size = 12, face = "bold", colour = "black", margin = margin(r=30))) +
   theme(panel.grid.major.x = element_blank()) +
   labs(title = "The Average of Arrival Delay for each Carrier", subtitle = "Minutes") +
-  theme(plot.title = element_text(size = 16, face = "bold", colour = "black"))
+  theme(plot.title = element_text(size = 16, colour = "black"))
 ```
 
 
@@ -468,7 +468,7 @@ ggplot(Carrier_depdelay, aes(x = reorder(Carrier, avg), y = avg)) +
   theme(axis.title.y = element_text(size = 12, face = "bold", colour = "black", margin = margin(r=30))) +
   theme(panel.grid.major.x = element_blank()) +
   labs(title = "The Average of Departure Delay for each Carrier", subtitle = "Minutes") +
-  theme(plot.title = element_text(size = 16, face = "bold", colour = "black"))
+  theme(plot.title = element_text(size = 16, colour = "black"))
 ```
 
 
