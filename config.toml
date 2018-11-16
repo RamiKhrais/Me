@@ -1,0 +1,25 @@
+baseurl = "/"
+title = "Rami"
+copyright = "Copyright &copy; 2017 - Author Name"
+canonifyurls = true
+theme = "hugo-kiera"
+
+paginate = 3
+
+summaryLength = 30
+enableEmoji = true
+pygmentsCodeFences = true
+
+[author]
+    name = ""
+    github = ""
+    gitlab = ""
+    linkedin = ""
+    facebook = ""
+    twitter = ""
+    instagram = ""
+
+[params]
+    tagline = "A newdiver in data ocean"
+
+
