@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Analysis on Rami Kh</title>
+    <link>/categories/data-analysis/</link>
+    <description>Recent content in Data Analysis on Rami Kh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright &amp;copy; 2017 - Author Name</copyright>
+    <lastBuildDate>Fri, 16 Nov 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/data-analysis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Analysis of Airlines Market in USA</title>
+      <link>/post/analysis-of-airlines-market-in-usa/</link>
+      <pubDate>Fri, 16 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/analysis-of-airlines-market-in-usa/</guid>
+      <description>Data OverviewThe data that will be used in this analysis is extracted from built-in R dataset hflights. The dataset consists of 21 variables and 227,496 observations and it covers the activity of 15 carriers in United States in 2011.</description>
+    </item>
+    
+  </channel>
+</rss>
