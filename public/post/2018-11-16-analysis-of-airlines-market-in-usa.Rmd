@@ -487,5 +487,5 @@ ggplot(Carrier_depdelay, aes(x = reorder(Carrier, avg), y = avg)) +
 ###Conclusion4:
 
 <p style='text-align: justify;'>The data shows that **ExpressJet** and **Southwest** have the highest numbers of cancelled flights and this result seems intuitive as these carriers have the highest number of flights. The data shows that **JetBlue** and **AtlanticSoutheast** have the highest average of departure and arrival delays while **Mesa** has the lwoest average of dealys.</p>
-
+ 
  
