@@ -206,7 +206,7 @@ ggplot(two_largest_monthly, aes(x= Month, y= flights, col = Carrier)) +
   theme(legend.text = element_text(size= 12, face = "bold", colour= "black")) + 
   theme(legend.title = element_blank()) +
   labs(title = "The Largest Players in the Market", subtitle = "Monthly Flights") +
-  theme(plot.title = element_text(size = 15, colour = "black", face = "bold"))
+  theme(plot.title = element_text(size = 15, colour = "black"))
 ```
 
 
