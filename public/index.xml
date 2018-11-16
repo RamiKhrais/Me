@@ -20,5 +20,14 @@
       <description>This me Rami. I hold a master degree in Economics from Exeter University, UK. I&#39;ve worked previously as upstream oil and gas analyst and as economic researcher as well. Through my career path, I&#39;ve gained a good experience in modelling oil and gas assets and analysing the main trends in energy markets.</description>
     </item>
     
+    <item>
+      <title>Analysis of Airlines Market in USA</title>
+      <link>/post/analysis-of-airlines-market-in-usa/</link>
+      <pubDate>Fri, 16 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/analysis-of-airlines-market-in-usa/</guid>
+      <description>Data OverviewThe data that will be used in this analysis is extracted from built-in R dataset hflights. The dataset consists of 21 variables and 227,496 observations and it covers the activity of 15 carriers in United States in 2011.</description>
+    </item>
+    
   </channel>
 </rss>
