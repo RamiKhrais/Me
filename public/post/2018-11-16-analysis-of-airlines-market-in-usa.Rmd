@@ -201,7 +201,7 @@ ggplot(two_largest_monthly, aes(x= Month, y= flights, col = Carrier)) +
   theme(panel.grid.major.x = element_blank()) +
   theme(panel.grid.minor.x = element_blank()) + 
   scale_colour_manual(values = c("firebrick1", "goldenrod1")) +
-  theme(axis.title.y = element_text(size = 14, face = "bold", margin = margin(r=20))) +
+  theme(axis.title.y = element_text(size = 14, margin = margin(r=20))) +
   theme(legend.position = "bottom") +
   theme(legend.text = element_text(size= 12, face = "bold", colour= "black")) + 
   theme(legend.title = element_blank()) +
