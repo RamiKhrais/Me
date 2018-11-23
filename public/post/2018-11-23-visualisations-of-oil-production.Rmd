@@ -11,7 +11,7 @@ tags: []
 
 ##Overview
 
-<p style='text-align: justify;'> I'm going to visualise some charts for oil production and reserves for few countries. The data used in the coming charts is mainly extracted from BP Statistical Review of World Energy 2018(Though first two charts were based on OPEC data). When it comes to BP Review, oil production refers to a relateively broad category including crude oil, shale oil, oil sand and natrual gas liquids (NGLs). The aim of this report is to show some of the most popular charts used in the field and some of their customizations. </p>
+<p style='text-align: justify;'> I'm going to visualise some charts for oil production and reserves for few countries. The data used in the coming charts is mainly extracted from BP Statistical Review of World Energy 2018 (Though first two charts were based on OPEC data). When it comes to BP Review, oil production refers to a relateively broad category including crude oil, shale oil, oil sand and natrual gas liquids (NGLs). The aim of this report is to show some of the most popular charts used in the field and some of their customizations. </p>
 
 ##Packages used in data cleaning and visualisation
 
@@ -26,7 +26,7 @@ library(tidyr)
 ```
 
 
-###Bar Chart
+##Bar Chart
 
 ```{r}
 oil_reserves <- read_excel("C:/Users/Rami/Desktop/reserves.xlsx")
@@ -54,7 +54,7 @@ ggplot(oil_reserves, aes(x= reorder(Country, Reserves), y= Reserves, fill = Coun
   theme(title = element_text(size = 14))
 ```
 
-###Pie Chart 
+##Pie Chart 
 
 ```{r}
 oil_reserves$Country <- factor(oil_reserves$Country, levels = rev(as.character(oil_reserves$Country)))
@@ -88,17 +88,29 @@ glimpse(bp)
 <p style='text-align: justify;'> The data looks a bit dirty. Let's do some cleaning here. </p>
 
 ```{r warning=FALSE, message=FALSE}
-colnames(bp)[1] <- "Country" #Changing the column name of “Thousand Barrels”
+#Changing the column name of “Thousand Barrels”
 
-bp_clean1 <- bp[1:(length(bp)-3)] #Removing the last three redundant columns
+colnames(bp)[1] <- "Country" 
 
-bp_clean2 <- na.omit(bp_clean1) #Removing na values form the data
+#Removing the last three redundant columns
 
-bp_clean3 <- gather(bp_clean2, Year, Production, -Country, na.rm = TRUE) #Rearranging the data
+bp_clean1 <- bp[1:(length(bp)-3)]
 
-bp_clean3$Production <- as.integer(bp_clean3$Production) #Changing the prodution into integer
+#Removing na values form the data
 
-bp_clean3$Production[is.na(bp_clean3$Production)] <- 0 #Replacing n/a values with zeros
+bp_clean2 <- na.omit(bp_clean1)
+
+#Rearranging the data
+
+bp_clean3 <- gather(bp_clean2, Year, Production, -Country, na.rm = TRUE) 
+
+#Changing the prodution into integer
+
+bp_clean3$Production <- as.integer(bp_clean3$Production)
+
+#Replacing n/a values with zeros
+
+bp_clean3$Production[is.na(bp_clean3$Production)] <- 0 
 
 #Removing redundant rows from the dataset
 
@@ -118,7 +130,7 @@ head(bp_clean4)
 ```
 
 
-###Line Chart 
+##Line Chart 
 
 ```{r warning=FALSE, message=FALSE}
 Opec_five_prodcution <- bp_clean4 %>%
@@ -159,7 +171,7 @@ plot_line
 ```
 
 
-###Area Chart
+##Area Chart
 
 ```{r}
 Opec_five_prodcution$Country <- factor(Opec_five_prodcution$Country, levels = c("Saudi Arabia", "Iran", "Iraq", "Venezuela", "Kuwait"))
@@ -188,7 +200,7 @@ ggplot(data = Opec_five_prodcution, aes(x=Year, y=Production, fill = Country, gr
 ```
 
 
-###Bar Chart(Labeled Ends) 
+##Bar Chart(Labeled Ends) 
 
 ```{r}
 bp_clean4 <- as.data.frame(bp_clean4)
@@ -209,7 +221,7 @@ highest <- c("two", rep("one", 14))
 ggplot(top_ten, aes(x = reorder(Country, Production), y = Production)) + 
   geom_bar(stat = "identity", aes(fill = highest)) + 
   scale_fill_manual(values = c("#813753","#54203F")) + coord_flip() +
-  geom_text(aes(y= Production, x = seq(15,1), label = paste0(round(Production),"")), nudge_y = 700, color="black", size = 5) + 
+  geom_text(aes(y= Production, x = seq(15,1), label = paste0(round(Production),"")), nudge_y = 800, color="black", size = 4) + 
   theme_minimal() +
   theme(axis.title.x = element_blank(),
         axis.title.y = element_blank(),
@@ -224,7 +236,7 @@ ggplot(top_ten, aes(x = reorder(Country, Production), y = Production)) +
 ```
 
 
-###Stacked Bars 
+##Stacked Bars 
 
 ```{r}
 top_three <- bp_clean4 %>%
@@ -249,11 +261,11 @@ ggplot(top_three, aes(x= Year, y = Production, fill = Country)) +
         legend.text = element_text(size = 12, colour = "black", face = "bold")) + 
   labs(title= "Top Three Oil Producing Countries in the World (2012-2017)", subtitle = "Thousand Barrels Daily", 
        caption = "Source: BP Statistical Review") +
-  theme(title = element_text(size = 14))
+  theme(title = element_text(size = 12))
 ```
 
 
-###Clustered Bars 
+##Clustered Bars 
 
 ```{r}
 top_five <- bp_clean4 %>%
@@ -300,8 +312,8 @@ ggplot(us_production, aes(x= Year, y = Production)) +
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         legend.title = element_blank(),
-        axis.text.y = element_text(size = 12, colour = "black"),
-        axis.text.x = element_text(size = 12, colour = "black"),
+        axis.text.y = element_text(size = 10, colour = "black"),
+        axis.text.x = element_text(size = 10, colour = "black", angle = 65, vjust = 0.6),
         axis.title.y = element_blank()) +
   labs(title= "US Oil Production (1997-2017)", subtitle = "Thousand Barrels Daily", 
        caption = "Source: BP Statistical Review") +

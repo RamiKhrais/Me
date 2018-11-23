@@ -13,7 +13,7 @@ tags: []
 <div id="overview" class="section level2">
 <h2>Overview</h2>
 <p style="text-align: justify;">
-I’m going to visualise some charts for oil production and reserves for few countries. The data used in the coming charts is mainly extracted from BP Statistical Review of World Energy 2018(Though first two charts were based on OPEC data). When it comes to BP Review, oil production refers to a relateively broad category including crude oil, shale oil, oil sand and natrual gas liquids (NGLs). The aim of this report is to show some of the most popular charts used in the field and some of their customizations.
+I’m going to visualise some charts for oil production and reserves for few countries. The data used in the coming charts is mainly extracted from BP Statistical Review of World Energy 2018 (Though first two charts were based on OPEC data). When it comes to BP Review, oil production refers to a relateively broad category including crude oil, shale oil, oil sand and natrual gas liquids (NGLs). The aim of this report is to show some of the most popular charts used in the field and some of their customizations.
 </p>
 </div>
 <div id="packages-used-in-data-cleaning-and-visualisation" class="section level2">
@@ -25,8 +25,9 @@ library(scales)
 library(ggthemes)
 library(readxl)
 library(tidyr)</code></pre>
-<div id="bar-chart" class="section level3">
-<h3>Bar Chart</h3>
+</div>
+<div id="bar-chart" class="section level2">
+<h2>Bar Chart</h2>
 <pre class="r"><code>oil_reserves &lt;- read_excel(&quot;C:/Users/Rami/Desktop/reserves.xlsx&quot;)
 head(oil_reserves)</code></pre>
 <pre><code>## # A tibble: 5 x 3
@@ -58,8 +59,8 @@ ggplot(oil_reserves, aes(x= reorder(Country, Reserves), y= Reserves, fill = Coun
   theme(title = element_text(size = 14))</code></pre>
 <p><img src="/post/2018-11-23-visualisations-of-oil-production_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
-<div id="pie-chart" class="section level3">
-<h3>Pie Chart</h3>
+<div id="pie-chart" class="section level2">
+<h2>Pie Chart</h2>
 <pre class="r"><code>oil_reserves$Country &lt;- factor(oil_reserves$Country, levels = rev(as.character(oil_reserves$Country)))
 
 ggplot(oil_reserves, aes(x = &quot;&quot;, y = Cnt, fill = Country)) + 
@@ -80,7 +81,6 @@ ggplot(oil_reserves, aes(x = &quot;&quot;, y = Cnt, fill = Country)) +
   theme(legend.position = &quot;bottom&quot;) + 
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
 <p><img src="/post/2018-11-23-visualisations-of-oil-production_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-</div>
 <div id="importing-and-cleaning-bp-data-for-oil-production" class="section level3">
 <h3>Importing and Cleaning BP Data for Oil Production</h3>
 <pre class="r"><code>bp &lt;- read_excel(&quot;C:/Users/Rami/Desktop/BPStats.xlsx&quot;, sheet = 6, skip = 2)
@@ -147,17 +147,29 @@ glimpse(bp)</code></pre>
 <p style="text-align: justify;">
 The data looks a bit dirty. Let’s do some cleaning here.
 </p>
-<pre class="r"><code>colnames(bp)[1] &lt;- &quot;Country&quot; #Changing the column name of “Thousand Barrels”
+<pre class="r"><code>#Changing the column name of “Thousand Barrels”
 
-bp_clean1 &lt;- bp[1:(length(bp)-3)] #Removing the last three redundant columns
+colnames(bp)[1] &lt;- &quot;Country&quot; 
 
-bp_clean2 &lt;- na.omit(bp_clean1) #Removing na values form the data
+#Removing the last three redundant columns
 
-bp_clean3 &lt;- gather(bp_clean2, Year, Production, -Country, na.rm = TRUE) #Rearranging the data
+bp_clean1 &lt;- bp[1:(length(bp)-3)]
 
-bp_clean3$Production &lt;- as.integer(bp_clean3$Production) #Changing the prodution into integer
+#Removing na values form the data
 
-bp_clean3$Production[is.na(bp_clean3$Production)] &lt;- 0 #Replacing n/a values with zeros
+bp_clean2 &lt;- na.omit(bp_clean1)
+
+#Rearranging the data
+
+bp_clean3 &lt;- gather(bp_clean2, Year, Production, -Country, na.rm = TRUE) 
+
+#Changing the prodution into integer
+
+bp_clean3$Production &lt;- as.integer(bp_clean3$Production)
+
+#Replacing n/a values with zeros
+
+bp_clean3$Production[is.na(bp_clean3$Production)] &lt;- 0 
 
 #Removing redundant rows from the dataset
 
@@ -181,8 +193,9 @@ Let’s have a look at our data right now.
 ## 5 Brazil    1965          96
 ## 6 Colombia  1965         203</code></pre>
 </div>
-<div id="line-chart" class="section level3">
-<h3>Line Chart</h3>
+</div>
+<div id="line-chart" class="section level2">
+<h2>Line Chart</h2>
 <pre class="r"><code>Opec_five_prodcution &lt;- bp_clean4 %&gt;%
   filter(Country %in% c(&quot;Venezuela&quot;, &quot;Saudi Arabia&quot;, &quot;Iran&quot;, &quot;Iraq&quot;, &quot;Kuwait&quot;)) %&gt;%
   filter(Year %in% c(1997:2017)) %&gt;%
@@ -226,8 +239,8 @@ plot_line &lt;- ggplot(Opec_five_prodcution, aes(x = Year, y = Production, fill 
 plot_line</code></pre>
 <p><img src="/post/2018-11-23-visualisations-of-oil-production_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
-<div id="area-chart" class="section level3">
-<h3>Area Chart</h3>
+<div id="area-chart" class="section level2">
+<h2>Area Chart</h2>
 <pre class="r"><code>Opec_five_prodcution$Country &lt;- factor(Opec_five_prodcution$Country, levels = c(&quot;Saudi Arabia&quot;, &quot;Iran&quot;, &quot;Iraq&quot;, &quot;Venezuela&quot;, &quot;Kuwait&quot;))
 
 
@@ -253,8 +266,8 @@ ggplot(data = Opec_five_prodcution, aes(x=Year, y=Production, fill = Country, gr
   theme(title = element_text(size = 14))</code></pre>
 <p><img src="/post/2018-11-23-visualisations-of-oil-production_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
-<div id="bar-chartlabeled-ends" class="section level3">
-<h3>Bar Chart(Labeled Ends)</h3>
+<div id="bar-chartlabeled-ends" class="section level2">
+<h2>Bar Chart(Labeled Ends)</h2>
 <pre class="r"><code>bp_clean4 &lt;- as.data.frame(bp_clean4)
 
 bp_clean4$Production &lt;- as.numeric(bp_clean4$Production)
@@ -269,7 +282,7 @@ top_ten &lt;- bp_clean4 %&gt;%
 ggplot(top_ten, aes(x = reorder(Country, Production), y = Production)) + 
   geom_bar(stat = &quot;identity&quot;, aes(fill = highest)) + 
   scale_fill_manual(values = c(&quot;#813753&quot;,&quot;#54203F&quot;)) + coord_flip() +
-  geom_text(aes(y= Production, x = seq(15,1), label = paste0(round(Production),&quot;&quot;)), nudge_y = 700, color=&quot;black&quot;, size = 5) + 
+  geom_text(aes(y= Production, x = seq(15,1), label = paste0(round(Production),&quot;&quot;)), nudge_y = 800, color=&quot;black&quot;, size = 4) + 
   theme_minimal() +
   theme(axis.title.x = element_blank(),
         axis.title.y = element_blank(),
@@ -283,8 +296,8 @@ ggplot(top_ten, aes(x = reorder(Country, Production), y = Production)) +
   theme(title = element_text(size = 12))</code></pre>
 <p><img src="/post/2018-11-23-visualisations-of-oil-production_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
-<div id="stacked-bars" class="section level3">
-<h3>Stacked Bars</h3>
+<div id="stacked-bars" class="section level2">
+<h2>Stacked Bars</h2>
 <pre class="r"><code>top_three &lt;- bp_clean4 %&gt;%
   filter(Year %in% c(2012:2017) &amp; Country %in% c(&quot;US&quot;, &quot;Russian Federation&quot;, &quot;Saudi Arabia&quot;)) %&gt;%
   arrange(desc(Production))
@@ -307,11 +320,11 @@ ggplot(top_three, aes(x= Year, y = Production, fill = Country)) +
         legend.text = element_text(size = 12, colour = &quot;black&quot;, face = &quot;bold&quot;)) + 
   labs(title= &quot;Top Three Oil Producing Countries in the World (2012-2017)&quot;, subtitle = &quot;Thousand Barrels Daily&quot;, 
        caption = &quot;Source: BP Statistical Review&quot;) +
-  theme(title = element_text(size = 14))</code></pre>
+  theme(title = element_text(size = 12))</code></pre>
 <p><img src="/post/2018-11-23-visualisations-of-oil-production_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
-<div id="clustered-bars" class="section level3">
-<h3>Clustered Bars</h3>
+<div id="clustered-bars" class="section level2">
+<h2>Clustered Bars</h2>
 <pre class="r"><code>top_five &lt;- bp_clean4 %&gt;%
   filter(Year %in% c(2012:2017) &amp; Country %in% c(&quot;US&quot;, &quot;Russian Federation&quot;, &quot;Saudi Arabia&quot;, &quot;Iran&quot;, &quot;Canada&quot;)) %&gt;%
   arrange(desc(Production))
@@ -336,7 +349,6 @@ ggplot(top_five, aes(x= Year, y = Production, fill = Country)) +
        caption = &quot;Source: BP Statistical Review&quot;) +
   theme(title = element_text(size = 14)) </code></pre>
 <p><img src="/post/2018-11-23-visualisations-of-oil-production_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-</div>
 <div id="bar-chartoverlaid-line" class="section level3">
 <h3>Bar chart(Overlaid Line)</h3>
 <pre class="r"><code>us_production &lt;- bp_clean4 %&gt;%
@@ -354,8 +366,8 @@ ggplot(us_production, aes(x= Year, y = Production)) +
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         legend.title = element_blank(),
-        axis.text.y = element_text(size = 12, colour = &quot;black&quot;),
-        axis.text.x = element_text(size = 12, colour = &quot;black&quot;),
+        axis.text.y = element_text(size = 10, colour = &quot;black&quot;),
+        axis.text.x = element_text(size = 10, colour = &quot;black&quot;, angle = 65, vjust = 0.6),
         axis.title.y = element_blank()) +
   labs(title= &quot;US Oil Production (1997-2017)&quot;, subtitle = &quot;Thousand Barrels Daily&quot;, 
        caption = &quot;Source: BP Statistical Review&quot;) +
