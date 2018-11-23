@@ -282,7 +282,7 @@ top_ten &lt;- bp_clean4 %&gt;%
 ggplot(top_ten, aes(x = reorder(Country, Production), y = Production)) + 
   geom_bar(stat = &quot;identity&quot;, aes(fill = highest)) + 
   scale_fill_manual(values = c(&quot;#813753&quot;,&quot;#54203F&quot;)) + coord_flip() +
-  geom_text(aes(y= Production, x = seq(15,1), label = paste0(round(Production),&quot;&quot;)), nudge_y = 800, color=&quot;black&quot;, size = 4) + 
+  geom_text(aes(y= Production, x = seq(15,1), label = paste0(round(Production),&quot;&quot;)), nudge_y = 750, color=&quot;black&quot;, size = 4) + 
   theme_minimal() +
   theme(axis.title.x = element_blank(),
         axis.title.y = element_blank(),
@@ -291,7 +291,7 @@ ggplot(top_ten, aes(x = reorder(Country, Production), y = Production)) +
         legend.position = &quot;None&quot;,
         panel.background = element_blank(),
         panel.grid = element_blank()) + 
-  labs(title = &quot;Top Ten Oil Producing Countries in the World in 2017&quot;, subtitle = &quot;Thousand Barrels Daily&quot;, 
+  labs(title = &quot;Top Fifteen Oil Producing Countries in the World in 2017&quot;, subtitle = &quot;Thousand Barrels Daily&quot;, 
       caption = &quot;Source: BP Statistical Review&quot;) + 
   theme(title = element_text(size = 12))</code></pre>
 <p><img src="/post/2018-11-23-visualisations-of-oil-production_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>

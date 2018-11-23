@@ -221,7 +221,7 @@ highest <- c("two", rep("one", 14))
 ggplot(top_ten, aes(x = reorder(Country, Production), y = Production)) + 
   geom_bar(stat = "identity", aes(fill = highest)) + 
   scale_fill_manual(values = c("#813753","#54203F")) + coord_flip() +
-  geom_text(aes(y= Production, x = seq(15,1), label = paste0(round(Production),"")), nudge_y = 800, color="black", size = 4) + 
+  geom_text(aes(y= Production, x = seq(15,1), label = paste0(round(Production),"")), nudge_y = 750, color="black", size = 4) + 
   theme_minimal() +
   theme(axis.title.x = element_blank(),
         axis.title.y = element_blank(),
@@ -230,7 +230,7 @@ ggplot(top_ten, aes(x = reorder(Country, Production), y = Production)) +
         legend.position = "None",
         panel.background = element_blank(),
         panel.grid = element_blank()) + 
-  labs(title = "Top Ten Oil Producing Countries in the World in 2017", subtitle = "Thousand Barrels Daily", 
+  labs(title = "Top Fifteen Oil Producing Countries in the World in 2017", subtitle = "Thousand Barrels Daily", 
       caption = "Source: BP Statistical Review") + 
   theme(title = element_text(size = 12))
 ```
