@@ -1,0 +1,309 @@
+---
+title: Visualisations of Oil Production
+author: Rami Kh
+date: '2018-11-23'
+slug: visualisations-of-oil-production
+categories:
+  - Visualisation
+tags: []
+---
+
+
+##Overview
+
+<p style='text-align: justify;'> I'm going to visualise some charts for oil production and reserves for few countries. The data used in the coming charts is mainly extracted from BP Statistical Review of World Energy 2018(Though first two charts were based on OPEC data). When it comes to BP Review, oil production refers to a relateively broad category including crude oil, shale oil, oil sand and natrual gas liquids (NGLs). The aim of this report is to show some of the most popular charts used in the field and some of their customizations. </p>
+
+##Packages used in data cleaning and visualisation
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+library(ggthemes)
+library(dplyr)
+library(scales)
+library(ggthemes)
+library(readxl)
+library(tidyr)
+```
+
+
+###Bar Chart
+
+```{r}
+oil_reserves <- read_excel("C:/Users/Rami/Desktop/reserves.xlsx")
+head(oil_reserves)
+```
+
+<p style='text-align: justify;'> As we want the chart to show the production levels in ascending levels, we should manipultae the data a little bit. </p>
+
+```{r}
+oil_reserves$Country <- factor(oil_reserves$Country, levels = rev(as.character(oil_reserves$Country)))
+
+ggplot(oil_reserves, aes(x= reorder(Country, Reserves), y= Reserves, fill = Country)) +
+  theme_minimal() + 
+  geom_bar(stat = "identity", width = 0.8) + 
+  scale_y_continuous(limits = c(0, 320), breaks = c(0, 40, 80, 120, 160, 200, 240, 280, 320), labels = scales::comma) +
+  scale_fill_manual(values= c("#000B29", "#D70026", "azure4", "#EDB83D", "coral")) + 
+  theme(axis.title.x = element_blank()) + 
+  theme(axis.title.y = element_blank()) +
+  theme(axis.text.x = element_text(size = 12, face = "bold", colour = "black")) +
+  ylab("Proven Crude Oil Reserves") + 
+  theme(panel.grid.major.x = element_blank()) + 
+  theme(panel.grid.minor.x = element_blank()) + 
+  theme(legend.position = "none") + 
+  labs(title = "Five OPEC Countries with the Biggest Oil Reserves", subtitle = " Billion Barrels", caption = "Source: OPEC") +
+  theme(title = element_text(size = 14))
+```
+
+###Pie Chart 
+
+```{r}
+oil_reserves$Country <- factor(oil_reserves$Country, levels = rev(as.character(oil_reserves$Country)))
+
+ggplot(oil_reserves, aes(x = "", y = Cnt, fill = Country)) + 
+  coord_polar("y") + theme_classic() + 
+  geom_bar(width = 2.5, size = 2, colour = "white", stat = "identity") +
+  theme(axis.line.x = element_blank()) + 
+  theme(axis.line.y = element_blank()) + 
+  theme(axis.title.x = element_blank()) + 
+  labs(x = NULL, Y = NULL) +
+  theme(axis.text = element_blank()) + 
+  scale_fill_manual(values = c("#000B29", "#D70026", "azure4", "#EDB83D", "coral")) + 
+  guides(fill = guide_legend(reverse = TRUE)) + 
+  geom_text(aes(label = paste0(round(Cnt), "%")), position = position_stack(vjust = 0.5), color = "white") + 
+  labs(title = "Five Opec Countries with the Biggest Oil Reserves", caption = "Source = OPEC") +
+  theme(title = element_text(size = 14)) + 
+  theme(legend.text = element_text(size = 14)) + 
+  theme(legend.title = element_blank()) + 
+  theme(legend.position = "bottom") + 
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+###Importing and Cleaning BP Data for Oil Production
+
+```{r}
+bp <- read_excel("C:/Users/Rami/Desktop/BPStats.xlsx", sheet = 6, skip = 2)
+glimpse(bp)
+```
+
+<p style='text-align: justify;'> The data looks a bit dirty. Let's do some cleaning here. </p>
+
+```{r warning=FALSE, message=FALSE}
+colnames(bp)[1] <- "Country" #Changing the column name of “Thousand Barrels”
+
+bp_clean1 <- bp[1:(length(bp)-3)] #Removing the last three redundant columns
+
+bp_clean2 <- na.omit(bp_clean1) #Removing na values form the data
+
+bp_clean3 <- gather(bp_clean2, Year, Production, -Country, na.rm = TRUE) #Rearranging the data
+
+bp_clean3$Production <- as.integer(bp_clean3$Production) #Changing the prodution into integer
+
+bp_clean3$Production[is.na(bp_clean3$Production)] <- 0 #Replacing n/a values with zeros
+
+#Removing redundant rows from the dataset
+
+remove.list <- paste(c("Other Africa", "Total World", "European Union #", "Other Asia Pacific", "Total Asia Pacific", "of which: OECD",
+                 "Total Europe", "Total Africa", "OPEC", "Non-OPEC", "Other Europe", "Total North America", "Total CIS", 
+                 "Non-OECD", "OECD", "Total Middle East", "Other Middle East", "Other CIS", "Other S. & Cent. America", 
+                 "Total S. & Cent. America"))
+
+bp_clean4 <- subset(bp_clean3, ! Country %in% remove.list)
+                     
+```
+
+<p style='text-align: justify;'> Let's have a look at our data right now. </p>
+
+```{r}
+head(bp_clean4)
+```
+
+
+###Line Chart 
+
+```{r warning=FALSE, message=FALSE}
+Opec_five_prodcution <- bp_clean4 %>%
+  filter(Country %in% c("Venezuela", "Saudi Arabia", "Iran", "Iraq", "Kuwait")) %>%
+  filter(Year %in% c(1997:2017)) %>%
+  group_by(Country, Production) %>%
+  arrange((desc(Production))) 
+
+head(Opec_five_prodcution)
+```
+
+
+```{r}
+Opec_five_prodcution$Country <- factor(Opec_five_prodcution$Country, levels = c("Saudi Arabia", "Iran", "Iraq", "Venezuela", "Kuwait"))
+
+
+plot_line <- ggplot(Opec_five_prodcution, aes(x = Year, y = Production, fill = Country)) +
+  geom_line(size = 2, aes(group = Country, colour = Country)) + 
+  scale_color_manual(values = c("#000B29", "#D70026", "azure4", "#EDB83D", "coral")) +
+  theme_minimal() + 
+  scale_y_continuous(limits = c(1000, 13000), breaks = c(1000, 4000, 7000, 10000, 13000), labels = scales::comma) + 
+  scale_x_discrete(breaks = seq(1997,2017,5)) + 
+  theme(axis.title.x = element_blank()) + 
+  theme(axis.text.x = element_text(size = 12, colour = "black")) + 
+  theme(axis.title.y = element_blank()) + 
+  theme(axis.text.y = element_text(size = 10, colour = "black")) + 
+  theme(legend.title = element_blank()) + 
+  theme(panel.grid.major.x = element_blank()) + 
+  theme(panel.grid.minor.x = element_blank()) +
+  theme(legend.position = "bottom") + 
+  theme(legend.key.size = unit(2, "lines")) +
+  theme(legend.text = element_text(colour = "black", size = 12, face = "bold")) + 
+  labs(title = "Oil Production of Five of OPEC Countries", subtitle = "Thousand Barrels Daily",
+       caption = "Source: BP Statistical Review") +
+  theme(title = element_text(size = 14))
+
+plot_line
+```
+
+
+###Area Chart
+
+```{r}
+Opec_five_prodcution$Country <- factor(Opec_five_prodcution$Country, levels = c("Saudi Arabia", "Iran", "Iraq", "Venezuela", "Kuwait"))
+
+
+ggplot(data = Opec_five_prodcution, aes(x=Year, y=Production, fill = Country, group = Country)) + 
+  geom_area(aes(fill = Country), stat= "identity") + 
+  scale_fill_manual(values = c("#000B29", "#D70026", "azure4", "#EDB83D", "coral")) + 
+  theme_minimal() +
+  scale_y_continuous(limits = c(0, 30000), breaks = c(0, 6000, 12000, 18000, 24000, 30000), labels = scales::comma) + 
+  scale_x_discrete(breaks = seq(1997,2017,5)) + 
+  theme(axis.title.x = element_blank()) + 
+  theme(axis.text.x = element_text(size = 12, colour = "black")) + 
+  theme(axis.title.y = element_blank()) + 
+  theme(axis.text.y = element_text(size = 10, colour = "black")) + 
+  theme(legend.title = element_blank()) + 
+  theme(panel.grid.major.x = element_blank()) + 
+  theme(panel.grid.minor.x = element_blank()) +
+  theme(legend.position = "bottom") + 
+  theme(legend.key.width = unit(3, "lines")) +
+  theme(legend.key.height = unit(0.4, "lines")) + 
+  theme(legend.text = element_text(colour = "black", size = 12, face = "bold")) + 
+  labs(title = "Oil Production of Five of OPEC Countries", subtitle = "Thousand Barrels Daily",
+       caption = "Source: BP Statistical Review") +
+  theme(title = element_text(size = 14))
+```
+
+
+###Bar Chart(Labeled Ends) 
+
+```{r}
+bp_clean4 <- as.data.frame(bp_clean4)
+
+bp_clean4$Production <- as.numeric(bp_clean4$Production)
+
+
+top_ten <- bp_clean4 %>%
+  filter(Year == "2017") %>%
+  arrange(desc(Production)) %>%
+  slice(1:15)
+```
+
+
+```{r}
+highest <- c("two", rep("one", 14))
+
+ggplot(top_ten, aes(x = reorder(Country, Production), y = Production)) + 
+  geom_bar(stat = "identity", aes(fill = highest)) + 
+  scale_fill_manual(values = c("#813753","#54203F")) + coord_flip() +
+  geom_text(aes(y= Production, x = seq(15,1), label = paste0(round(Production),"")), nudge_y = 700, color="black", size = 5) + 
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 12, colour = "black"),
+        legend.position = "None",
+        panel.background = element_blank(),
+        panel.grid = element_blank()) + 
+  labs(title = "Top Ten Oil Producing Countries in the World in 2017", subtitle = "Thousand Barrels Daily", 
+      caption = "Source: BP Statistical Review") + 
+  theme(title = element_text(size = 12))
+```
+
+
+###Stacked Bars 
+
+```{r}
+top_three <- bp_clean4 %>%
+  filter(Year %in% c(2012:2017) & Country %in% c("US", "Russian Federation", "Saudi Arabia")) %>%
+  arrange(desc(Production))
+
+ggplot(top_three, aes(x= Year, y = Production, fill = Country)) +
+  geom_bar(stat = "identity") + 
+  theme_minimal() +
+  scale_fill_manual(values = c("#003B46", "#07575B", "#66A5AD")) +
+  scale_y_continuous(limits = c(0,40000), breaks = c(0, 10000, 20000, 30000, 40000), labels = scales::comma) + 
+  theme(axis.title.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.title = element_blank(),
+        axis.text.y = element_text(size = 12, colour = "black"),
+        axis.title.y = element_blank(),
+        axis.text.x = element_text(size = 12, colour = "black"),
+        legend.position = "bottom", 
+        legend.key.height = unit(0.8, "lines"), 
+        legend.key.width = unit(3, "lines"),
+        legend.text = element_text(size = 12, colour = "black", face = "bold")) + 
+  labs(title= "Top Three Oil Producing Countries in the World (2012-2017)", subtitle = "Thousand Barrels Daily", 
+       caption = "Source: BP Statistical Review") +
+  theme(title = element_text(size = 14))
+```
+
+
+###Clustered Bars 
+
+```{r}
+top_five <- bp_clean4 %>%
+  filter(Year %in% c(2012:2017) & Country %in% c("US", "Russian Federation", "Saudi Arabia", "Iran", "Canada")) %>%
+  arrange(desc(Production))
+
+ggplot(top_five, aes(x= Year, y = Production, fill = Country)) +
+  geom_bar(stat = "identity", position = "dodge") + 
+  theme_minimal() +
+  scale_fill_manual(values = c("#375E97", "#FB6542", "#FFBB00", "#3F681C", "#98DBC6")) +
+  scale_y_continuous(limits = c(0,20000), breaks = c(0, 4000, 8000, 12000, 16000, 20000), labels = scales::comma) + 
+  theme(axis.title.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.title = element_blank(),
+        axis.text.y = element_text(size = 12, colour = "black"),
+        axis.text.x = element_text(size = 12, colour = "black"),
+        axis.title.y = element_blank(), 
+        legend.position = "bottom", 
+        legend.key.height = unit(0.8, "lines"), 
+        legend.key.width = unit(0.8, "lines"),
+        legend.text = element_text(size = 12, colour = "black", face = "bold")) + 
+  labs(title= "Top Five Oil Producing Countries (2012-2017)", subtitle = "Thousand Barrels Daily", 
+       caption = "Source: BP Statistical Review") +
+  theme(title = element_text(size = 14)) 
+```
+
+
+###Bar chart(Overlaid Line)
+
+```{r}
+us_production <- bp_clean4 %>%
+  filter(Year %in% c(1997:2017) & Country == "US") %>%
+  arrange(Year)
+
+
+ggplot(us_production, aes(x= Year, y = Production)) + 
+  geom_bar(size = 1.5, width = 0.5, fill = "gold", stat = "identity") + 
+  geom_line(aes(group = 1), size = 1, color = "orangered3") + 
+  geom_point(size = 7, shape = 21, fill = "orangered3") +
+  theme_minimal() + 
+  scale_y_continuous(limits = c(0,14000), breaks = c(0, 2000, 4000, 6000, 8000, 10000, 12000, 14000), labels = scales::comma) +
+  theme(axis.title.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.title = element_blank(),
+        axis.text.y = element_text(size = 12, colour = "black"),
+        axis.text.x = element_text(size = 12, colour = "black"),
+        axis.title.y = element_blank()) +
+  labs(title= "US Oil Production (1997-2017)", subtitle = "Thousand Barrels Daily", 
+       caption = "Source: BP Statistical Review") +
+  theme(title = element_text(size = 14))
+```
