@@ -157,7 +157,7 @@ $\hat{y}$ refers to the mean value of $Y$ for a given value of $X$
 <p style='text-align: justify;'>**The Least Square Mehtod** is the statistical approach that can be used to minimize the sum of all the squared distances between the observed $y$ and the predicted $\hat{y}$ at each given value of $x$</p>
 
 
-![my-image]("C:\Users\Rami\Desktop\Me\static\images\model.png")
+![](/post/2018-12-11-oil-well-drilling-costs-simple-linear-regression_files/model.png)
 
 <p style='text-align: justify;'>Using the image above, **Least Square Method** is a mathemtical technique through which we can find the value of $\hat{\beta}_0$ (intercept) and $\hat{\beta}_1$ that minmize the squared distances between red points and blue line where the slope is:</p>
 
@@ -169,4 +169,4 @@ and the intercept is:
 $$
 {\beta}_0 = \bar{y} - {\beta}_1 \bar{x}
 $$
-
+ 
