@@ -9,11 +9,6 @@ tags: []
 ---
 
 
-```{r echo=FALSE, results='hide',message=FALSE}
-library(knitr)
-```
-
-
 ##Introduction
 
 <p style='text-align: justify;'> A simple linear regression is a statistical model that allows us to analyse the relationship between a dependent variable (response) and independent variable (predictor). The model is considered as one of the most popular mathematical techniques to predict the value of the outcome variable based on one or more input predictor variables. It has been used for ages as a simple and straightforward approach in studying the linear relationships in a wide spectrum of fields ranging from economics to biology and it takes the following formula: </p>
@@ -54,7 +49,7 @@ X represents the independent (predictor) variable.
 
 **${\beta}_1$** is the coefficient (slope term) representing the linear relationship.
 
-**$\epsilon$** represents the error term (Normally distribured/Constant Variance)
+**$\epsilon$** represents the error term (Normally distribured/Constant Variance).
 
 
 
@@ -156,8 +151,7 @@ $\hat{y}$ refers to the mean value of $Y$ for a given value of $X$
 
 <p style='text-align: justify;'>**The Least Square Mehtod** is the statistical approach that can be used to minimize the sum of all the squared distances between the observed $y$ and the predicted $\hat{y}$ at each given value of $x$</p>
 
-
-![](/post/2018-12-11-oil-well-drilling-costs-simple-linear-regression_files/model.png)
+![Simple Linear Regression](/img/model.png)
 
 <p style='text-align: justify;'>Using the image above, **Least Square Method** is a mathemtical technique through which we can find the value of $\hat{\beta}_0$ (intercept) and $\hat{\beta}_1$ that minmize the squared distances between red points and blue line where the slope is:</p>
 
