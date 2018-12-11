@@ -13,20 +13,18 @@ tags: []
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p style="text-align: justify;">
-A simple linear regression is a statistical model that allows us to analyse the relationship between a dependent variable (response) and independent variable (predictor). The model is considered as one of the most popular mathematical techniques to predict the value of the outcome variable based on one or more input predictor variables. It has been used for ages as a simple and straightforward approach in studying the linear relationships in a wide spectrum of fields ranging from economics to biology and It takes the following formula:
+A simple linear regression is a statistical model that allows us to analyse the relationship between a dependent variable (response) and independent variable (predictor). The model is considered as one of the most popular mathematical techniques to predict the value of the outcome variable based on one or more input predictor variables. It has been used for ages as a simple and straightforward approach in studying the linear relationships in a wide spectrum of fields ranging from economics to biology and it takes the following formula:
 </p>
 <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"> <mtable displaystyle="true"> <mlabeledtr> <mtd id="mjx-eqn-1"> <mtext></mtext> </mtd> <mtd> <mi>Y</mi> <mo>=</mo> <msub> <mi>β<!-- ?? --></mi> <mn>0</mn> </msub> <mo>+</mo> <msub> <mi>β<!-- ?? --></mi> </msub> <mi>X</mi> <mo>+</mo> <mi>ϵ<!-- ?? --></mi> </mtd> </mlabeledtr> </mtable> </math></p>
 <p>Where:</p>
-<p>Y represents the dependent (response) variable</p>
-<p>X represents the independent (predictor) variable</p>
-<p><math xmlns="http://www.w3.org/1998/Math/MathML"> <msub> <mi>β<!-- ?? --></mi> <mn>0</mn> </msub> </math> represents the intercept (the value of Y when X = Zero)</p>
-<p><math xmlns="http://www.w3.org/1998/Math/MathML"> <msub> <mi>β<!-- ?? --></mi> <mn>1</mn> </msub> </math> is the coefficient (slope term) representing the linear relationship</p>
-<p><math xmlns="http://www.w3.org/1998/Math/MathML"> <mi>ϵ<!-- ?? --></mi> </math> represents the error term (Normally distribured/Constant Variance)</p>
-<p style="text-align: justify;">
-The simple linear regression is established upon the following assumptions:
-</p>
+<p><strong>Y</strong> represents the dependent (response) variable.</p>
+<p><strong>X</strong> represents the independent (predictor) variable.</p>
+<p><strong><span class="math inline">\({\beta}_0\)</span></strong> represents the intercept (the value of Y when X = Zero).</p>
+<p><strong><span class="math inline">\({\beta}_1\)</span></strong> is the coefficient (slope term) representing the linear relationship.</p>
+<p><strong><span class="math inline">\(\epsilon\)</span></strong> represents the error term (Normally distribured/Constant Variance)</p>
+<p><strong>The simple linear regression is established upon the following assumptions:</strong></p>
 <ul>
-<li><strong>Linear:</strong> the relationship between <span class="math inline">\(Y\)</span> and <span class="math inline">\(Y\)</span> is linear.</li>
+<li><strong>Linear:</strong> the relationship between <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span> is linear.</li>
 <li><strong>Independent:</strong> the errors <span class="math inline">\(\epsilon\)</span> are independent.</li>
 <li><strong>Normal:</strong> the errors <span class="math inline">\(\epsilon\)</span> are noramlly distributed.</li>
 <li><strong>Equal Variance:</strong> the variance of <span class="math inline">\(Y\)</span> is the same at each value of <span class="math inline">\(X\)</span>.</li>
@@ -44,15 +42,19 @@ The simple linear regression is established upon the following assumptions:
 <p>where:</p>
 <p><span class="math inline">\(\hat{y}\)</span> refers to the mean value of <span class="math inline">\(Y\)</span> for a given value of <span class="math inline">\(X\)</span></p>
 <p style="text-align: justify;">
-<strong>The Least Square Mehtod</strong> is the statistical approach that can be used to minimize the sum of all the squared distances between the observed <span class="math inline">\(y\)</span> and the predicted value <span class="math inline">\(\hat{y}\)</span> at each given value of <span class="math inline">\(x\)</span>
+<strong>The Least Square Mehtod</strong> is the statistical approach that can be used to minimize the sum of all the squared distances between the observed <span class="math inline">\(y\)</span> and the predicted <span class="math inline">\(\hat{y}\)</span> at each given value of <span class="math inline">\(x\)</span>
 </p>
-<p><img src="C:/Users/Rami/Desktop/model.png" /><!-- --></p>
-<p style='text-align: justify;'>
-<p>Using the image above, <strong>Least Square Method</strong> is a mathemtical technique through which we can find the value of <span class="math inline">\(\hat{\beta}_0\)</span> (intercept) and <span class="math inline">\(\hat{\beta}_1\)</span> that minmize the squared distances between red points and blue line where the slope is:</p>
+<div class="figure">
+<img src="C:/Users/Rami/Desktop/Me/static/images/model.png" alt="my-image" />
+<p class="caption">my-image</p>
+</div>
+<p style="text-align: justify;">
+Using the image above, <strong>Least Square Method</strong> is a mathemtical technique through which we can find the value of <span class="math inline">\(\hat{\beta}_0\)</span> (intercept) and <span class="math inline">\(\hat{\beta}_1\)</span> that minmize the squared distances between red points and blue line where the slope is:
+</p>
 <p><span class="math display">\[
-\hat{\beta}_1 = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2}
+{\beta}_1 = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2}
 \]</span> and the intercept is:</p>
 <p><span class="math display">\[
-\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}
+{\beta}_0 = \bar{y} - {\beta}_1 \bar{x}
 \]</span></p>
 </div>

@@ -16,7 +16,7 @@ library(knitr)
 
 ##Introduction
 
-<p style='text-align: justify;'> A simple linear regression is a statistical model that allows us to analyse the relationship between a dependent variable (response) and independent variable (predictor). The model is considered as one of the most popular mathematical techniques to predict the value of the outcome variable based on one or more input predictor variables. It has been used for ages as a simple and straightforward approach in studying the linear relationships in a wide spectrum of fields ranging from economics to biology and It takes the following formula: </p>
+<p style='text-align: justify;'> A simple linear regression is a statistical model that allows us to analyse the relationship between a dependent variable (response) and independent variable (predictor). The model is considered as one of the most popular mathematical techniques to predict the value of the outcome variable based on one or more input predictor variables. It has been used for ages as a simple and straightforward approach in studying the linear relationships in a wide spectrum of fields ranging from economics to biology and it takes the following formula: </p>
 
 
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -46,32 +46,21 @@ library(knitr)
 
 Where: 
 
-Y represents the dependent (response) variable
+**Y** represents the dependent (response) variable.
 
-X represents the independent (predictor) variable
+**X** represents the independent (predictor) variable.
 
-<math xmlns="http://www.w3.org/1998/Math/MathML">
-  <msub>
-    <mi>&#x03B2;<!-- ?? --></mi>
-    <mn>0</mn>
-  </msub>
-</math> represents the intercept (the value of Y when X = Zero)
+**${\beta}_0$** represents the intercept (the value of Y when X = Zero).
 
-<math xmlns="http://www.w3.org/1998/Math/MathML">
-  <msub>
-    <mi>&#x03B2;<!-- ?? --></mi>
-    <mn>1</mn>
-  </msub>
-</math> is the coefficient (slope term) representing the linear relationship
+**${\beta}_1$** is the coefficient (slope term) representing the linear relationship.
 
-<math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mi>&#x03F5;<!-- ?? --></mi>
-</math> represents the error term (Normally distribured/Constant Variance)
+**$\epsilon$** represents the error term (Normally distribured/Constant Variance)
 
 
-<p style='text-align: justify;'>The simple linear regression is established upon the following assumptions:</p>
 
-- **Linear:** the relationship between $Y$ and $Y$ is linear.
+**The simple linear regression is established upon the following assumptions:**
+
+- **Linear:** the relationship between $Y$ and $X$ is linear.
 - **Independent:** the errors $\epsilon$ are independent.
 - **Normal:** the errors $\epsilon$ are noramlly distributed.
 - **Equal Variance:** the variance of $Y$ is the same at each value of $X$.
@@ -165,21 +154,19 @@ where:
 $\hat{y}$ refers to the mean value of $Y$ for a given value of $X$
 
 
-<p style='text-align: justify;'>**The Least Square Mehtod** is the statistical approach that can be used to minimize the sum of all the squared distances between the observed $y$ and the predicted value $\hat{y}$ at each given value of $x$</p>
+<p style='text-align: justify;'>**The Least Square Mehtod** is the statistical approach that can be used to minimize the sum of all the squared distances between the observed $y$ and the predicted $\hat{y}$ at each given value of $x$</p>
 
 
-```{r echo=FALSE,message=FALSE}
-include_graphics("C:/Users/Rami/Desktop/model.png")
-```
+![my-image](C:\Users\Rami\Desktop\Me\static\images\model.png)
 
-<p style='text-align: justify;'>Using the image above, **Least Square Method** is a mathemtical technique through which we can find the value of $\hat{\beta}_0$ (intercept) and $\hat{\beta}_1$ that minmize the squared distances between red points and blue line where the slope is: 
+<p style='text-align: justify;'>Using the image above, **Least Square Method** is a mathemtical technique through which we can find the value of $\hat{\beta}_0$ (intercept) and $\hat{\beta}_1$ that minmize the squared distances between red points and blue line where the slope is:</p>
 
 $$
-\hat{\beta}_1 = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2}
+{\beta}_1 = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2}
 $$
 and the intercept is: 
 
 $$
-\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}
+{\beta}_0 = \bar{y} - {\beta}_1 \bar{x}
 $$
 
