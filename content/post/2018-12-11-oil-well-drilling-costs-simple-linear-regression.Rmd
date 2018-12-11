@@ -1,0 +1,185 @@
+---
+title: 'Oil Well Drilling Costs: Simple Linear Regression'
+author: Rami Kh
+date: '2018-12-11'
+slug: oil-well-drilling-costs-simple-linear-regression
+categories:
+  - Statistical Modelling
+tags: []
+---
+
+
+```{r echo=FALSE, results='hide',message=FALSE}
+library(knitr)
+```
+
+
+##Introduction
+
+<p style='text-align: justify;'> A simple linear regression is a statistical model that allows us to analyse the relationship between a dependent variable (response) and independent variable (predictor). The model is considered as one of the most popular mathematical techniques to predict the value of the outcome variable based on one or more input predictor variables. It has been used for ages as a simple and straightforward approach in studying the linear relationships in a wide spectrum of fields ranging from economics to biology and It takes the following formula: </p>
+
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true">
+    <mlabeledtr>
+      <mtd id="mjx-eqn-1">
+        <mtext></mtext>
+      </mtd>
+      <mtd>
+        <mi>Y</mi>
+        <mo>=</mo>
+        <msub>
+          <mi>&#x03B2;<!-- ?? --></mi>
+          <mn>0</mn>
+        </msub>
+        <mo>+</mo>
+        <msub>
+          <mi>&#x03B2;<!-- ?? --></mi>
+        </msub>
+        <mi>X</mi>
+        <mo>+</mo>
+        <mi>&#x03F5;<!-- ?? --></mi>
+      </mtd>
+    </mlabeledtr>
+  </mtable>
+</math>
+
+Where: 
+
+Y represents the dependent (response) variable
+
+X represents the independent (predictor) variable
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>&#x03B2;<!-- ?? --></mi>
+    <mn>0</mn>
+  </msub>
+</math> represents the intercept (the value of Y when X = Zero)
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>&#x03B2;<!-- ?? --></mi>
+    <mn>1</mn>
+  </msub>
+</math> is the coefficient (slope term) representing the linear relationship
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>&#x03F5;<!-- ?? --></mi>
+</math> represents the error term (Normally distribured/Constant Variance)
+
+
+<p style='text-align: justify;'>The simple linear regression is established upon the following assumptions:</p>
+
+- **Linear:** the relationship between $Y$ and $Y$ is linear.
+- **Independent:** the errors $\epsilon$ are independent.
+- **Normal:** the errors $\epsilon$ are noramlly distributed.
+- **Equal Variance:** the variance of $Y$ is the same at each value of $X$.
+
+
+##Least Square Method
+
+<p style='text-align: justify;'>If we know the population parameters <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>&#x03B2;<!-- ?? --></mi>
+    <mn>0</mn>
+  </msub>
+</math> and <math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>&#x03B2;<!-- ?? --></mi>
+    <mn>1</mn>
+  </msub>
+</math>, we could use the simple linear regression model where 
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtext>E</mtext>
+  <mo stretchy="false">[</mo>
+  <msub>
+    <mi>Y</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>&#x2223;<!-- ∣ --></mo>
+  <msub>
+    <mi>X</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">]</mo>
+  <mo>=</mo>
+  <msub>
+    <mi>&#x03B2;<!-- β --></mi>
+    <mn>0</mn>
+  </msub>
+  <mo>+</mo>
+  <msub>
+    <mi>&#x03B2;<!-- β --></mi>
+    <mn>1</mn>
+  </msub>
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>.</mo>
+</math
+
+<p style='text-align: justify;'>However, in reality we almost never have the parameters and thus we should estimate the value of $Y$
+at every given value of $X$</p>
+
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow class="MJX-TeXAtom-ORD">
+    <mover>
+      <mi>y</mi>
+      <mo stretchy="false">&#x005E;<!-- ^ --></mo>
+    </mover>
+  </mrow>
+  <mo>=</mo>
+  <msub>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mover>
+        <mi>&#x03B2;<!-- β --></mi>
+        <mo stretchy="false">&#x005E;<!-- ^ --></mo>
+      </mover>
+    </mrow>
+    <mn>0</mn>
+  </msub>
+  <mo>+</mo>
+  <msub>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mover>
+        <mi>&#x03B2;<!-- β --></mi>
+        <mo stretchy="false">&#x005E;<!-- ^ --></mo>
+      </mover>
+    </mrow>
+    <mn>1</mn>
+  </msub>
+  <mi>x</mi>
+  <mo>.</mo>
+</math>
+
+where: 
+
+$\hat{y}$ refers to the mean value of $Y$ for a given value of $X$
+
+
+<p style='text-align: justify;'>**The Least Square Mehtod** is the statistical approach that can be used to minimize the sum of all the squared distances between the observed $y$ and the predicted value $\hat{y}$ at each given value of $x$</p>
+
+
+```{r echo=FALSE,message=FALSE}
+include_graphics("C:/Users/Rami/Desktop/model.png")
+```
+
+<p style='text-align: justify;'>Using the image above, **Least Square Method** is a mathemtical technique through which we can find the value of $\hat{\beta}_0$ (intercept) and $\hat{\beta}_1$ that minmize the squared distances between red points and blue line where the slope is: 
+
+$$
+\hat{\beta}_1 = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2}
+$$
+and the intercept is: 
+
+$$
+\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}
+$$
+

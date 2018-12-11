@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Statistical Modelling on Rami Kh</title>
+    <link>/categories/statistical-modelling/</link>
+    <description>Recent content in Statistical Modelling on Rami Kh</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright &amp;copy; 2017 - Author Name</copyright>
+    <lastBuildDate>Tue, 11 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/statistical-modelling/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Oil Well Drilling Costs: Simple Linear Regression</title>
+      <link>/post/oil-well-drilling-costs-simple-linear-regression/</link>
+      <pubDate>Tue, 11 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/oil-well-drilling-costs-simple-linear-regression/</guid>
+      <description>IntroductionA simple linear regression is a statistical model that allows us to analyse the relationship between a dependent variable (response) and independent variable (predictor). The model is considered as one of the most popular mathematical techniques to predict the value of the outcome variable based on one or more input predictor variables.</description>
+    </item>
+    
+  </channel>
+</rss>
