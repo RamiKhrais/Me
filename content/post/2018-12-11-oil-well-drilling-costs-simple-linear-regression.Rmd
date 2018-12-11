@@ -151,7 +151,7 @@ $\hat{y}$ refers to the mean value of $Y$ for a given value of $X$
 
 <p style='text-align: justify;'>**The Least Square Mehtod** is the statistical approach that can be used to minimize the sum of all the squared distances between the observed $y$ and the predicted $\hat{y}$ at each given value of $x$</p>
 
-![Simple Linear Regression](/images/model.png)
+(/images/model.png)
 
 <p style='text-align: justify;'>Using the image above, **Least Square Method** is a mathemtical technique through which we can find the value of $\hat{\beta}_0$ (intercept) and $\hat{\beta}_1$ that minmize the squared distances between red points and blue line where the slope is:</p>
 
