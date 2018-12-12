@@ -61,7 +61,7 @@ X represents the independent (predictor) variable.
 - **Equal Variance:** the variance of $Y$ is the same at each value of $X$.
 
 
-##Least Square Method
+##Least Squares Method
 
 <p style='text-align: justify;'>If we know the population parameters <math xmlns="http://www.w3.org/1998/Math/MathML">
   <msub>
@@ -149,11 +149,12 @@ where:
 $\hat{y}$ refers to the mean value of $Y$ for a given value of $X$
 
 
-<p style='text-align: justify;'>**The Least Square Mehtod** is the statistical approach that can be used to minimize the sum of all the squared distances between the observed $y$ and the predicted $\hat{y}$ at each given value of $x$</p>
+<p style='text-align: justify;'>**The Least Squares Mehtod** is the statistical approach that can be used to minimize the sum of all the squared distances between the observed $y$ and the predicted $\hat{y}$ at each given value of $x$</p>
 
 ![](/images/model.png)
 
-<p style='text-align: justify;'>Using the image above, **Least Square Method** is a mathemtical technique through which we can find the value of $\hat{\beta}_0$ (intercept) and $\hat{\beta}_1$ that minmize the squared distances between red points and blue line where the slope is:</p>
+<p style='text-align: justify;'>Using the image above, **Least Squares Method** is a mathemtical technique through which we can find the value of ${\beta}_0$ (intercept) and ${\beta}_1 (slope)$ in order to draw a line that fits the data in a way minimizing the squared distances between the observed $y$ and the predicted $\hat{y}$, namely the squared distances between the the red points and the blue line. </p> 
+
 
 $$
 {\beta}_1 = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2}
@@ -164,3 +165,69 @@ $$
 {\beta}_0 = \bar{y} - {\beta}_1 \bar{x}
 $$
  
+##Estimating the Drilling Cost of Oil Well
+
+
+<p style='text-align: justify;'> In this post, I will use the simple linear regression to examine whether there is any relationship between the depth of oil well and the drilling cost. I'm going to use a sample of sixteen offshore oil wells located in Philippines where our indepenent variable (predictor) will be the depth of oil well while the dependent variable (response) will be the drilling cost of the well. </p>
+
+<p style='text-align: justify;'>Let us first load the packages needed for analysis. </p>
+
+```{r message=FALSE, warning=FALSE}
+library(readxl)
+library(ggplot2)
+library(PerformanceAnalytics)
+library(broom)
+library(GGally)
+```
+
+
+<p style='text-align: justify;'>Let us now import our data. </p>
+
+```{r}
+OilWell <- read_excel("C:/Users/Rami/Desktop/OilWell.xlsx")
+
+OilWell
+```
+
+
+<p style='text-align: justify;'>Note that the units used in the data is Foot and American Dollar for depth and cost respectively.</p>
+
+
+##Exploratory Analysis
+
+
+<p style='text-align: justify;'>Before building our model, it would be a good start to get an intiail snapshot of our data.</p>
+
+```{r}
+summary(OilWell)
+```
+
+
+<p style='text-align: justify;'>Let us draw a scatter plot for data.</p>
+
+```{r message=FALSE, warning=FALSE}
+p1 <- ggplot(OilWell, aes(x= Depth, y= Cost)) +
+  geom_point(size= 3) + theme_minimal()
+
+p1
+```
+
+
+<p style='text-align: justify;'>The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the drilling cost of oil well tends to increase along with the increase in its depth.</p>
+
+<p style='text-align: justify;'>If we want to quantify the relationship's strength between the two variables, we can use the correlation formula: </p>
+
+$$
+r = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2  (y_i - \bar{y})^2}
+$$
+
+```{r}
+cor(OilWell$Depth, OilWell$Cost)
+```
+
+```{r}
+chart.Correlation(OilWell[, c("Depth", "Cost")])
+```
+
+<p style='text-align: justify;'>The plot above shows that the relationship between the two variables is fairly strong.</p>
+

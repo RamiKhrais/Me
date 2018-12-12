@@ -73,7 +73,7 @@
 
         
 
-        <li>2 min read</li>
+        <li>4 min read</li>
     </ul>
 </aside>
     
@@ -101,8 +101,8 @@ A simple linear regression is a statistical model that allows us to analyse the 
 <li><strong>Equal Variance:</strong> the variance of <span class="math inline">\(Y\)</span> is the same at each value of <span class="math inline">\(X\)</span>.</li>
 </ul>
 </div>
-<div id="least-square-method" class="section level2">
-<h2>Least Square Method</h2>
+<div id="least-squares-method" class="section level2">
+<h2>Least Squares Method</h2>
 <p style="text-align: justify;">
 <p>If we know the population parameters <math xmlns="http://www.w3.org/1998/Math/MathML"> <msub> <mi>β<!-- ?? --></mi> <mn>0</mn> </msub> </math> and <math xmlns="http://www.w3.org/1998/Math/MathML"> <msub> <mi>β<!-- ?? --></mi> <mn>1</mn> </msub> </math>, we could use the simple linear regression model where</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block"> <mtext>E</mtext> <mo stretchy="false">[</mo> <msub> <mi>Y</mi> <mi>i</mi> </msub> <mo>∣<!-- ∣ --></mo> <msub> <mi>X</mi> <mi>i</mi> </msub> <mo>=</mo> <msub> <mi>x</mi> <mi>i</mi> </msub> <mo stretchy="false">]</mo> <mo>=</mo> <msub> <mi>β<!-- β --></mi> <mn>0</mn> </msub> <mo>+</mo> <msub> <mi>β<!-- β --></mi> <mn>1</mn> </msub> <msub> <mi>x</mi> <mi>i</mi> </msub> <mo>.</mo> </math
@@ -113,14 +113,14 @@ A simple linear regression is a statistical model that allows us to analyse the 
 <p>where:</p>
 <p><span class="math inline">\(\hat{y}\)</span> refers to the mean value of <span class="math inline">\(Y\)</span> for a given value of <span class="math inline">\(X\)</span></p>
 <p style="text-align: justify;">
-<strong>The Least Square Mehtod</strong> is the statistical approach that can be used to minimize the sum of all the squared distances between the observed <span class="math inline">\(y\)</span> and the predicted <span class="math inline">\(\hat{y}\)</span> at each given value of <span class="math inline">\(x\)</span>
+<strong>The Least Squares Mehtod</strong> is the statistical approach that can be used to minimize the sum of all the squared distances between the observed <span class="math inline">\(y\)</span> and the predicted <span class="math inline">\(\hat{y}\)</span> at each given value of <span class="math inline">\(x\)</span>
 </p>
 <div class="figure">
 <img src="/images/model.png" />
 
 </div>
 <p style="text-align: justify;">
-Using the image above, <strong>Least Square Method</strong> is a mathemtical technique through which we can find the value of <span class="math inline">\(\hat{\beta}_0\)</span> (intercept) and <span class="math inline">\(\hat{\beta}_1\)</span> that minmize the squared distances between red points and blue line where the slope is:
+Using the image above, <strong>Least Squares Method</strong> is a mathemtical technique through which we can find the value of <span class="math inline">\({\beta}_0\)</span> (intercept) and <span class="math inline">\({\beta}_1 (slope)\)</span> in order to draw a line that fits the data in a way minimizing the squared distances between the observed <span class="math inline">\(y\)</span> and the predicted <span class="math inline">\(\hat{y}\)</span>, namely the squared distances between the the red points and the blue line.
 </p>
 <p><span class="math display">\[
 {\beta}_1 = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2}
@@ -128,6 +128,86 @@ Using the image above, <strong>Least Square Method</strong> is a mathemtical tec
 <p><span class="math display">\[
 {\beta}_0 = \bar{y} - {\beta}_1 \bar{x}
 \]</span></p>
+</div>
+<div id="estimating-the-drilling-cost-of-oil-well" class="section level2">
+<h2>Estimating the Drilling Cost of Oil Well</h2>
+<p style="text-align: justify;">
+In this post, I will use the simple linear regression to examine whether there is any relationship between the depth of oil well and the drilling cost. I’m going to use a sample of sixteen offshore oil wells located in Philippines where our indepenent variable (predictor) will be the depth of oil well while the dependent variable (response) will be the drilling cost of the well.
+</p>
+<p style="text-align: justify;">
+Let us first load the packages needed for analysis.
+</p>
+<pre class="r"><code>library(readxl)
+library(ggplot2)
+library(PerformanceAnalytics)
+library(broom)
+library(GGally)</code></pre>
+<p style="text-align: justify;">
+Let us now import our data.
+</p>
+<pre class="r"><code>OilWell &lt;- read_excel(&quot;C:/Users/Rami/Desktop/OilWell.xlsx&quot;)
+
+OilWell</code></pre>
+<pre><code>## # A tibble: 16 x 2
+##    Depth     Cost
+##    &lt;dbl&gt;    &lt;dbl&gt;
+##  1  5000  2596800
+##  2  5200  3328000
+##  3  6000  3181100
+##  4  6538  3198400
+##  5  7109  4779900
+##  6  7556  5905600
+##  7  8005  5769200
+##  8  8207  8089500
+##  9  8210  4813100
+## 10  8600  5618700
+## 11  9026  7736000
+## 12  9197  6788300
+## 13  9926  7840800
+## 14 10813  8882500
+## 15 13800 10489500
+## 16 14311 12506600</code></pre>
+<p style="text-align: justify;">
+Note that the units used in the data is Foot and American Dollar for depth and cost respectively.
+</p>
+</div>
+<div id="exploratory-analysis" class="section level2">
+<h2>Exploratory Analysis</h2>
+<p style="text-align: justify;">
+Before building our model, it would be a good start to get an intiail snapshot of our data.
+</p>
+<pre class="r"><code>summary(OilWell)</code></pre>
+<pre><code>##      Depth            Cost         
+##  Min.   : 5000   Min.   : 2596800  
+##  1st Qu.: 6966   1st Qu.: 4416925  
+##  Median : 8208   Median : 5837400  
+##  Mean   : 8594   Mean   : 6345250  
+##  3rd Qu.: 9379   3rd Qu.: 7902975  
+##  Max.   :14311   Max.   :12506600</code></pre>
+<p style="text-align: justify;">
+Let us draw a scatter plot for data.
+</p>
+<pre class="r"><code>p1 &lt;- ggplot(OilWell, aes(x= Depth, y= Cost)) +
+  geom_point(size= 3) + theme_minimal()
+
+p1</code></pre>
+<p><img src="/post/2018-12-11-oil-well-drilling-costs-simple-linear-regression_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p style="text-align: justify;">
+The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the drilling cost of oil well tends to increase along with the increase in its depth.
+</p>
+<p style="text-align: justify;">
+If we want to quantify the relationship’s strength between the two variables, we can use the correlation formula:
+</p>
+<p><span class="math display">\[
+r = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2  (y_i - \bar{y})^2}
+\]</span></p>
+<pre class="r"><code>cor(OilWell$Depth, OilWell$Cost)</code></pre>
+<pre><code>## [1] 0.952927</code></pre>
+<pre class="r"><code>chart.Correlation(OilWell[, c(&quot;Depth&quot;, &quot;Cost&quot;)])</code></pre>
+<p><img src="/post/2018-12-11-oil-well-drilling-costs-simple-linear-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p style="text-align: justify;">
+The plot above shows that the relationship between the two variables is fairly strong.
+</p>
 </div>
 
 
