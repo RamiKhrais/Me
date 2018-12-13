@@ -63,7 +63,7 @@
 
         
 
-        <li>6 min read</li>
+        <li>7 min read</li>
     </ul>
 </aside>
     
@@ -122,7 +122,7 @@ Using the image above, <strong>Least Squares Method</strong> is a mathemtical te
 <div id="estimating-the-consumption-equation" class="section level2">
 <h2>Estimating the Consumption Equation</h2>
 <p style="text-align: justify;">
-In this post, I will use the simple linear regression to examine whether there is any relationship between the depth of oil well and the drilling cost. I’m going to use a sample of sixteen offshore oil wells located in Philippines where our indepenent variable (predictor) will be the depth of oil well while the dependent variable (response) will be the drilling cost of the well.
+In this post, I will use the simple linear regression to examine whether there is any relationship between the gross national disposable income (GNDI) per capita and the aggregate consumption per capita in the Palestinian Territories. I’m going to use a data extrcted from the Palestinian Central Bureau of Statistics covering the period from 1994 to 2016 using 2004 as a base year. The indepenent variable (predictor) will be the gross national disposable income per capita while the dependent variable (response) will be the the aggregate consumption per capita. The gross national disposable income refers to is the sum of the disposable incomes of all residents, and it measures the income available to the nation for final consumption and gross (or net) saving including the imcomes comes from external sources such as remittances and international aids.
 </p>
 <p style="text-align: justify;">
 Let us first load the packages needed for analysis.
@@ -156,7 +156,7 @@ consumption</code></pre>
 <div id="exploratory-analysis" class="section level2">
 <h2>Exploratory Analysis</h2>
 <p style="text-align: justify;">
-Before building our model, it would be a good start to get an intiail snapshot of our data.
+Before building our model, it would be a good start to get an initial snapshot of our data.
 </p>
 <pre class="r"><code>summary(consumption)</code></pre>
 <pre><code>##       Year          GNDIPC     ConsumptionPC 
@@ -175,7 +175,7 @@ Let us draw a scatter plot for data.
 p1</code></pre>
 <p><img src="/post/2018-12-13-estimation-of-the-consumption-equation-linear-regression-analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p style="text-align: justify;">
-The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the consumption per capita tends to increase along with the increase in the disposable income per capita.
+The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the aggregate consumption per capita tends to increase along with the increase in the gross disposable income per capita.
 </p>
 <p style="text-align: justify;">
 If we want to quantify the relationship’s strength between the two variables, we can use the correlation formula:
@@ -198,7 +198,7 @@ The plot above shows that the relationship between the two variables is fairly s
 <div id="building-the-linear-model" class="section level2">
 <h2>Building the Linear Model</h2>
 <p style="text-align: justify;">
-We can build our model using <strong>lm</strong> function in R which stands for “Linear Model”. This function will produce the best-fit linear relationship by minimizing the least squares. In other words, the <strong>lm</strong> funtion will enable us to estimate the value of coefficents (Slope and Intercept) in addition to the fitted values of <span class="math inline">\(y\)</span> for each value of <span class="math inline">\(x\)</span>.
+We can build our model using ‘lm’ function in R which stands for “Linear Model”. This function will produce the best-fit linear relationship by minimizing the least squares. In other words, the ‘lm’ funtion will enable us to estimate the value of coefficents (Slope and Intercept) in addition to the fitted values of <span class="math inline">\(y\)</span> for each value of <span class="math inline">\(x\)</span>.
 </p>
 <pre class="r"><code>model &lt;- lm(consumption$ConsumptionPC ~ consumption$GNDIPC)</code></pre>
 <pre class="r"><code>summary(model)</code></pre>
@@ -228,7 +228,7 @@ Given the estimates that we got from the model, we can now establish our fitted 
 </p>
 <p><span class="math display">\[Y = 539 + 0.656X + e\]</span></p>
 <p style="text-align: justify;">
-And we can get a tidy version of our model by using function <strong>tidy</strong> from <strong>broom</strong> package.
+And we can get a tidy version of our model by using function ‘tidy’ from ‘broom’ package.
 </p>
 <pre class="r"><code>tidy(model)</code></pre>
 <pre><code>## # A tibble: 2 x 5
@@ -237,12 +237,38 @@ And we can get a tidy version of our model by using function <strong>tidy</stron
 ## 1 (Intercept)         539.      211.         2.56 0.0184   
 ## 2 consumption$GNDIPC    0.656     0.114      5.77 0.0000101</code></pre>
 <p style="text-align: justify;">
-The table above shows that our intercept estimate is -2.277, so when depth is zero we can expect drilling cost to be -2277070 (though this might not be the case in realworld). The table also shows that the slope estimate is 1003, which means that for every 1000 ft increase in well’s depth, we expect the drilling cost to increase by $1003. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.
+The table above shows that our intercept estimate is 539, so when gross national income per capita is zero, we can expect aggregate consumption per capita to be 539. The table also shows that the slope estimate is 0.656, which means that for every $1 increase in gross national disposable income per capita, we expect the aggregate consumption per capita to increase by $0.656. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.
 </p>
 <pre class="r"><code>confint(model)</code></pre>
 <pre><code>##                          2.5 %      97.5 %
 ## (Intercept)        100.4169983 978.3495059
 ## consumption$GNDIPC   0.4194393   0.8926405</code></pre>
+<p style="text-align: justify;">
+The table above shows that our 95% confidence interval for <span class="math inline">\({\beta}_1\)</span> is [0.419,0.892]. Since zero is not included in the interval, we can conclude that as gross national disposable income per capita increases by $1, the aggregate consumption per capita is going to increase by 0.419-0.892 dollars.
+</p>
+</div>
+<div id="assessing-the-godness-of-fit" class="section level2">
+<h2>Assessing the Godness-of-Fit</h2>
+<p style="text-align: justify;">
+We should ask ouselves now: <strong>How well the model fits our data?</strong>. In order to answer this question, we are going to compute three things:
+</p>
+<p>1- Residual Standard Error(RSE). 2- R-Squared(R^2). 3- F-Statistics.</p>
+<p style="text-align: justify;">
+<strong>Residual Standard Error(RSE)</strong>: refers to the estimate of the standard deviation of <span class="math inline">\(\epsilon\)</span>. It provides us with the average distance the observed values deviate from the regression line measured by the units of response variable. RSE takes the following formula:
+</p>
+<p><span class="math display">\[RSE = \sqrt{\frac{1}{n-2}\sum^n_{i=1}(y_i - \hat{y}_i)^2}\]</span></p>
+<p style="text-align: justify;">
+We can get the value of RSE in R using sigma function from broom package.
+</p>
+<pre class="r"><code>sigma(model)</code></pre>
+<pre><code>## [1] 112.6039</code></pre>
+<p style="text-align: justify;">
+RSE value of 112.60 means that the actual aggregate consumption per capita will deviate from the true regression line by approximately $112.60, on average. As RSE is an absolute value that does not explain so much by itself, it might be a good idea to comapre it with the mean of the aggregate consumption per capita.
+</p>
+<pre class="r"><code>sigma(model)/mean(consumption$ConsumptionPC)</code></pre>
+<pre><code>## [1] 0.06438247</code></pre>
+<p style='text-align: justify;'>
+<p>We got a percentage error of 6.1% when we compare the RSE to the mean of the response variable. This percentage suggests that our model fits the data well</p>
 </div>
 
 

@@ -167,7 +167,7 @@ $$
 ##Estimating the Consumption Equation
 
 
-<p style='text-align: justify;'> In this post, I will use the simple linear regression to examine whether there is any relationship between the depth of oil well and the drilling cost. I'm going to use a sample of sixteen offshore oil wells located in Philippines where our indepenent variable (predictor) will be the depth of oil well while the dependent variable (response) will be the drilling cost of the well. </p>
+<p style='text-align: justify;'> In this post, I will use the simple linear regression to examine whether there is any relationship between the gross national disposable income (GNDI) per capita and the aggregate consumption per capita in the Palestinian Territories. I'm going to use a data extrcted from the Palestinian Central Bureau of Statistics covering the period from 1994 to 2016 using 2004 as a base year. The indepenent variable (predictor) will be the gross national disposable income per capita while the dependent variable (response) will be the the aggregate consumption per capita. The gross national disposable income refers to is the sum of the disposable incomes of all residents, and it measures the income available to the nation for final consumption and gross (or net) saving including the imcomes comes from external sources such as remittances and international aids.</p>
 
 <p style='text-align: justify;'>Let us first load the packages needed for analysis. </p>
 
@@ -192,7 +192,7 @@ consumption
 ##Exploratory Analysis
 
 
-<p style='text-align: justify;'>Before building our model, it would be a good start to get an intiail snapshot of our data.</p>
+<p style='text-align: justify;'>Before building our model, it would be a good start to get an initial snapshot of our data.</p>
 
 ```{r}
 summary(consumption)
@@ -210,7 +210,7 @@ p1
 ```
 
 
-<p style='text-align: justify;'>The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the consumption per capita tends to increase along with the increase in the disposable income per capita.</p>
+<p style='text-align: justify;'>The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the aggregate consumption per capita tends to increase along with the increase in the gross disposable income per capita.</p>
 
 <p style='text-align: justify;'>If we want to quantify the relationship's strength between the two variables, we can use the correlation formula: </p>
 
@@ -238,7 +238,7 @@ chart.Correlation(consumption[, c("GNDIPC", "ConsumptionPC")])
 
 ##Building the Linear Model
 
-<p style='text-align: justify;'>We can build our model using **lm** function in R which stands for "Linear Model". This function will produce the best-fit linear relationship by minimizing the least squares. In other words, the **lm** funtion will enable us to estimate the value of coefficents (Slope and Intercept) in addition to the fitted values of $y$ for each value of $x$.</p>
+<p style='text-align: justify;'>We can build our model using 'lm' function in R which stands for "Linear Model". This function will produce the best-fit linear relationship by minimizing the least squares. In other words, the 'lm' funtion will enable us to estimate the value of coefficents (Slope and Intercept) in addition to the fitted values of $y$ for each value of $x$.</p>
 
 
 ```{r}
@@ -256,15 +256,52 @@ summary(model)
 
 $$Y = 539 + 0.656X + e$$
 
-<p style='text-align: justify;'>And we can get a tidy version of our model by using function **tidy** from **broom** package. </p>
+<p style='text-align: justify;'>And we can get a tidy version of our model by using function 'tidy' from 'broom' package. </p>
 
 ```{r}
 tidy(model)
 ```
 
 
-<p style='text-align: justify;'>The table above shows that our intercept estimate is -2.277, so when depth is zero we can expect drilling cost to be -2277070 (though this might not be the case in realworld). The table also shows that the slope estimate is 1003, which means that for every 1000 ft increase in well's depth, we expect the drilling cost to increase by $1003. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.</p>
+<p style='text-align: justify;'>The table above shows that our intercept estimate is 539, so when gross national income per capita  is zero, we can expect aggregate consumption per capita to be 539. The table also shows that the slope estimate is 0.656, which means that for every \$1 increase in gross national disposable income per capita, we expect the aggregate consumption per capita to increase by $0.656. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.</p>
 
 ```{r}
 confint(model)
 ```
+
+<p style='text-align: justify;'>The table above shows that our 95% confidence interval for ${\beta}_1$ is [0.419,0.892]. Since zero is not included in the interval, we can conclude that as gross national disposable income per capita increases by $1, the aggregate consumption per capita is going to increase by 0.419-0.892 dollars. </p>
+
+
+##Assessing the Godness-of-Fit
+
+
+<p style='text-align: justify;'>We should ask ouselves now: **How well the model fits our data?**. In order to answer this question, we are going to compute three things: </p>
+
+1- Residual Standard Error(RSE).
+2- R-Squared(R^2).
+3- F-Statistics. 
+
+
+<p style='text-align: justify;'>**Residual Standard Error(RSE)**: refers to the estimate of the standard deviation of $\epsilon$. It provides us with the average distance the observed values deviate from the regression line measured by the units of response variable. RSE takes the following formula: </p>
+
+$$RSE = \sqrt{\frac{1}{n-2}\sum^n_{i=1}(y_i - \hat{y}_i)^2}$$
+
+
+<p style='text-align: justify;'>We can get the value of RSE in R using sigma function from broom package.</p>
+
+```{r}
+sigma(model)
+```
+
+
+<p style='text-align: justify;'>RSE value of 112.60 means that the actual aggregate consumption per capita will deviate from the true regression line by approximately $112.60, on average. As RSE is an absolute value that does not explain so much by itself, it might be a good idea to comapre it with the mean of the aggregate consumption per capita. </p>
+
+```{r}
+sigma(model)/mean(consumption$ConsumptionPC)
+```
+
+
+<p style='text-align: justify;'>We got a percentage error of 6.1% when we compare the RSE to the mean of the response variable. This percentage suggests that our model fits the data well 
+
+
+
