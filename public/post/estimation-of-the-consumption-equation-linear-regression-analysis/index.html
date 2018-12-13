@@ -252,9 +252,11 @@ The table above shows that our 95% confidence interval for <span class="math inl
 <p style="text-align: justify;">
 We should ask ouselves now: <strong>How well the model fits our data?</strong>. In order to answer this question, we are going to compute three things:
 </p>
-<p>1- Residual Standard Error(RSE). 2- R-Squared(R^2). 3- F-Statistics.</p>
+<p>1- Residual Standard Error(RSE).</p>
+<p>2- R-Squared(R^2).</p>
+<p>3- F-Statistics.</p>
 <p style="text-align: justify;">
-<strong>Residual Standard Error(RSE)</strong>: refers to the estimate of the standard deviation of <span class="math inline">\(\epsilon\)</span>. It provides us with the average distance the observed values deviate from the regression line measured by the units of response variable. RSE takes the following formula:
+<strong>Residual Standard Error (RSE)</strong>: refers to the estimate of the standard deviation of <span class="math inline">\(\epsilon\)</span>. It provides us with the average distance the observed values deviate from the regression line measured by the units of response variable. RSE takes the following formula:
 </p>
 <p><span class="math display">\[RSE = \sqrt{\frac{1}{n-2}\sum^n_{i=1}(y_i - \hat{y}_i)^2}\]</span></p>
 <p style="text-align: justify;">
@@ -267,8 +269,9 @@ RSE value of 112.60 means that the actual aggregate consumption per capita will 
 </p>
 <pre class="r"><code>sigma(model)/mean(consumption$ConsumptionPC)</code></pre>
 <pre><code>## [1] 0.06438247</code></pre>
-<p style='text-align: justify;'>
-<p>We got a percentage error of 6.1% when we compare the RSE to the mean of the response variable. This percentage suggests that our model fits the data well</p>
+<p style="text-align: justify;">
+We got a percentage error of 6.1% when we compare the RSE to the mean of the response variable. This percentage suggests that our model fits the data well as the deviation of the response variable from the regression line is not large.
+</p>
 </div>
 
 
