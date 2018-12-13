@@ -255,7 +255,7 @@ summary(model)
 
 <p style='text-align: justify;'>Given the estimates that we got from the model, we can now establish our fitted regression:</p>
 
-$$Y = -2.277 + 1.003X + e$$
+$$Y = 539 + 0.656X + e$$
 
 <p style='text-align: justify;'>And we can get a tidy version of our model by using function **tidy** from **broom** package. </p>
 
