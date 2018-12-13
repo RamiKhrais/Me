@@ -1,10 +1,9 @@
 ---
 title: 'Estimation of the Consumption Equation: Linear Regression Analysis'
 author: Rami Kh
-date: '2018-12-11'
-slug: Estimation of the Consumption Equation 
-categories:
-  - Statistical Modelling
+date: '2018-12-13'
+slug: estimation-of-the-consumption-equation-linear-regression-analysis
+categories: []
 tags: []
 ---
 
@@ -269,11 +268,3 @@ tidy(model)
 ```{r}
 confint(model)
 ```
-
-
-<p style='text-align: justify;'>
-
-
-
-
-

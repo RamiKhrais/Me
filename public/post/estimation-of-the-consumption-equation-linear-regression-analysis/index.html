@@ -50,25 +50,15 @@
 
 <article>
 
-    <h1>Oil Well Drilling Costs: Simple Linear Regression</h1>
+    <h1>Estimation of the Consumption Equation: Linear Regression Analysis</h1>
 
     
         <aside>
     <ul>
         <li>
-            <time class="post-date" datetime="2018-12-11T00:00:00Z">Dec 11, 2018</time>
+            <time class="post-date" datetime="2018-12-13T00:00:00Z">Dec 13, 2018</time>
         </li>
         
-        
-        <li>
-            Categories: 
-            <em>
-                
-                    
-                    <a href="/categories/statistical-modelling/">Statistical Modelling</a>
-                
-            </em>
-        </li>
         
 
         
@@ -129,8 +119,8 @@ Using the image above, <strong>Least Squares Method</strong> is a mathemtical te
 {\beta}_0 = \bar{y} - {\beta}_1 \bar{x}
 \]</span></p>
 </div>
-<div id="estimating-the-drilling-cost-of-oil-well" class="section level2">
-<h2>Estimating the Drilling Cost of Oil Well</h2>
+<div id="estimating-the-consumption-equation" class="section level2">
+<h2>Estimating the Consumption Equation</h2>
 <p style="text-align: justify;">
 In this post, I will use the simple linear regression to examine whether there is any relationship between the depth of oil well and the drilling cost. I’m going to use a sample of sixteen offshore oil wells located in Philippines where our indepenent variable (predictor) will be the depth of oil well while the dependent variable (response) will be the drilling cost of the well.
 </p>
@@ -145,55 +135,47 @@ library(GGally)</code></pre>
 <p style="text-align: justify;">
 Let us now import our data.
 </p>
-<pre class="r"><code>OilWell &lt;- read_excel(&quot;C:/Users/Rami/Desktop/OilWell.xlsx&quot;)
+<pre class="r"><code>consumption &lt;- read_excel(&quot;C:/Users/Rami/Desktop/gndi-con.xlsx&quot;)
 
-OilWell</code></pre>
-<pre><code>## # A tibble: 16 x 2
-##    Depth     Cost
-##    &lt;dbl&gt;    &lt;dbl&gt;
-##  1  5000  2596800
-##  2  5200  3328000
-##  3  6000  3181100
-##  4  6538  3198400
-##  5  7109  4779900
-##  6  7556  5905600
-##  7  8005  5769200
-##  8  8207  8089500
-##  9  8210  4813100
-## 10  8600  5618700
-## 11  9026  7736000
-## 12  9197  6788300
-## 13  9926  7840800
-## 14 10813  8882500
-## 15 13800 10489500
-## 16 14311 12506600</code></pre>
-<p style="text-align: justify;">
-Note that the units used in the data is Foot and American Dollar for depth and cost respectively.
-</p>
+consumption</code></pre>
+<pre><code>## # A tibble: 23 x 3
+##     Year GNDIPC ConsumptionPC
+##    &lt;dbl&gt;  &lt;dbl&gt;         &lt;dbl&gt;
+##  1  1994  1712.         1594.
+##  2  1995  1682.         1613.
+##  3  1996  1610.         1541.
+##  4  1997  1709.         1644.
+##  5  1998  1903.         1760.
+##  6  1999  1995.         1826.
+##  7  2000  1796.         1678.
+##  8  2001  1673.         1576.
+##  9  2002  1503.         1372.
+## 10  2003  1471.         1492.
+## # ... with 13 more rows</code></pre>
 </div>
 <div id="exploratory-analysis" class="section level2">
 <h2>Exploratory Analysis</h2>
 <p style="text-align: justify;">
 Before building our model, it would be a good start to get an intiail snapshot of our data.
 </p>
-<pre class="r"><code>summary(OilWell)</code></pre>
-<pre><code>##      Depth            Cost         
-##  Min.   : 5000   Min.   : 2596800  
-##  1st Qu.: 6966   1st Qu.: 4416925  
-##  Median : 8208   Median : 5837400  
-##  Mean   : 8594   Mean   : 6345250  
-##  3rd Qu.: 9379   3rd Qu.: 7902975  
-##  Max.   :14311   Max.   :12506600</code></pre>
+<pre class="r"><code>summary(consumption)</code></pre>
+<pre><code>##       Year          GNDIPC     ConsumptionPC 
+##  Min.   :1994   Min.   :1471   Min.   :1372  
+##  1st Qu.:2000   1st Qu.:1696   1st Qu.:1629  
+##  Median :2005   Median :1903   Median :1757  
+##  Mean   :2005   Mean   :1844   Mean   :1749  
+##  3rd Qu.:2010   3rd Qu.:1999   3rd Qu.:1876  
+##  Max.   :2016   Max.   :2274   Max.   :2056</code></pre>
 <p style="text-align: justify;">
 Let us draw a scatter plot for data.
 </p>
-<pre class="r"><code>p1 &lt;- ggplot(OilWell, aes(x= Depth, y= Cost)) +
-  geom_point(size= 3) + theme_minimal()
+<pre class="r"><code>p1 &lt;- ggplot(consumption, aes(x=consumption$GNDIPC, y=consumption$ConsumptionPC)) +
+  geom_point() + theme_minimal()
 
 p1</code></pre>
-<p><img src="/post/2018-12-11-oil-well-drilling-costs-simple-linear-regression_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2018-12-13-estimation-of-the-consumption-equation-linear-regression-analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p style="text-align: justify;">
-The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the drilling cost of oil well tends to increase along with the increase in its depth.
+The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the consumption per capita tends to increase along with the increase in the disposable income per capita.
 </p>
 <p style="text-align: justify;">
 If we want to quantify the relationship’s strength between the two variables, we can use the correlation formula:
@@ -201,10 +183,14 @@ If we want to quantify the relationship’s strength between the two variables, 
 <p><span class="math display">\[
 r = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2  (y_i - \bar{y})^2}
 \]</span></p>
-<pre class="r"><code>cor(OilWell$Depth, OilWell$Cost)</code></pre>
-<pre><code>## [1] 0.952927</code></pre>
-<pre class="r"><code>chart.Correlation(OilWell[, c(&quot;Depth&quot;, &quot;Cost&quot;)])</code></pre>
-<p><img src="/post/2018-12-11-oil-well-drilling-costs-simple-linear-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>#Transforming the variables into integrs
+
+consumption$`GNDI PC` &lt;- as.integer(consumption$GNDIPC)
+consumption$`Consumption PC` &lt;- as.integer(consumption$ConsumptionPC)</code></pre>
+<pre class="r"><code>cor(consumption$GNDIPC, consumption$ConsumptionPC)</code></pre>
+<pre><code>## [1] 0.7828823</code></pre>
+<pre class="r"><code>chart.Correlation(consumption[, c(&quot;GNDIPC&quot;, &quot;ConsumptionPC&quot;)])</code></pre>
+<p><img src="/post/2018-12-13-estimation-of-the-consumption-equation-linear-regression-analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p style="text-align: justify;">
 The plot above shows that the relationship between the two variables is fairly strong. Now we are going to build our model.
 </p>
@@ -214,49 +200,49 @@ The plot above shows that the relationship between the two variables is fairly s
 <p style="text-align: justify;">
 We can build our model using <strong>lm</strong> function in R which stands for “Linear Model”. This function will produce the best-fit linear relationship by minimizing the least squares. In other words, the <strong>lm</strong> funtion will enable us to estimate the value of coefficents (Slope and Intercept) in addition to the fitted values of <span class="math inline">\(y\)</span> for each value of <span class="math inline">\(x\)</span>.
 </p>
-<pre class="r"><code>model &lt;- lm(Cost ~ Depth, data = OilWell)</code></pre>
+<pre class="r"><code>model &lt;- lm(consumption$ConsumptionPC ~ consumption$GNDIPC)</code></pre>
 <pre class="r"><code>summary(model)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = Cost ~ Depth, data = OilWell)
+## lm(formula = consumption$ConsumptionPC ~ consumption$GNDIPC)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -1147244  -604635   -30614   397001  2132166 
+##     Min      1Q  Median      3Q     Max 
+## -302.78  -57.95  -16.59   95.65  163.16 
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -2.277e+06  7.655e+05  -2.975     0.01 *  
-## Depth        1.003e+03  8.532e+01  11.760 1.21e-08 ***
+##                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)        539.3833   211.0807   2.555   0.0184 *  
+## consumption$GNDIPC   0.6560     0.1138   5.766 1.01e-05 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 879900 on 14 degrees of freedom
-## Multiple R-squared:  0.9081, Adjusted R-squared:  0.9015 
-## F-statistic: 138.3 on 1 and 14 DF,  p-value: 1.212e-08</code></pre>
+## Residual standard error: 112.6 on 21 degrees of freedom
+## Multiple R-squared:  0.6129, Adjusted R-squared:  0.5945 
+## F-statistic: 33.25 on 1 and 21 DF,  p-value: 1.006e-05</code></pre>
 </div>
 <div id="assessing-coefficients" class="section level2">
 <h2>Assessing Coefficients</h2>
 <p style="text-align: justify;">
 Given the estimates that we got from the model, we can now establish our fitted regression:
 </p>
-<p><span class="math display">\[Y = -2.277 + 1.003X + e\]</span></p>
+<p><span class="math display">\[Y = 539 + 0.656X + e\]</span></p>
 <p style="text-align: justify;">
 And we can get a tidy version of our model by using function <strong>tidy</strong> from <strong>broom</strong> package.
 </p>
 <pre class="r"><code>tidy(model)</code></pre>
 <pre><code>## # A tibble: 2 x 5
-##   term         estimate std.error statistic      p.value
-##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
-## 1 (Intercept) -2277070.  765499.      -2.97 0.0100      
-## 2 Depth           1003.      85.3     11.8  0.0000000121</code></pre>
+##   term               estimate std.error statistic   p.value
+##   &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)         539.      211.         2.56 0.0184   
+## 2 consumption$GNDIPC    0.656     0.114      5.77 0.0000101</code></pre>
 <p style="text-align: justify;">
 The table above shows that our intercept estimate is -2.277, so when depth is zero we can expect drilling cost to be -2277070 (though this might not be the case in realworld). The table also shows that the slope estimate is 1003, which means that for every 1000 ft increase in well’s depth, we expect the drilling cost to increase by $1003. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.
 </p>
 <pre class="r"><code>confint(model)</code></pre>
-<pre><code>##                     2.5 %      97.5 %
-## (Intercept) -3918900.9632 -635238.346
-## Depth            820.3449    1186.333</code></pre>
+<pre><code>##                          2.5 %      97.5 %
+## (Intercept)        100.4169983 978.3495059
+## consumption$GNDIPC   0.4194393   0.8926405</code></pre>
 </div>
 
 
