@@ -73,7 +73,7 @@
 
         
 
-        <li>4 min read</li>
+        <li>6 min read</li>
     </ul>
 </aside>
     
@@ -120,7 +120,7 @@ A simple linear regression is a statistical model that allows us to analyse the 
 
 </div>
 <p style="text-align: justify;">
-Using the image above, <strong>Least Squares Method</strong> is a mathemtical technique through which we can find the value of <span class="math inline">\({\beta}_0\)</span> (intercept) and <span class="math inline">\({\beta}_1 (slope)\)</span> in order to draw a line that fits the data in a way minimizing the squared distances between the observed <span class="math inline">\(y\)</span> and the predicted <span class="math inline">\(\hat{y}\)</span>, namely the squared distances between the the red points and the blue line.
+Using the image above, <strong>Least Squares Method</strong> is a mathemtical technique through which we can find the value of <span class="math inline">\({\beta}_0\)</span> (intercept) and <span class="math inline">\({\beta}_1 (slope)\)</span> in order to draw a line that fits the data in a way minimizing the squared distances between the observed <span class="math inline">\(y\)</span> and the predicted <span class="math inline">\(\hat{y}\)</span>, namely the squared distances between the the red points and the blue line(squared errors).
 </p>
 <p><span class="math display">\[
 {\beta}_1 = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2}
@@ -206,8 +206,57 @@ r = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i -
 <pre class="r"><code>chart.Correlation(OilWell[, c(&quot;Depth&quot;, &quot;Cost&quot;)])</code></pre>
 <p><img src="/post/2018-12-11-oil-well-drilling-costs-simple-linear-regression_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p style="text-align: justify;">
-The plot above shows that the relationship between the two variables is fairly strong.
+The plot above shows that the relationship between the two variables is fairly strong. Now we are going to build our model.
 </p>
+</div>
+<div id="building-the-linear-model" class="section level2">
+<h2>Building the Linear Model</h2>
+<p style="text-align: justify;">
+We can build our model using <strong>lm</strong> function in R which stands for “Linear Model”. This function will produce the best-fit linear relationship by minimizing the least squares. In other words, the <strong>lm</strong> funtion will enable us to estimate the value of coefficents (Slope and Intercept) in addition to the fitted values of <span class="math inline">\(y\)</span> for each value of <span class="math inline">\(x\)</span>.
+</p>
+<pre class="r"><code>model &lt;- lm(Cost ~ Depth, data = OilWell)</code></pre>
+<pre class="r"><code>summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Cost ~ Depth, data = OilWell)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1147244  -604635   -30614   397001  2132166 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -2.277e+06  7.655e+05  -2.975     0.01 *  
+## Depth        1.003e+03  8.532e+01  11.760 1.21e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 879900 on 14 degrees of freedom
+## Multiple R-squared:  0.9081, Adjusted R-squared:  0.9015 
+## F-statistic: 138.3 on 1 and 14 DF,  p-value: 1.212e-08</code></pre>
+</div>
+<div id="assessing-coefficients" class="section level2">
+<h2>Assessing Coefficients</h2>
+<p style="text-align: justify;">
+Given the estimates that we got from the model, we can now establish our fitted regression:
+</p>
+<p><span class="math display">\[Y = -2.277 + 1.003X + e\]</span></p>
+<p style="text-align: justify;">
+And we can get a tidy version of our model by using function <strong>tidy</strong> from <strong>broom</strong> package.
+</p>
+<pre class="r"><code>tidy(model)</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   term         estimate std.error statistic      p.value
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+## 1 (Intercept) -2277070.  765499.      -2.97 0.0100      
+## 2 Depth           1003.      85.3     11.8  0.0000000121</code></pre>
+<p style="text-align: justify;">
+The table above shows that our intercept estimate is -2.277, so when depth is zero we can expect drilling cost to be -2277070 (though this might not be the case in realworld). The table also shows that the slope estimate is 1003, which means that for every 1000 ft increase in well’s depth, we expect the drilling cost to increase by $1003. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.
+</p>
+<pre class="r"><code>confint(model)</code></pre>
+<pre><code>##                     2.5 %      97.5 %
+## (Intercept) -3918900.9632 -635238.346
+## Depth            820.3449    1186.333</code></pre>
 </div>
 
 

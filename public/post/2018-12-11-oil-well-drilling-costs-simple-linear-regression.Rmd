@@ -1,8 +1,8 @@
 ---
-title: 'Oil Well Drilling Costs: Simple Linear Regression'
+title: 'Estimation of the Consumption Equation: Linear Regression Analysis'
 author: Rami Kh
 date: '2018-12-11'
-slug: oil-well-drilling-costs-simple-linear-regression
+slug: Estimation of the Consumption Equation 
 categories:
   - Statistical Modelling
 tags: []
@@ -153,7 +153,7 @@ $\hat{y}$ refers to the mean value of $Y$ for a given value of $X$
 
 ![](/images/model.png)
 
-<p style='text-align: justify;'>Using the image above, **Least Squares Method** is a mathemtical technique through which we can find the value of ${\beta}_0$ (intercept) and ${\beta}_1 (slope)$ in order to draw a line that fits the data in a way minimizing the squared distances between the observed $y$ and the predicted $\hat{y}$, namely the squared distances between the the red points and the blue line. </p> 
+<p style='text-align: justify;'>Using the image above, **Least Squares Method** is a mathemtical technique through which we can find the value of ${\beta}_0$ (intercept) and ${\beta}_1 (slope)$ in order to draw a line that fits the data in a way minimizing the squared distances between the observed $y$ and the predicted $\hat{y}$, namely the squared distances between the the red points and the blue line(squared errors). </p> 
 
 
 $$
@@ -165,7 +165,7 @@ $$
 {\beta}_0 = \bar{y} - {\beta}_1 \bar{x}
 $$
  
-##Estimating the Drilling Cost of Oil Well
+##Estimating the Consumption Equation
 
 
 <p style='text-align: justify;'> In this post, I will use the simple linear regression to examine whether there is any relationship between the depth of oil well and the drilling cost. I'm going to use a sample of sixteen offshore oil wells located in Philippines where our indepenent variable (predictor) will be the depth of oil well while the dependent variable (response) will be the drilling cost of the well. </p>
@@ -184,13 +184,10 @@ library(GGally)
 <p style='text-align: justify;'>Let us now import our data. </p>
 
 ```{r}
-OilWell <- read_excel("C:/Users/Rami/Desktop/OilWell.xlsx")
+consumption <- read_excel("C:/Users/Rami/Desktop/gndi-con.xlsx")
 
-OilWell
+consumption
 ```
-
-
-<p style='text-align: justify;'>Note that the units used in the data is Foot and American Dollar for depth and cost respectively.</p>
 
 
 ##Exploratory Analysis
@@ -199,21 +196,22 @@ OilWell
 <p style='text-align: justify;'>Before building our model, it would be a good start to get an intiail snapshot of our data.</p>
 
 ```{r}
-summary(OilWell)
+summary(consumption)
 ```
 
 
 <p style='text-align: justify;'>Let us draw a scatter plot for data.</p>
 
 ```{r message=FALSE, warning=FALSE}
-p1 <- ggplot(OilWell, aes(x= Depth, y= Cost)) +
-  geom_point(size= 3) + theme_minimal()
+
+p1 <- ggplot(consumption, aes(x=consumption$GNDIPC, y=consumption$ConsumptionPC)) +
+  geom_point() + theme_minimal()
 
 p1
 ```
 
 
-<p style='text-align: justify;'>The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the drilling cost of oil well tends to increase along with the increase in its depth.</p>
+<p style='text-align: justify;'>The scatter plot above suggests that there is a poisitive linear relationship existed between the two variables; the consumption per capita tends to increase along with the increase in the disposable income per capita.</p>
 
 <p style='text-align: justify;'>If we want to quantify the relationship's strength between the two variables, we can use the correlation formula: </p>
 
@@ -222,12 +220,60 @@ r = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i -
 $$
 
 ```{r}
-cor(OilWell$Depth, OilWell$Cost)
+#Transforming the variables into integrs
+
+consumption$`GNDI PC` <- as.integer(consumption$GNDIPC)
+consumption$`Consumption PC` <- as.integer(consumption$ConsumptionPC)
 ```
 
 ```{r}
-chart.Correlation(OilWell[, c("Depth", "Cost")])
+cor(consumption$GNDIPC, consumption$ConsumptionPC)
 ```
 
-<p style='text-align: justify;'>The plot above shows that the relationship between the two variables is fairly strong.</p>
+```{r}
+chart.Correlation(consumption[, c("GNDIPC", "ConsumptionPC")])
+```
+
+<p style='text-align: justify;'>The plot above shows that the relationship between the two variables is fairly strong. Now we are going to build our model.</p>
+
+
+##Building the Linear Model
+
+<p style='text-align: justify;'>We can build our model using **lm** function in R which stands for "Linear Model". This function will produce the best-fit linear relationship by minimizing the least squares. In other words, the **lm** funtion will enable us to estimate the value of coefficents (Slope and Intercept) in addition to the fitted values of $y$ for each value of $x$.</p>
+
+
+```{r}
+model <- lm(consumption$ConsumptionPC ~ consumption$GNDIPC)
+```
+
+```{r}
+summary(model)
+```
+
+
+##Assessing Coefficients 
+
+<p style='text-align: justify;'>Given the estimates that we got from the model, we can now establish our fitted regression:</p>
+
+$$Y = -2.277 + 1.003X + e$$
+
+<p style='text-align: justify;'>And we can get a tidy version of our model by using function **tidy** from **broom** package. </p>
+
+```{r}
+tidy(model)
+```
+
+
+<p style='text-align: justify;'>The table above shows that our intercept estimate is -2.277, so when depth is zero we can expect drilling cost to be -2277070 (though this might not be the case in realworld). The table also shows that the slope estimate is 1003, which means that for every 1000 ft increase in well's depth, we expect the drilling cost to increase by $1003. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.</p>
+
+```{r}
+confint(model)
+```
+
+
+<p style='text-align: justify;'>
+
+
+
+
 
