@@ -70,7 +70,8 @@ library(ggplot2)
 library(PerformanceAnalytics)
 library(broom)
 library(GGally)
-library(modelr)</code></pre>
+library(modelr)
+library(lars)</code></pre>
 <p style="text-align: justify;">
 Let us now import our data.
 </p>
@@ -109,7 +110,7 @@ Before building our model, it would be a good start to get an initial snapshot o
 Let us draw a scatter plot for data.
 </p>
 <pre class="r"><code>p1 &lt;- ggplot(consumption, aes(x=consumption$GNDIPC, y=consumption$ConsumptionPC)) +
-  geom_point() + theme_minimal()
+  geom_point(size= 2) + theme_minimal()
 
 p1</code></pre>
 <p><img src="/post/2018-12-13-estimation-of-the-consumption-equation-linear-regression-analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
@@ -122,7 +123,7 @@ If we want to quantify the relationship’s strength between the two variables, 
 <p><span class="math display">\[
 r = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i - \bar{x})^2  (y_i - \bar{y})^2}
 \]</span></p>
-<pre class="r"><code>#Transforming the variables into integrs
+<pre class="r"><code>#Transforming the variables into integers
 
 consumption$`GNDI PC` &lt;- as.integer(consumption$GNDIPC)
 consumption$`Consumption PC` &lt;- as.integer(consumption$ConsumptionPC)</code></pre>
@@ -189,11 +190,10 @@ The table above shows that our 95% confidence interval for <span class="math inl
 <div id="assessing-the-godness-of-fit" class="section level2">
 <h2>Assessing the Godness-of-Fit</h2>
 <p style="text-align: justify;">
-We should ask ouselves now: <strong>How well the model fits our data?</strong>. In order to answer this question, we are going to compute three things:
+We should ask ouselves now: <strong>How well the model fits our data?</strong>. In order to answer this question, we are going to compute two things:
 </p>
 <p>1- Residual Standard Error (RSE).</p>
 <p>2- R-Squared (<span class="math inline">\(R^2\)</span>).</p>
-<p>3- F-Statistics.</p>
 <p style="text-align: justify;">
 <strong>Residual Standard Error (RSE)</strong>: refers to the estimate of the standard deviation of <span class="math inline">\(\epsilon\)</span>. It provides us with the average distance the observed values deviate from the regression line measured by the units of response variable. RSE takes the following formula:
 </p>
@@ -233,4 +233,13 @@ Since <span class="math inline">\(R^2\)</span> measures the variation in the res
 <p style="text-align: justify;">
 <span class="math inline">\(R^2\)</span> for our model is equal to 0.6129, which means that 61% of the variability in the aggregate consumption per capita can be explained by the gross national disposable income per capita.
 </p>
+</div>
+<div id="residual-analysis" class="section level2">
+<h2>Residual Analysis</h2>
+<p style="text-align: justify;">
+Only part of the variance in the dependent variable will be explained by the values of the independent variable SSR/SST (which is equal to 0.61 in our model). The variance left unexplained is due to the error SSE/SST and this why we should also conduct an analysis over the residulas of our model. The main issue here is to make sure that the residuals are following the main assumptions of the linear regression.
+</p>
+<pre class="r"><code>par(mfrow = c(2, 2))
+plot(model)</code></pre>
+<p><img src="/post/2018-12-13-estimation-of-the-consumption-equation-linear-regression-analysis_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>

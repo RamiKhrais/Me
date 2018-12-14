@@ -178,6 +178,7 @@ library(PerformanceAnalytics)
 library(broom)
 library(GGally)
 library(modelr)
+library(lars)
 ```
 
 
@@ -205,7 +206,7 @@ summary(consumption)
 ```{r message=FALSE, warning=FALSE}
 
 p1 <- ggplot(consumption, aes(x=consumption$GNDIPC, y=consumption$ConsumptionPC)) +
-  geom_point() + theme_minimal()
+  geom_point(size= 2) + theme_minimal()
 
 p1
 ```
@@ -220,7 +221,7 @@ r = \frac{\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i = 1}^{n}(x_i -
 $$
 
 ```{r}
-#Transforming the variables into integrs
+#Transforming the variables into integers
 
 consumption$`GNDI PC` <- as.integer(consumption$GNDIPC)
 consumption$`Consumption PC` <- as.integer(consumption$ConsumptionPC)
@@ -276,13 +277,11 @@ confint(model)
 ##Assessing the Godness-of-Fit
 
 
-<p style='text-align: justify;'>We should ask ouselves now: **How well the model fits our data?**. In order to answer this question, we are going to compute three things: </p>
+<p style='text-align: justify;'>We should ask ouselves now: **How well the model fits our data?**. In order to answer this question, we are going to compute two things: </p>
 
 1- Residual Standard Error (RSE).
 
 2- R-Squared ($R^2$).
-
-3- F-Statistics. 
 
 
 <p style='text-align: justify;'>**Residual Standard Error (RSE)**: refers to the estimate of the standard deviation of $\epsilon$. It provides us with the average distance the observed values deviate from the regression line measured by the units of response variable. RSE takes the following formula: </p>
@@ -328,4 +327,14 @@ $$R^2 =  \frac{SSR}{SST}= \frac{\sum^n_{i=1}(y_i-\hat{y}_i)^2}{\sum^n_{i=1}(y_i-
 <p style='text-align: justify;'>$R^2$ for our model is equal to 0.6129, which means that 61% of the variability in the aggregate consumption per capita can be explained by the gross national disposable income per capita. </p>
 
 
+##Residual Analysis
+
+
+<p style='text-align: justify;'>Only part of the variance in the dependent variable will be explained by the values of the independent variable SSR/SST (which is equal to 0.61 in our model). The variance left unexplained is due to the error SSE/SST and this why we should also conduct an analysis over the residulas of our model. The main issue here is to make sure that the residuals are following the main assumptions of the linear regression.</p>
+
+
+```{r}
+par(mfrow = c(2, 2))
+plot(model)
+```
 
