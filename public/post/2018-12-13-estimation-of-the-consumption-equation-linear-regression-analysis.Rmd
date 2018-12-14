@@ -321,7 +321,7 @@ $$\text{SSR} = \sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2$$
 
 $$\text{SSE} = \sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$
 
-<p style='text-align: justify;'>Since $$R^2$$ measures the variation in the response variable that is **explained** by the model, it thus takes the following formula:</p>
+<p style='text-align: justify;'>Since $R^2$ measures the variation in the response variable that is **explained** by the model, it thus takes the following formula:</p>
 
 $$R^2 =  \frac{SSR}{SST}= \frac{\sum^n_{i=1}(y_i-\hat{y}_i)^2}{\sum^n_{i=1}(y_i-\bar{y}_i)^2}$$
 
