@@ -330,7 +330,7 @@ $$R^2 =  \frac{SSR}{SST}= \frac{\sum^n_{i=1}(y_i-\hat{y}_i)^2}{\sum^n_{i=1}(y_i-
 ##Residual Analysis
 
 
-<p style='text-align: justify;'>Only part of the variance in the dependent variable will be explained by the values of the independent variable SSR/SST (which is equal to 0.61 in our model). The variance left unexplained is due to the error SSE/SST and this why we should also conduct an analysis over the residulas of our model. The main issue here is to make sure that the residuals are following the main assumptions of the linear regression.</p>
+<p style='text-align: justify;'>Only part of the variance in the dependent variable will be explained by the values of the independent variable SSR/SST (which is equal to 0.61 in our model). The variance left unexplained is due to the error SSE/SST and this is why we should also conduct an analysis on the residuals of our model. The main issue here is to make sure that the residuals are following the assumptions of the linear regression.</p> 
 
 
 ```{r}
