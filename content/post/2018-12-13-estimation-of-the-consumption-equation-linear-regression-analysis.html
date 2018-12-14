@@ -69,7 +69,8 @@ Let us first load the packages needed for analysis.
 library(ggplot2)
 library(PerformanceAnalytics)
 library(broom)
-library(GGally)</code></pre>
+library(GGally)
+library(modelr)</code></pre>
 <p style="text-align: justify;">
 Let us now import our data.
 </p>
@@ -175,7 +176,7 @@ And we can get a tidy version of our model by using function ‘tidy’ from ‘
 ## 1 (Intercept)         539.      211.         2.56 0.0184   
 ## 2 consumption$GNDIPC    0.656     0.114      5.77 0.0000101</code></pre>
 <p style="text-align: justify;">
-The table above shows that our intercept estimate is 539, so when gross national income per capita is zero, we can expect aggregate consumption per capita to be 539. The table also shows that the slope estimate is 0.656, which means that for every $1 increase in gross national disposable income per capita, we expect the aggregate consumption per capita to increase by $0.656. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.
+The table above shows that our intercept estimate is 539, so when gross national income per capita is zero, we can expect aggregate consumption per capita to be 539. The table also shows that the slope estimate is 0.656, which means that for every increase of one dollar in gross national disposable income per capita, we expect the aggregate consumption per capita to increase by $0.656. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.
 </p>
 <pre class="r"><code>confint(model)</code></pre>
 <pre><code>##                          2.5 %      97.5 %
@@ -190,8 +191,8 @@ The table above shows that our 95% confidence interval for <span class="math inl
 <p style="text-align: justify;">
 We should ask ouselves now: <strong>How well the model fits our data?</strong>. In order to answer this question, we are going to compute three things:
 </p>
-<p>1- Residual Standard Error(RSE).</p>
-<p>2- R-Squared(R^2).</p>
+<p>1- Residual Standard Error (RSE).</p>
+<p>2- R-Squared (<span class="math inline">\(R^2\)</span>).</p>
 <p>3- F-Statistics.</p>
 <p style="text-align: justify;">
 <strong>Residual Standard Error (RSE)</strong>: refers to the estimate of the standard deviation of <span class="math inline">\(\epsilon\)</span>. It provides us with the average distance the observed values deviate from the regression line measured by the units of response variable. RSE takes the following formula:
@@ -210,6 +211,26 @@ RSE value of 112.60 means that the actual aggregate consumption per capita will 
 <p style="text-align: justify;">
 We got a percentage error of 6.1% when we compare the RSE to the mean of the response variable. This percentage suggests that our model fits the data well as the deviation of the response variable from the regression line is not large.
 </p>
-<p style='text-align: justify;'>
-<p>** R-Squared(R^2)**</p>
+<p style="text-align: justify;">
+<strong>R-Squared (<span class="math inline">\(R^2\)</span>)</strong>: expresses the proportion of the variance in the depdendent variable (response ) that is “explained” by the model. That is, the variation in aggregate consumption per capita due to the changes in the gross national disposable income per capita. In order to fully understand the logic behind <span class="math inline">\(R^2\)</span>, let us first introduce three important formulas.
+</p>
+<p style="text-align: justify;">
+<strong>1- Sum of Squares Total</strong>: refers the <strong>total</strong> variation of the observed values of <span class="math inline">\(y\)</span>
+</p>
+<p><span class="math display">\[\text{SST} = \sum_{i=1}^{n}(y_i - \bar{y})^2\]</span></p>
+<p style="text-align: justify;">
+<strong>2- Sum of Squares Regression</strong>: refers to the <strong>explained</strong> variation of the observed values of <span class="math inline">\(y\)</span>
+</p>
+<p><span class="math display">\[\text{SSR} = \sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2\]</span></p>
+<p style="text-align: justify;">
+<strong>3- Sum of Squares Error</strong>: refers to the <strong>unexplained</strong> variation of the observed values of <span class="math inline">\(y\)</span>
+</p>
+<p><span class="math display">\[\text{SSE} = \sum_{i=1}^{n}(y_i - \hat{y}_i)^2\]</span></p>
+<p style="text-align: justify;">
+Since <span class="math display">\[R^2\]</span> measures the variation in the response variable that is <strong>explained</strong> by the model, it thus takes the following formula:
+</p>
+<p><span class="math display">\[R^2 =  \frac{SSR}{SST}= \frac{\sum^n_{i=1}(y_i-\hat{y}_i)^2}{\sum^n_{i=1}(y_i-\bar{y}_i)^2}\]</span></p>
+<p style="text-align: justify;">
+<span class="math inline">\(R^2\)</span> for our model is equal to 0.6129, which means that 61% of the variability in the aggregate consumption per capita can be explained by the gross national disposable income per capita.
+</p>
 </div>

@@ -177,6 +177,7 @@ library(ggplot2)
 library(PerformanceAnalytics)
 library(broom)
 library(GGally)
+library(modelr)
 ```
 
 
@@ -263,7 +264,7 @@ tidy(model)
 ```
 
 
-<p style='text-align: justify;'>The table above shows that our intercept estimate is 539, so when gross national income per capita  is zero, we can expect aggregate consumption per capita to be 539. The table also shows that the slope estimate is 0.656, which means that for every \$1 increase in gross national disposable income per capita, we expect the aggregate consumption per capita to increase by $0.656. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.</p>
+<p style='text-align: justify;'>The table above shows that our intercept estimate is 539, so when gross national income per capita  is zero, we can expect aggregate consumption per capita to be 539. The table also shows that the slope estimate is 0.656, which means that for every increase of one dollar in gross national disposable income per capita, we expect the aggregate consumption per capita to increase by $0.656. But are these coefficients statistically significant? We can examine this by computing the standard error at 95% confidence interval for the cofficients.</p>
 
 ```{r}
 confint(model)
@@ -277,9 +278,9 @@ confint(model)
 
 <p style='text-align: justify;'>We should ask ouselves now: **How well the model fits our data?**. In order to answer this question, we are going to compute three things: </p>
 
-1- Residual Standard Error(RSE).
+1- Residual Standard Error (RSE).
 
-2- R-Squared(R^2).
+2- R-Squared ($R^2$).
 
 3- F-Statistics. 
 
@@ -306,6 +307,25 @@ sigma(model)/mean(consumption$ConsumptionPC)
 <p style='text-align: justify;'>We got a percentage error of 6.1% when we compare the RSE to the mean of the response variable. This percentage suggests that our model fits the data well as the deviation of the response variable from the regression line is not large. </p>
 
 
-<p style='text-align: justify;'>** R-Squared(R^2)**
+<p style='text-align: justify;'>**R-Squared ($R^2$)**: expresses the proportion of the variance in the depdendent variable (response ) that is "explained" by the model. That is, the variation in aggregate consumption per capita due to the changes in the gross national disposable income per capita. In order to fully understand the logic behind $R^2$, let us first introduce three important formulas.</p>
+
+<p style='text-align: justify;'>**1- Sum of Squares Total**: refers the **total** variation of the observed values of $y$</p>
+
+$$\text{SST} = \sum_{i=1}^{n}(y_i - \bar{y})^2$$
+
+<p style='text-align: justify;'>**2- Sum of Squares Regression**: refers to the **explained** variation of the observed values of $y$</p>
+
+$$\text{SSR} = \sum_{i=1}^{n}(\hat{y}_i - \bar{y})^2$$
+
+<p style='text-align: justify;'>**3- Sum of Squares Error**: refers to the **unexplained** variation of the observed values of $y$ </p>
+
+$$\text{SSE} = \sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$
+
+<p style='text-align: justify;'>Since $$R^2$$ measures the variation in the response variable that is **explained** by the model, it thus takes the following formula:</p>
+
+$$R^2 =  \frac{SSR}{SST}= \frac{\sum^n_{i=1}(y_i-\hat{y}_i)^2}{\sum^n_{i=1}(y_i-\bar{y}_i)^2}$$
+
+<p style='text-align: justify;'>$R^2$ for our model is equal to 0.6129, which means that 61% of the variability in the aggregate consumption per capita can be explained by the gross national disposable income per capita. </p>
+
 
 
