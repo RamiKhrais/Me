@@ -113,13 +113,65 @@ $$y'_{t} = c + \phi_{1}y'_{t-1} + \cdots + \phi_{p}y'_{t-p}  + \theta_{1}\vareps
 
 where:
 
-$y'_{t}$ is the differenced series
+$y'_{t}$ is the differenced series.
 
 $p$ = order of AR part.
 
 $d$ = degree of first differencing.
 
 $q$ = order of MA part.
+
+
+##The Modelling of ARMA Models: Box-Jenkins Method
+
+<p style='text-align: justify;'>The most popular thechnique in modelling and forecasting time series is Box-Jenkis Method (named after George Box and Gwilym Jenkins who wrote a book on time series analysis in 1976). The method follows three steps: </p>
+
+**1- Identification:** Assessing whether the time series is stationary, and if not, we should know how many differences are required to make it stationary. Assume that we have a non-stationary process as follows:</p>
+
+```{r}
+A <- arima.sim(model = list(order = c(0,1,0)), n = 200)
+ts.plot(A)
+```
+
+<p style='text-align: justify;'>If we want to transform a non-stationary process into a stationary one, we can apply diffrencing on the time series. </p>
+
+```{r}
+Stationary <- diff(A)
+ts.plot(Stationary)
+```
+
+<p style='text-align: justify;'>Then we need to identify the parameters of ARMA model for our data. How?</p>
+
+<p style='text-align: justify;'>There are two diagnostic plots that can be used yo help choosing the $p$ and $q$ parameters of ARMA model. </p>
+
+ <p style='text-align: justify;'>**1- Autocorrelation Function (AFC)**: The plot summarizes the correlation of an observation with lag value. </p>
+
+<p style='text-align: justify;'>**2- Partial Autocorrelation Function (PACF)**: The plot summarizes the correlation of an observation that is not accounted for by prior lagged observation. </p>
+
+###Rules of Autocorrelations for Chosing the Order of Model: 
+
+<p style='text-align: justify;'>- If ACF tails off and PACF cuts off at lag p, this should be a strong indictaor of possible AR(p) model. </p>
+
+```{r results="hide"}
+AR <- arima.sim(model = list(ar = 0.9), n = 200)
+acf2(AR)
+```
+
+<p style='text-align: justify;'>- If ACF cuts off at laq q and PACF tails off, this should be a strong indictaor of possible MA(q) model. </p>
+
+```{r results="hide"}
+MA <- arima.sim(model = list(ma = -0.5), n = 200)
+acf2(MA)
+```
+
+
+<p style='text-align: justify;'>- If both ACF and PACF are tailing off, this should be a strong indicator of ARMA(p,q) model. </p>
+
+```{r}
+ARMA <- arima.sim(model = list(ar = 0.65, ma = -0.4), n  = 200)
+acf2(ARMA)
+```
+
 
 
 

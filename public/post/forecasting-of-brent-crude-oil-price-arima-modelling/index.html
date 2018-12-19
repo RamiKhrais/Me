@@ -63,7 +63,7 @@
 
         
 
-        <li>3 min read</li>
+        <li>5 min read</li>
     </ul>
 </aside>
     
@@ -167,10 +167,92 @@ A time series that combines AR modle and MA model after integreating the differe
 </p>
 <p><span class="math display">\[y&#39;_{t} = c + \phi_{1}y&#39;_{t-1} + \cdots + \phi_{p}y&#39;_{t-p}  + \theta_{1}\varepsilon_{t-1} + \cdots + \theta_{q}\varepsilon_{t-q} + \varepsilon_{t}\]</span></p>
 <p>where:</p>
-<p><span class="math inline">\(y&#39;_{t}\)</span> is the differenced series</p>
+<p><span class="math inline">\(y&#39;_{t}\)</span> is the differenced series.</p>
 <p><span class="math inline">\(p\)</span> = order of AR part.</p>
 <p><span class="math inline">\(d\)</span> = degree of first differencing.</p>
 <p><span class="math inline">\(q\)</span> = order of MA part.</p>
+</div>
+<div id="the-modelling-of-arma-models-box-jenkins-method" class="section level2">
+<h2>The Modelling of ARMA Models: Box-Jenkins Method</h2>
+<p style="text-align: justify;">
+The most popular thechnique in modelling and forecasting time series is Box-Jenkis Method (named after George Box and Gwilym Jenkins who wrote a book on time series analysis in 1976). The method follows three steps:
+</p>
+<strong>1- Identification:</strong> Assessing whether the time series is stationary, and if not, we should know how many differences are required to make it stationary. Assume that we have a non-stationary process as follows:
+</p>
+<pre class="r"><code>A &lt;- arima.sim(model = list(order = c(0,1,0)), n = 200)
+ts.plot(A)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p style="text-align: justify;">
+If we want to transform a non-stationary process into a stationary one, we can apply diffrencing on the time series.
+</p>
+<pre class="r"><code>Stationary &lt;- diff(A)
+ts.plot(Stationary)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p style="text-align: justify;">
+Then we need to identify the parameters of ARMA model for our data. How?
+</p>
+<p style="text-align: justify;">
+There are two diagnostic plots that can be used yo help choosing the <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> parameters of ARMA model.
+</p>
+<p style="text-align: justify;">
+<strong>1- Autocorrelation Function (AFC)</strong>: The plot summarizes the correlation of an observation with lag value.
+</p>
+<p style="text-align: justify;">
+<strong>2- Partial Autocorrelation Function (PACF)</strong>: The plot summarizes the correlation of an observation that is not accounted for by prior lagged observation.
+</p>
+<div id="rules-of-autocorrelations-for-chosing-the-order-of-model" class="section level3">
+<h3>Rules of Autocorrelations for Chosing the Order of Model:</h3>
+<p style='text-align: justify;'>
+<ul>
+<li>If ACF tails off and PACF cuts off at lag p, this should be a strong indictaor of possible AR(p) model.
+</p></li>
+</ul>
+<pre class="r"><code>AR &lt;- arima.sim(model = list(ar = 0.9), n = 200)
+acf2(AR)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p style='text-align: justify;'>
+<ul>
+<li>If ACF cuts off at laq q and PACF tails off, this should be a strong indictaor of possible MA(q) model.
+</p></li>
+</ul>
+<pre class="r"><code>MA &lt;- arima.sim(model = list(ma = -0.5), n = 200)
+acf2(MA)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p style='text-align: justify;'>
+<ul>
+<li>If both ACF and PACF are tailing off, this should be a strong indicator of ARMA(p,q) model.
+</p></li>
+</ul>
+<pre class="r"><code>ARMA &lt;- arima.sim(model = list(ar = 0.65, ma = -0.4), n  = 200)
+acf2(ARMA)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre><code>##         ACF  PACF
+##  [1,]  0.26  0.26
+##  [2,]  0.08  0.01
+##  [3,]  0.03  0.01
+##  [4,] -0.04 -0.05
+##  [5,]  0.04  0.07
+##  [6,] -0.11 -0.14
+##  [7,]  0.07  0.15
+##  [8,]  0.07  0.01
+##  [9,] -0.12 -0.16
+## [10,] -0.05  0.00
+## [11,] -0.12 -0.08
+## [12,] -0.18 -0.17
+## [13,] -0.11  0.00
+## [14,] -0.11 -0.05
+## [15,]  0.03  0.02
+## [16,] -0.02 -0.02
+## [17,] -0.14 -0.14
+## [18,]  0.01  0.04
+## [19,] -0.04 -0.01
+## [20,]  0.07  0.07
+## [21,]  0.06  0.01
+## [22,]  0.02 -0.01
+## [23,]  0.10  0.01
+## [24,]  0.04  0.05
+## [25,]  0.04 -0.03</code></pre>
+</div>
 </div>
 
 
