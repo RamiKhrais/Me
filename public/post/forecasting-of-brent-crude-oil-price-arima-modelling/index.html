@@ -1,0 +1,230 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Rami Kh</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="The HTML5 Herald" />
+  <meta name="author" content="Rami Kh" />
+  <meta name="generator" content="Hugo 0.51" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+</head>
+
+<body>
+  <div id="container">
+    <header>
+      <h1>
+                <a href="/">Rami Kh</a>
+            </h1>
+
+      <ul id="social-media">
+             
+      </ul>
+      
+      <p><em>A newdiver in data ocean</em></p>
+      
+    </header>
+
+    
+<nav>
+    <ul>
+        
+        <li>
+            <a class="" href="/about/">
+                <i class="fa-li fa  fa-lg"></i><span>About Me</span>
+            </a>
+        </li>
+        
+    </ul>
+</nav>
+
+    <main>
+
+
+
+
+<article>
+
+    <h1>Forecasting of Brent Crude Oil Price: ARIMA Modelling</h1>
+
+    
+        <aside>
+    <ul>
+        <li>
+            <time class="post-date" datetime="2018-12-19T00:00:00Z">Dec 19, 2018</time>
+        </li>
+        
+        
+
+        
+
+        <li>3 min read</li>
+    </ul>
+</aside>
+    
+
+    
+
+
+<div id="time-series-definition" class="section level2">
+<h2>Time Series: Definition</h2>
+<p style="text-align: justify;">
+A sequence of of data points being recorded at specific times.
+</p>
+<div id="example-of-time-series" class="section level3">
+<h3>Example of Time Series:</h3>
+<pre class="r"><code>plot(AirPassengers)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="basic-details-of-time-series" class="section level3">
+<h3>Basic Details of Time Series:</h3>
+<pre class="r"><code>library(astsa)</code></pre>
+<pre class="r"><code>start(AirPassengers)</code></pre>
+<pre><code>## [1] 1949    1</code></pre>
+<pre class="r"><code>end(AirPassengers)</code></pre>
+<pre><code>## [1] 1960   12</code></pre>
+<pre class="r"><code>frequency(AirPassengers)</code></pre>
+<pre><code>## [1] 12</code></pre>
+<pre class="r"><code>length(AirPassengers)</code></pre>
+<pre><code>## [1] 144</code></pre>
+</div>
+</div>
+<div id="the-components-of-time-series" class="section level2">
+<h2>The Components of Time Series:</h2>
+<strong>1- Trend:</strong>
+<p style="text-align: justify;">
+Overall upward or downward pattern of the data. This trend in the series might be a result of political, economic or technological factors among other factors.
+</p>
+<strong>2- Seasonality:</strong>
+<p style="text-align: justify;">
+Regular pattern of upward/downward fluctuations that occur within certain period of time due to external factors such as waether, customs, holidays ..etc.
+</p>
+<strong>3- Noise:</strong>
+<p style="text-align: justify;">
+Unsystemtaic fluctuations that happen due to random variation or unforseen events.
+</p>
+</div>
+<div id="decomposition-of-time-series" class="section level2">
+<h2>Decomposition of Time Series</h2>
+<pre class="r"><code>plot(decompose(AirPassengers))</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="basic-time-series-models" class="section level2">
+<h2>Basic Time Series Models</h2>
+<strong>1- White Noise (WN):</strong>
+<p style="text-align: justify;">
+The simplest exapmple of stationary process. It is a purely random process that has constant mean and variace and has zero autocovariance. Each observation in the white noise series is uncorrelated with all other values in the sequence.
+</p>
+<pre class="r"><code>WN &lt;- arima.sim(model = list(order = c(0,0,0)), n = 200)
+ts.plot(WN)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<strong>2- Random Walk:</strong>
+<p style="text-align: justify;">
+A time series said to follow a random walk if the first differences are random. The random walk process can be deemed as the simplest example of non-stationary process.
+</p>
+<p><span class="math display">\[y_t = y_{t-1} + \varepsilon_t\]</span> where <span class="math inline">\(\varepsilon_t\)</span> is white noise.</p>
+<pre class="r"><code>RW &lt;- arima.sim(model = list(order = c(0,1,0)), n = 200)
+ts.plot(RW)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<strong>3- Autoregressive Model(AR):</strong>
+<p style="text-align: justify;">
+A time series in which <span class="math inline">\(y_t\)</span> depends only on its past values.
+</p>
+<p><span class="math display">\[y_{t} = c + \phi_{1}y_{t-1} + \phi_{2}y_{t-2} + \dots + \phi_{p}y_{t-p} + \varepsilon_{t}\]</span> Where:</p>
+<p>when <span class="math inline">\(\phi_1\)</span> = 0, <span class="math inline">\(y_t\)</span> is equivalent to a white noise.</p>
+<p>when <span class="math inline">\(\phi_1\)</span> = 1 and <span class="math inline">\(c\ne0\)</span>, <span class="math inline">\(y_t\)</span> is equivalent to a random walk.</p>
+<p>when <span class="math inline">\(\phi_1\)</span> = 1 and <span class="math inline">\(cne0\)</span>, <span class="math inline">\(y_t\)</span> is equivalent to a random walk with a drift.</p>
+<pre class="r"><code>AR &lt;- arima.sim(model = list(ar = 0.5), n = 200)
+ts.plot(AR)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<strong>4- Simple Moving Average(MA):</strong>
+<p style="text-align: justify;">
+A time series in which <span class="math inline">\(y_t\)</span> depends only on the error terms including the current and the previous ones.
+</p>
+<p><span class="math display">\[y_{t} = c + \varepsilon_t + \theta_{1}\varepsilon_{t-1} + \theta_{2}\varepsilon_{t-2} + \dots + \theta_{q}\varepsilon_{t-q}\]</span></p>
+<p>Where:</p>
+<p>when <span class="math inline">\(\theta_1\)</span> = 0, <span class="math inline">\(y_t\)</span> is equivalent to a white noise.</p>
+<p>when <span class="math inline">\(\theta_1\)</span> <span class="math inline">\(\ne0\)</span>, <span class="math inline">\(y_t\)</span> depends on both <span class="math inline">\(\varepsilon_{t}\)</span> and <span class="math inline">\(\varepsilon_{t-1}\)</span>.</p>
+<pre class="r"><code>MA &lt;- arima.sim(model = list(ma = 0.5), n = 200)
+ts.plot(MA)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<strong>5- ARMA Model:</strong>
+<p style="text-align: justify;">
+A time series that combines AR model and MA model. In other words, the ARMA model is just an autoregressive model with autocorrelated errors.
+</p>
+<p><span class="math display">\[y_t = µ + \phi_{1}y_{t-1} + ... + \phi_{p}y_{t-p} + \theta_{1}\varepsilon_{t-1} + .... + \theta_{q}\varepsilon_{t-q}\]</span></p>
+<pre class="r"><code>ARMA &lt;- arima.sim(model = list(ar = 0.75, ma = 0.3), n = 200)
+ts.plot(ARMA)</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<strong>6- ARIMA Model:</strong>
+<p style="text-align: justify;">
+A time series that combines AR modle and MA model after integreating the differences needed for stationarity.
+</p>
+<p><span class="math display">\[y&#39;_{t} = c + \phi_{1}y&#39;_{t-1} + \cdots + \phi_{p}y&#39;_{t-p}  + \theta_{1}\varepsilon_{t-1} + \cdots + \theta_{q}\varepsilon_{t-q} + \varepsilon_{t}\]</span></p>
+<p>where:</p>
+<p><span class="math inline">\(y&#39;_{t}\)</span> is the differenced series</p>
+<p><span class="math inline">\(p\)</span> = order of AR part.</p>
+<p><span class="math inline">\(d\)</span> = degree of first differencing.</p>
+<p><span class="math inline">\(q\)</span> = order of MA part.</p>
+</div>
+
+
+</article>
+
+
+<section class="post-nav">
+    <ul>
+        
+        <li>
+            <a href="/post/estimation-of-the-consumption-equation-linear-regression-analysis/"><i class="fa fa-chevron-circle-left"></i> Estimation of the Consumption Equation: Linear Regression Analysis</a>
+        </li>
+        
+        
+    </ul>
+</section>
+    
+
+
+
+
+
+</main>
+    <footer>
+        <h6>Copyright &copy; 2017 - Author Name | 
+            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
+            <a href="/index.xml">Subscribe</a></h6>
+    </footer>
+</div>
+<script src="/js/scripts.js"></script>
+</body>
+
+</html>
+
+
+
+
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    
