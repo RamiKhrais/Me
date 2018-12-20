@@ -175,7 +175,7 @@ acf2(ARMA)
 
 **2- Estimation:** The estimation of the of the model parameters involves using numerical method to minimize the error terms. </p>
 
-```{r}
+```{r results="hide"}
 x <- arima.sim(list(order = c(1, 0, 1), ar = 0.9, ma = -0.4), n = 200)
 fit_x <- sarima(x, p = 1, d = 0, q = 1)
 ```
@@ -185,11 +185,22 @@ fit_x <- sarima(x, p = 1, d = 0, q = 1)
 
 **AIC/BIC:** measures the errors and penalizes for adding parameters and help us choosing the suitable model. 
 
-<center>Average(observed - predicted)^2 + k (p + q)</center>
+$$(observed - predicted)^2 + k (p + q)$$
 
 Where: 
 
 AIC has k = 2 and BIC has k = log(k)
+
+
+<p style='text-align: justify;'>In addition to compute the value of AIC and BIC, we should also check the residuals against the following assumptions: </p>
+
+1- Residuals should be uncorrelated. 
+
+2- Residuals have zero mean. 
+
+3- Residuals have constant variance. 
+
+4- Residuals are normally distibuted. 
 
 
 
