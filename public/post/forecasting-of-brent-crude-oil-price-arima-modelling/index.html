@@ -63,7 +63,7 @@
 
         
 
-        <li>5 min read</li>
+        <li>6 min read</li>
     </ul>
 </aside>
     
@@ -177,6 +177,7 @@ A time series that combines AR modle and MA model after integreating the differe
 <p style="text-align: justify;">
 The most popular thechnique in modelling and forecasting time series is Box-Jenkis Method (named after George Box and Gwilym Jenkins who wrote a book on time series analysis in 1976). The method follows three steps:
 </p>
+<p style="text-align: justify;">
 <strong>1- Identification:</strong> Assessing whether the time series is stationary, and if not, we should know how many differences are required to make it stationary. Assume that we have a non-stationary process as follows:
 </p>
 <pre class="r"><code>A &lt;- arima.sim(model = list(order = c(0,1,0)), n = 200)
@@ -192,7 +193,7 @@ ts.plot(Stationary)</code></pre>
 Then we need to identify the parameters of ARMA model for our data. How?
 </p>
 <p style="text-align: justify;">
-There are two diagnostic plots that can be used yo help choosing the <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> parameters of ARMA model.
+There are two diagnostic plots that can be used to help choosing the <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> parameters of ARMA model.
 </p>
 <p style="text-align: justify;">
 <strong>1- Autocorrelation Function (AFC)</strong>: The plot summarizes the correlation of an observation with lag value.
@@ -218,7 +219,7 @@ acf2(AR)</code></pre>
 <pre class="r"><code>MA &lt;- arima.sim(model = list(ma = -0.5), n = 200)
 acf2(MA)</code></pre>
 <p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p style='text-align: justify;'>
+<p style="text-align: justify;">
 <ul>
 <li>If both ACF and PACF are tailing off, this should be a strong indicator of ARMA(p,q) model.
 </p></li>
@@ -226,32 +227,66 @@ acf2(MA)</code></pre>
 <pre class="r"><code>ARMA &lt;- arima.sim(model = list(ar = 0.65, ma = -0.4), n  = 200)
 acf2(ARMA)</code></pre>
 <p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<pre><code>##         ACF  PACF
-##  [1,]  0.26  0.26
-##  [2,]  0.08  0.01
-##  [3,]  0.03  0.01
-##  [4,] -0.04 -0.05
-##  [5,]  0.04  0.07
-##  [6,] -0.11 -0.14
-##  [7,]  0.07  0.15
-##  [8,]  0.07  0.01
-##  [9,] -0.12 -0.16
-## [10,] -0.05  0.00
-## [11,] -0.12 -0.08
-## [12,] -0.18 -0.17
-## [13,] -0.11  0.00
-## [14,] -0.11 -0.05
-## [15,]  0.03  0.02
-## [16,] -0.02 -0.02
-## [17,] -0.14 -0.14
-## [18,]  0.01  0.04
-## [19,] -0.04 -0.01
-## [20,]  0.07  0.07
-## [21,]  0.06  0.01
-## [22,]  0.02 -0.01
-## [23,]  0.10  0.01
-## [24,]  0.04  0.05
-## [25,]  0.04 -0.03</code></pre>
+<strong>2- Estimation:</strong> The estimation of the of the model parameters involves using numerical method to minimize the error terms.
+</p>
+<pre class="r"><code>x &lt;- arima.sim(list(order = c(1, 0, 1), ar = 0.9, ma = -0.4), n = 200)
+fit_x &lt;- sarima(x, p = 1, d = 0, q = 1)</code></pre>
+<pre><code>## initial  value 0.301282 
+## iter   2 value 0.285559
+## iter   3 value 0.056496
+## iter   4 value 0.045294
+## iter   5 value 0.027939
+## iter   6 value 0.021402
+## iter   7 value 0.018802
+## iter   8 value 0.017555
+## iter   9 value 0.017529
+## iter  10 value 0.017485
+## iter  11 value 0.017472
+## iter  12 value 0.017471
+## iter  13 value 0.017470
+## iter  14 value 0.017469
+## iter  15 value 0.017468
+## iter  16 value 0.017468
+## iter  17 value 0.017468
+## iter  18 value 0.017468
+## iter  19 value 0.017468
+## iter  20 value 0.017468
+## iter  21 value 0.017468
+## iter  22 value 0.017468
+## iter  23 value 0.017468
+## iter  24 value 0.017468
+## iter  24 value 0.017468
+## iter  24 value 0.017468
+## final  value 0.017468 
+## converged
+## initial  value 0.021900 
+## iter   2 value 0.021847
+## iter   3 value 0.021720
+## iter   4 value 0.021647
+## iter   5 value 0.021636
+## iter   6 value 0.021630
+## iter   7 value 0.021624
+## iter   8 value 0.021621
+## iter   9 value 0.021621
+## iter  10 value 0.021621
+## iter  11 value 0.021621
+## iter  12 value 0.021621
+## iter  13 value 0.021621
+## iter  14 value 0.021621
+## iter  14 value 0.021621
+## iter  14 value 0.021621
+## final  value 0.021621 
+## converged</code></pre>
+<p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p style="text-align: justify;">
+<strong>3- Diagnostic Checking:</strong> Assessing whether the model overfits the data. This means that the model is more complex than it needs to be and captures radnom noise in the data.
+</p>
+<p><strong>AIC/BIC:</strong> measures the errors and penalizes for adding parameters and help us choosing the suitable model.</p>
+<center>
+Average(observed - predicted)^2 + k (p + q)
+</center>
+<p>Where:</p>
+<p>AIC has k = 2 and BIC has k = log(k)</p>
 </div>
 </div>
 

@@ -126,7 +126,7 @@ $q$ = order of MA part.
 
 <p style='text-align: justify;'>The most popular thechnique in modelling and forecasting time series is Box-Jenkis Method (named after George Box and Gwilym Jenkins who wrote a book on time series analysis in 1976). The method follows three steps: </p>
 
-**1- Identification:** Assessing whether the time series is stationary, and if not, we should know how many differences are required to make it stationary. Assume that we have a non-stationary process as follows:</p>
+<p style='text-align: justify;'>**1- Identification:** Assessing whether the time series is stationary, and if not, we should know how many differences are required to make it stationary. Assume that we have a non-stationary process as follows:</p>
 
 ```{r}
 A <- arima.sim(model = list(order = c(0,1,0)), n = 200)
@@ -142,9 +142,9 @@ ts.plot(Stationary)
 
 <p style='text-align: justify;'>Then we need to identify the parameters of ARMA model for our data. How?</p>
 
-<p style='text-align: justify;'>There are two diagnostic plots that can be used yo help choosing the $p$ and $q$ parameters of ARMA model. </p>
+<p style='text-align: justify;'>There are two diagnostic plots that can be used to help choosing the $p$ and $q$ parameters of ARMA model. </p>
 
- <p style='text-align: justify;'>**1- Autocorrelation Function (AFC)**: The plot summarizes the correlation of an observation with lag value. </p>
+<p style='text-align: justify;'>**1- Autocorrelation Function (AFC)**: The plot summarizes the correlation of an observation with lag value. </p>
 
 <p style='text-align: justify;'>**2- Partial Autocorrelation Function (PACF)**: The plot summarizes the correlation of an observation that is not accounted for by prior lagged observation. </p>
 
@@ -167,10 +167,29 @@ acf2(MA)
 
 <p style='text-align: justify;'>- If both ACF and PACF are tailing off, this should be a strong indicator of ARMA(p,q) model. </p>
 
-```{r}
+```{r results="hide"}
 ARMA <- arima.sim(model = list(ar = 0.65, ma = -0.4), n  = 200)
 acf2(ARMA)
 ```
+
+
+**2- Estimation:** The estimation of the of the model parameters involves using numerical method to minimize the error terms. </p>
+
+```{r}
+x <- arima.sim(list(order = c(1, 0, 1), ar = 0.9, ma = -0.4), n = 200)
+fit_x <- sarima(x, p = 1, d = 0, q = 1)
+```
+
+
+<p style='text-align: justify;'>**3- Diagnostic Checking:** Assessing whether the model overfits the data. This means that the model is more complex than it needs to be and captures radnom noise in the data.</p>
+
+**AIC/BIC:** measures the errors and penalizes for adding parameters and help us choosing the suitable model. 
+
+<center>Average(observed - predicted)^2 + k (p + q)</center>
+
+Where: 
+
+AIC has k = 2 and BIC has k = log(k)
 
 
 
