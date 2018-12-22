@@ -1,5 +1,5 @@
 ---
-title: 'Forecasting of Brent Crude Oil Price: ARIMA Modelling'
+title: 'Simple Introduction to Time Series Analysis'
 author: Rami Kh
 date: '2018-12-19'
 slug: forecasting-of-brent-crude-oil-price-arima-modelling
@@ -74,9 +74,9 @@ ts.plot(RW)</code></pre>
 A time series in which <span class="math inline">\(y_t\)</span> depends only on its past values.
 </p>
 <p><span class="math display">\[y_{t} = c + \phi_{1}y_{t-1} + \phi_{2}y_{t-2} + \dots + \phi_{p}y_{t-p} + \varepsilon_{t}\]</span> Where:</p>
-<p>when <span class="math inline">\(\phi_1\)</span> = 0, <span class="math inline">\(y_t\)</span> is equivalent to a white noise.</p>
-<p>when <span class="math inline">\(\phi_1\)</span> = 1 and <span class="math inline">\(c\ne0\)</span>, <span class="math inline">\(y_t\)</span> is equivalent to a random walk.</p>
-<p>when <span class="math inline">\(\phi_1\)</span> = 1 and <span class="math inline">\(cne0\)</span>, <span class="math inline">\(y_t\)</span> is equivalent to a random walk with a drift.</p>
+<p>when <span class="math inline">\(\phi_1\)</span> = 0, <span class="math inline">\(y_t\)</span> is equivalent to white noise.</p>
+<p>when <span class="math inline">\(\phi_1\)</span> = 1 and <span class="math inline">\(c\)</span> =0, <span class="math inline">\(y_t\)</span> is equivalent torandom walk.</p>
+<p>when <span class="math inline">\(\phi_1\)</span> = 1 and <span class="math inline">\(cne0\)</span>, <span class="math inline">\(y_t\)</span> is equivalent to random walk with a drift.</p>
 <pre class="r"><code>AR &lt;- arima.sim(model = list(ar = 0.5), n = 200)
 ts.plot(AR)</code></pre>
 <p><img src="/post/2018-12-19-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
@@ -181,8 +181,8 @@ fit_x &lt;- sarima(x, p = 1, d = 0, q = 1)</code></pre>
 In addition to compute the value of AIC and BIC, we should also check the residuals against the following assumptions:
 </p>
 <p>1- Residuals should be uncorrelated.</p>
-<p>2- Residuals have zero mean.</p>
-<p>3- Residuals have constant variance.</p>
-<p>4- Residuals are normally distibuted.</p>
+<p>2- Residuals should have zero mean.</p>
+<p>3- Residuals should have constant variance.</p>
+<p>4- Residuals should be normally distibuted.</p>
 </div>
 </div>

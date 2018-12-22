@@ -1,5 +1,5 @@
 ---
-title: 'Forecasting of Brent Crude Oil Price: ARIMA Modelling'
+title: 'Simple Introduction to Time Series Analysis'
 author: Rami Kh
 date: '2018-12-19'
 slug: forecasting-of-brent-crude-oil-price-arima-modelling
@@ -72,11 +72,11 @@ ts.plot(RW)
 $$y_{t} = c + \phi_{1}y_{t-1} + \phi_{2}y_{t-2} + \dots + \phi_{p}y_{t-p} + \varepsilon_{t}$$
 Where:
 
-when $\phi_1$ = 0, $y_t$ is equivalent to a white noise.
+when $\phi_1$ = 0, $y_t$ is equivalent to white noise.
 
-when $\phi_1$ = 1 and $c\ne0$, $y_t$ is equivalent to a random walk.
+when $\phi_1$ = 1 and $c$ =0, $y_t$ is equivalent torandom walk.
 
-when $\phi_1$ = 1 and $cne0$, $y_t$ is equivalent to a random walk with a drift. 
+when $\phi_1$ = 1 and $cne0$, $y_t$ is equivalent to  random walk with a drift. 
 
 ```{r}
 AR <- arima.sim(model = list(ar = 0.5), n = 200)
@@ -196,12 +196,8 @@ AIC has k = 2 and BIC has k = log(k)
 
 1- Residuals should be uncorrelated. 
 
-2- Residuals have zero mean. 
+2- Residuals should have zero mean. 
 
-3- Residuals have constant variance. 
+3- Residuals should have constant variance. 
 
-4- Residuals are normally distibuted. 
-
-
-
-
+4- Residuals should be normally distibuted.  
