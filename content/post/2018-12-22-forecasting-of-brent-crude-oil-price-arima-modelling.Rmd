@@ -31,3 +31,11 @@ library(astsa)
 **1- Identification:**
 
 <p style='text-align: justify;'>Following the Box-Jenkins method, the first step in building our econometric model should be started with the assessement of the stationarity of the time series under consideration. If the time series proves to be non-stationary, it should be differenced to make it stationary. </p>
+
+<p style='text-align: justify;'>Let us first import our data. </p>
+
+```{r}
+brent <- read.csv("C:/Users/Rami/Desktop/brent.csv")
+head(brent)
+```
+ 
