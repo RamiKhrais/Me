@@ -27,3 +27,7 @@ library(astsa)
 
 ##Methodology
 
+
+**1- Identification:**
+
+<p style='text-align: justify;'>Following the Box-Jenkins method, the first step in building our econometric model should be started with the assessement of the stationarity of the time series under consideration. If the time series proves to be non-stationary, it should be differenced to make it stationary. </p>
