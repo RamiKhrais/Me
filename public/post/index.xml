@@ -30,15 +30,6 @@
     </item>
     
     <item>
-      <title>Simple Introduction to Time Series Analysis</title>
-      <link>/post/forecasting-of-brent-crude-oil-price-arima-modelling/</link>
-      <pubDate>Wed, 19 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/post/forecasting-of-brent-crude-oil-price-arima-modelling/</guid>
-      <description>Time Series: DefinitionA sequence of of data points being recorded at specific times.Example of Time Series:plot(AirPassengers)Basic Details of Time Series:library(astsa)start(AirPassengers)## [1] 1949 1end(AirPassengers)## [1] 1960 12frequency(AirPassengers)## [1] 12length(AirPassengers)## [1] 144The Components of Time Series:1- Trend:Overall upward or downward pattern of the data.</description>
-    </item>
-    
-    <item>
       <title>Estimation of the Consumption Equation: Linear Regression Analysis</title>
       <link>/post/estimation-of-the-consumption-equation-linear-regression-analysis/</link>
       <pubDate>Thu, 13 Dec 2018 00:00:00 +0000</pubDate>
