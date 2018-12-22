@@ -1,0 +1,203 @@
+---
+title: 'Simple Introduction to Time Series Analysis'
+author: Rami Kh
+date: '2018-12-19'
+slug: forecasting-of-brent-crude-oil-price-arima-modelling
+categories: []
+tags: []
+---
+
+
+##Time Series: Definition
+
+<p style='text-align: justify;'>A sequence of of data points being recorded at specific times. </p>
+
+
+###Example of Time Series: 
+
+```{r}
+plot(AirPassengers)
+```
+
+
+###Basic Details of Time Series:
+
+```{r warning=FALSE, message=FALSE}
+library(astsa)
+```
+
+```{r}
+start(AirPassengers)
+end(AirPassengers)
+frequency(AirPassengers)
+length(AirPassengers)
+```
+
+##The Components of Time Series:
+
+**1- Trend:** <p style='text-align: justify;'>Overall upward or downward pattern of the data. This trend in the series might be a result of political, economic or technological factors among other factors.</p>
+
+**2- Seasonality:** <p style='text-align: justify;'>Regular pattern of upward/downward fluctuations that occur within certain period of time due to external factors such as waether, customs, holidays ..etc. </p>
+
+**3- Noise:** <p style='text-align: justify;'>Unsystemtaic fluctuations that happen due to random variation or unforseen events. </p>
+
+##Decomposition of Time Series
+
+```{r}
+plot(decompose(AirPassengers))
+```
+
+##Basic Time Series Models
+
+**1- White Noise (WN):** <p style='text-align: justify;'>The simplest exapmple of stationary process. It is a purely random process that has constant mean and variace and has zero autocovariance. Each observation in the white noise series is uncorrelated with all other values in the sequence. </p>
+
+```{r}
+WN <- arima.sim(model = list(order = c(0,0,0)), n = 200)
+ts.plot(WN)
+```
+
+
+**2- Random Walk:** <p style='text-align: justify;'>A time series said to follow a random walk if the first differences are random. The random walk process can be deemed as the simplest example of non-stationary process. </p>
+
+$$y_t = y_{t-1} + \varepsilon_t$$
+where $\varepsilon_t$ is white noise. 
+
+```{r}
+RW <- arima.sim(model = list(order = c(0,1,0)), n = 200)
+ts.plot(RW)
+```
+
+**3- Autoregressive Model(AR):**<p style='text-align: justify;'>A time series in which $y_t$ depends only on its past values. </p>
+
+$$y_{t} = c + \phi_{1}y_{t-1} + \phi_{2}y_{t-2} + \dots + \phi_{p}y_{t-p} + \varepsilon_{t}$$
+Where:
+
+when $\phi_1$ = 0, $y_t$ is equivalent to white noise.
+
+when $\phi_1$ = 1 and $c$ =0, $y_t$ is equivalent torandom walk.
+
+when $\phi_1$ = 1 and $cne0$, $y_t$ is equivalent to  random walk with a drift. 
+
+```{r}
+AR <- arima.sim(model = list(ar = 0.5), n = 200)
+ts.plot(AR)
+```
+
+**4- Simple Moving Average(MA):**<p style='text-align: justify;'>A time series in which $y_t$ depends only on the error terms including the current and the previous ones. </p>
+
+$$y_{t} = c + \varepsilon_t + \theta_{1}\varepsilon_{t-1} + \theta_{2}\varepsilon_{t-2} + \dots + \theta_{q}\varepsilon_{t-q}$$
+
+Where:
+
+when $\theta_1$ = 0, $y_t$ is equivalent to a white noise.
+
+when $\theta_1$ $\ne0$, $y_t$ depends on both $\varepsilon_{t}$ and $\varepsilon_{t-1}$.
+
+```{r}
+MA <- arima.sim(model = list(ma = 0.5), n = 200)
+ts.plot(MA)
+```
+
+**5- ARMA Model:** <p style='text-align: justify;'>A time series that combines AR model and MA model. In other words, the ARMA model is just an autoregressive model with autocorrelated errors.</p>
+
+$$y_t = µ + \phi_{1}y_{t-1} + ... + \phi_{p}y_{t-p} + \theta_{1}\varepsilon_{t-1} + .... + \theta_{q}\varepsilon_{t-q}$$
+
+```{r}
+ARMA <- arima.sim(model = list(ar = 0.75, ma = 0.3), n = 200)
+ts.plot(ARMA)
+```
+
+**6- ARIMA Model:**<p style='text-align: justify;'>A time series that combines AR modle and MA model after integreating the differences needed for stationarity. </p>
+
+$$y'_{t} = c + \phi_{1}y'_{t-1} + \cdots + \phi_{p}y'_{t-p}  + \theta_{1}\varepsilon_{t-1} + \cdots + \theta_{q}\varepsilon_{t-q} + \varepsilon_{t}$$
+
+where:
+
+$y'_{t}$ is the differenced series.
+
+$p$ = order of AR part.
+
+$d$ = degree of first differencing.
+
+$q$ = order of MA part.
+
+
+##The Modelling of ARMA Models: Box-Jenkins Method
+
+<p style='text-align: justify;'>The most popular thechnique in modelling and forecasting time series is Box-Jenkis Method (named after George Box and Gwilym Jenkins who wrote a book on time series analysis in 1976). The method follows three steps: </p>
+
+<p style='text-align: justify;'>**1- Identification:** Assessing whether the time series is stationary, and if not, we should know how many differences are required to make it stationary. Assume that we have a non-stationary process as follows:</p>
+
+```{r}
+A <- arima.sim(model = list(order = c(0,1,0)), n = 200)
+ts.plot(A)
+```
+
+<p style='text-align: justify;'>If we want to transform a non-stationary process into a stationary one, we can apply diffrencing on the time series. </p>
+
+```{r}
+Stationary <- diff(A)
+ts.plot(Stationary)
+```
+
+<p style='text-align: justify;'>Then we need to identify the parameters of ARMA model for our data. How?</p>
+
+<p style='text-align: justify;'>There are two diagnostic plots that can be used to help choosing the $p$ and $q$ parameters of ARMA model. </p>
+
+<p style='text-align: justify;'>**1- Autocorrelation Function (AFC)**: The plot summarizes the correlation of an observation with lag value. </p>
+
+<p style='text-align: justify;'>**2- Partial Autocorrelation Function (PACF)**: The plot summarizes the correlation of an observation that is not accounted for by prior lagged observation. </p>
+
+###Rules of Autocorrelations for Chosing the Order of Model: 
+
+<p style='text-align: justify;'>- If ACF tails off and PACF cuts off at lag p, this should be a strong indictaor of possible AR(p) model. </p>
+
+```{r results="hide"}
+AR <- arima.sim(model = list(ar = 0.9), n = 200)
+acf2(AR)
+```
+
+<p style='text-align: justify;'>- If ACF cuts off at laq q and PACF tails off, this should be a strong indictaor of possible MA(q) model. </p>
+
+```{r results="hide"}
+MA <- arima.sim(model = list(ma = -0.5), n = 200)
+acf2(MA)
+```
+
+
+<p style='text-align: justify;'>- If both ACF and PACF are tailing off, this should be a strong indicator of ARMA(p,q) model. </p>
+
+```{r results="hide"}
+ARMA <- arima.sim(model = list(ar = 0.65, ma = -0.4), n  = 200)
+acf2(ARMA)
+```
+
+
+**2- Estimation:** The estimation of the of the model parameters involves using numerical method to minimize the error terms. </p>
+
+```{r results="hide"}
+x <- arima.sim(list(order = c(1, 0, 1), ar = 0.9, ma = -0.4), n = 200)
+fit_x <- sarima(x, p = 1, d = 0, q = 1)
+```
+
+
+<p style='text-align: justify;'>**3- Diagnostic Checking:** Assessing whether the model overfits the data. This means that the model is more complex than it needs to be and captures radnom noise in the data.</p>
+
+**AIC/BIC:** measures the errors and penalizes for adding parameters and help us choosing the suitable model. 
+
+$$(observed - predicted)^2 + k (p + q)$$
+
+Where: 
+
+AIC has k = 2 and BIC has k = log(k)
+
+
+<p style='text-align: justify;'>In addition to compute the value of AIC and BIC, we should also check the residuals against the following assumptions: </p>
+
+1- Residuals should be uncorrelated. 
+
+2- Residuals should have zero mean. 
+
+3- Residuals should have constant variance. 
+
+4- Residuals should be normally distibuted.  
