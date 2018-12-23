@@ -147,12 +147,14 @@ summary(Model5)
 ```
 
 
-<p style='text-align: justify;'>**Note:** When we apply **auto.arima()** function on data, we received ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price include seasonal component. </p>
+<p style='text-align: justify;'>**Note:** When we apply **auto.arima()** function on data, we received ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component. </p>
 
 | Model | ARIMA(1,1,1) | ARIMA(1,1,0) | ARIMA(2,1,2) | ARIMA(2,1,0) | ARIMA(1,1,0)(0,0,2)[12] |
 |-------|--------------|--------------|--------------|--------------|-------------------------|
 | AIC   |    2086.02   |    2084.01   |    2083.47   |    2086.01   |         2075.12         |
 
 
+
+<p style='text-align: justify;'>We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0). </p>
 
 
