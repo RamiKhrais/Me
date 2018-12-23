@@ -242,4 +242,53 @@ summary(Model5)</code></pre>
 <p style="text-align: justify;">
 We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).
 </p>
+<p><strong>3- Residual Analysis:</strong></p>
+<p style="text-align: justify;">
+In addition to the comparison of AIC for our models, we need to make sure that the residuals of each one meet the assumptions of randomness, normal distribution and uncorrelation.
+</p>
+<pre class="r"><code>checkresiduals(Model1)</code></pre>
+<p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(1,1,1) with drift
+## Q* = 45.47, df = 21, p-value = 0.001502
+## 
+## Model df: 3.   Total lags used: 24</code></pre>
+<pre class="r"><code>checkresiduals(Model2)</code></pre>
+<p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(1,1,0) with drift
+## Q* = 45.274, df = 22, p-value = 0.002449
+## 
+## Model df: 2.   Total lags used: 24</code></pre>
+<pre class="r"><code>checkresiduals(Model3)</code></pre>
+<p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(2,1,2) with drift
+## Q* = 40.391, df = 19, p-value = 0.002907
+## 
+## Model df: 5.   Total lags used: 24</code></pre>
+<pre class="r"><code>checkresiduals(Model4)</code></pre>
+<p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(2,1,0) with drift
+## Q* = 45.537, df = 21, p-value = 0.001472
+## 
+## Model df: 3.   Total lags used: 24</code></pre>
+<pre class="r"><code>checkresiduals(Model5)</code></pre>
+<p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(1,1,0)(0,0,2)[12]
+## Q* = 30.429, df = 21, p-value = 0.08369
+## 
+## Model df: 3.   Total lags used: 24</code></pre>
 </div>

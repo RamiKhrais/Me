@@ -155,6 +155,30 @@ summary(Model5)
 
 
 
-<p style='text-align: justify;'>We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0). </p>
+<p style='text-align: justify;'>We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).</p>
 
+
+**3- Residual Analysis:**
+
+<p style='text-align: justify;'>In addition to the comparison of AIC for our models, we need to make sure that the residuals of each one meet the assumptions of randomness, normal distribution and uncorrelation. </p>
+
+```{r}
+checkresiduals(Model1)
+```
+
+```{r}
+checkresiduals(Model2)
+```
+
+```{r}
+checkresiduals(Model3)
+```
+
+```{r}
+checkresiduals(Model4)
+```
+
+```{r}
+checkresiduals(Model5)
+```
 
