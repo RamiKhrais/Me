@@ -201,3 +201,4 @@ AIC has k = 2 and BIC has k = log(k)
 3- Residuals should have constant variance. 
 
 4- Residuals should be normally distibuted.  
+ 

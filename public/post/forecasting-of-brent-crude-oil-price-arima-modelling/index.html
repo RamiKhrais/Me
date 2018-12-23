@@ -50,20 +50,30 @@
 
 <article>
 
-    <h1>Simple Introduction to Time Series Analysis</h1>
+    <h1>Forecasting of Brent Crude Oil Price: ARIMA Modelling </h1>
 
     
         <aside>
     <ul>
         <li>
-            <time class="post-date" datetime="2018-12-19T00:00:00Z">Dec 19, 2018</time>
+            <time class="post-date" datetime="2018-12-22T00:00:00Z">Dec 22, 2018</time>
         </li>
         
         
+        <li>
+            Categories: 
+            <em>
+                
+                    
+                    <a href="/categories/time-series-analysis/">Time Series Analysis</a>
+                
+            </em>
+        </li>
+        
 
         
 
-        <li>5 min read</li>
+        <li>2 min read</li>
     </ul>
 </aside>
     
@@ -71,182 +81,38 @@
     
 
 
-<div id="time-series-definition" class="section level2">
-<h2>Time Series: Definition</h2>
+<div id="introduction" class="section level2">
+<h2>Introduction:</h2>
 <p style="text-align: justify;">
-A sequence of of data points being recorded at specific times.
+Crude oil is almost the most important commodities in the world. It is widely considered to be the lifeblood of our modern life and the crucial driver behind the radical transformations in the global economy over the last decades. The crude oil and its products are almost used in every single industry ranging from aviation to petrochemical. The world currently produces approximately 93 million barrels per day. The market of crude is bigger than all raw metal markets combined at approximate value of 1.7 trillion dollar a year. Given this exceptional importance, the price of crude oil is one of the key determinant of the global economic activity, the international trade, the stock prices, and the macroeconomic policies adopted by the countries worldwide. It has therefore been a subject of a great deal of research. An enormous number of governmental and international agencies, consultancies, hedge funds and think-tanks are always busy designing and evaluating the best approaches to forecast the crude oil prices and to capture its volatile trends. In this project, I will build an econometric model in order to study the dynamics of monthly Brent oil prices for the period from 1987 to 2018 using the <a href="https://ramikh.netlify.com/post/forecasting-of-brent-crude-oil-price-arima-modelling/">Box-Jenkins method</a>. I will use several ARIMA models in order to assess their forecasting performances using the relevant statistical tests and techniques. The data for this project is obtained from the Energy Information Administration (EIA) for the spot price of Brent crude in Europe in American Dollar for the mentioned period.
 </p>
-<div id="example-of-time-series" class="section level3">
-<h3>Example of Time Series:</h3>
-<pre class="r"><code>plot(AirPassengers)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-</div>
-<div id="basic-details-of-time-series" class="section level3">
-<h3>Basic Details of Time Series:</h3>
-<pre class="r"><code>library(astsa)</code></pre>
-<pre class="r"><code>start(AirPassengers)</code></pre>
-<pre><code>## [1] 1949    1</code></pre>
-<pre class="r"><code>end(AirPassengers)</code></pre>
-<pre><code>## [1] 1960   12</code></pre>
-<pre class="r"><code>frequency(AirPassengers)</code></pre>
-<pre><code>## [1] 12</code></pre>
-<pre class="r"><code>length(AirPassengers)</code></pre>
-<pre><code>## [1] 144</code></pre>
+<div id="packages-used-in-modelling-and-forecasting" class="section level3">
+<h3>Packages used in Modelling and Forecasting</h3>
+<pre class="r"><code>library(ggplot2)
+library(readxl)
+library(urca)
+library(tseries)
+library(astsa)</code></pre>
 </div>
 </div>
-<div id="the-components-of-time-series" class="section level2">
-<h2>The Components of Time Series:</h2>
-<strong>1- Trend:</strong>
+<div id="methodology" class="section level2">
+<h2>Methodology</h2>
+<p><strong>1- Identification:</strong></p>
 <p style="text-align: justify;">
-Overall upward or downward pattern of the data. This trend in the series might be a result of political, economic or technological factors among other factors.
-</p>
-<strong>2- Seasonality:</strong>
-<p style="text-align: justify;">
-Regular pattern of upward/downward fluctuations that occur within certain period of time due to external factors such as waether, customs, holidays ..etc.
-</p>
-<strong>3- Noise:</strong>
-<p style="text-align: justify;">
-Unsystemtaic fluctuations that happen due to random variation or unforseen events.
-</p>
-</div>
-<div id="decomposition-of-time-series" class="section level2">
-<h2>Decomposition of Time Series</h2>
-<pre class="r"><code>plot(decompose(AirPassengers))</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-</div>
-<div id="basic-time-series-models" class="section level2">
-<h2>Basic Time Series Models</h2>
-<strong>1- White Noise (WN):</strong>
-<p style="text-align: justify;">
-The simplest exapmple of stationary process. It is a purely random process that has constant mean and variace and has zero autocovariance. Each observation in the white noise series is uncorrelated with all other values in the sequence.
-</p>
-<pre class="r"><code>WN &lt;- arima.sim(model = list(order = c(0,0,0)), n = 200)
-ts.plot(WN)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<strong>2- Random Walk:</strong>
-<p style="text-align: justify;">
-A time series said to follow a random walk if the first differences are random. The random walk process can be deemed as the simplest example of non-stationary process.
-</p>
-<p><span class="math display">\[y_t = y_{t-1} + \varepsilon_t\]</span> where <span class="math inline">\(\varepsilon_t\)</span> is white noise.</p>
-<pre class="r"><code>RW &lt;- arima.sim(model = list(order = c(0,1,0)), n = 200)
-ts.plot(RW)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<strong>3- Autoregressive Model(AR):</strong>
-<p style="text-align: justify;">
-A time series in which <span class="math inline">\(y_t\)</span> depends only on its past values.
-</p>
-<p><span class="math display">\[y_{t} = c + \phi_{1}y_{t-1} + \phi_{2}y_{t-2} + \dots + \phi_{p}y_{t-p} + \varepsilon_{t}\]</span> Where:</p>
-<p>when <span class="math inline">\(\phi_1\)</span> = 0, <span class="math inline">\(y_t\)</span> is equivalent to white noise.</p>
-<p>when <span class="math inline">\(\phi_1\)</span> = 1 and <span class="math inline">\(c\)</span> =0, <span class="math inline">\(y_t\)</span> is equivalent torandom walk.</p>
-<p>when <span class="math inline">\(\phi_1\)</span> = 1 and <span class="math inline">\(cne0\)</span>, <span class="math inline">\(y_t\)</span> is equivalent to random walk with a drift.</p>
-<pre class="r"><code>AR &lt;- arima.sim(model = list(ar = 0.5), n = 200)
-ts.plot(AR)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<strong>4- Simple Moving Average(MA):</strong>
-<p style="text-align: justify;">
-A time series in which <span class="math inline">\(y_t\)</span> depends only on the error terms including the current and the previous ones.
-</p>
-<p><span class="math display">\[y_{t} = c + \varepsilon_t + \theta_{1}\varepsilon_{t-1} + \theta_{2}\varepsilon_{t-2} + \dots + \theta_{q}\varepsilon_{t-q}\]</span></p>
-<p>Where:</p>
-<p>when <span class="math inline">\(\theta_1\)</span> = 0, <span class="math inline">\(y_t\)</span> is equivalent to a white noise.</p>
-<p>when <span class="math inline">\(\theta_1\)</span> <span class="math inline">\(\ne0\)</span>, <span class="math inline">\(y_t\)</span> depends on both <span class="math inline">\(\varepsilon_{t}\)</span> and <span class="math inline">\(\varepsilon_{t-1}\)</span>.</p>
-<pre class="r"><code>MA &lt;- arima.sim(model = list(ma = 0.5), n = 200)
-ts.plot(MA)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
-<strong>5- ARMA Model:</strong>
-<p style="text-align: justify;">
-A time series that combines AR model and MA model. In other words, the ARMA model is just an autoregressive model with autocorrelated errors.
-</p>
-<p><span class="math display">\[y_t = µ + \phi_{1}y_{t-1} + ... + \phi_{p}y_{t-p} + \theta_{1}\varepsilon_{t-1} + .... + \theta_{q}\varepsilon_{t-q}\]</span></p>
-<pre class="r"><code>ARMA &lt;- arima.sim(model = list(ar = 0.75, ma = 0.3), n = 200)
-ts.plot(ARMA)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<strong>6- ARIMA Model:</strong>
-<p style="text-align: justify;">
-A time series that combines AR modle and MA model after integreating the differences needed for stationarity.
-</p>
-<p><span class="math display">\[y&#39;_{t} = c + \phi_{1}y&#39;_{t-1} + \cdots + \phi_{p}y&#39;_{t-p}  + \theta_{1}\varepsilon_{t-1} + \cdots + \theta_{q}\varepsilon_{t-q} + \varepsilon_{t}\]</span></p>
-<p>where:</p>
-<p><span class="math inline">\(y&#39;_{t}\)</span> is the differenced series.</p>
-<p><span class="math inline">\(p\)</span> = order of AR part.</p>
-<p><span class="math inline">\(d\)</span> = degree of first differencing.</p>
-<p><span class="math inline">\(q\)</span> = order of MA part.</p>
-</div>
-<div id="the-modelling-of-arma-models-box-jenkins-method" class="section level2">
-<h2>The Modelling of ARMA Models: Box-Jenkins Method</h2>
-<p style="text-align: justify;">
-The most popular thechnique in modelling and forecasting time series is Box-Jenkis Method (named after George Box and Gwilym Jenkins who wrote a book on time series analysis in 1976). The method follows three steps:
+Following the Box-Jenkins method, the first step in building our econometric model should be started with the assessement of the stationarity of the time series under consideration. If the time series proves to be non-stationary, it should be differenced to make it stationary.
 </p>
 <p style="text-align: justify;">
-<strong>1- Identification:</strong> Assessing whether the time series is stationary, and if not, we should know how many differences are required to make it stationary. Assume that we have a non-stationary process as follows:
+Let us first import our data.
 </p>
-<pre class="r"><code>A &lt;- arima.sim(model = list(order = c(0,1,0)), n = 200)
-ts.plot(A)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p style="text-align: justify;">
-If we want to transform a non-stationary process into a stationary one, we can apply diffrencing on the time series.
-</p>
-<pre class="r"><code>Stationary &lt;- diff(A)
-ts.plot(Stationary)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p style="text-align: justify;">
-Then we need to identify the parameters of ARMA model for our data. How?
-</p>
-<p style="text-align: justify;">
-There are two diagnostic plots that can be used to help choosing the <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> parameters of ARMA model.
-</p>
-<p style="text-align: justify;">
-<strong>1- Autocorrelation Function (AFC)</strong>: The plot summarizes the correlation of an observation with lag value.
-</p>
-<p style="text-align: justify;">
-<strong>2- Partial Autocorrelation Function (PACF)</strong>: The plot summarizes the correlation of an observation that is not accounted for by prior lagged observation.
-</p>
-<div id="rules-of-autocorrelations-for-chosing-the-order-of-model" class="section level3">
-<h3>Rules of Autocorrelations for Chosing the Order of Model:</h3>
-<p style='text-align: justify;'>
-<ul>
-<li>If ACF tails off and PACF cuts off at lag p, this should be a strong indictaor of possible AR(p) model.
-</p></li>
-</ul>
-<pre class="r"><code>AR &lt;- arima.sim(model = list(ar = 0.9), n = 200)
-acf2(AR)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p style='text-align: justify;'>
-<ul>
-<li>If ACF cuts off at laq q and PACF tails off, this should be a strong indictaor of possible MA(q) model.
-</p></li>
-</ul>
-<pre class="r"><code>MA &lt;- arima.sim(model = list(ma = -0.5), n = 200)
-acf2(MA)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<p style="text-align: justify;">
-<ul>
-<li>If both ACF and PACF are tailing off, this should be a strong indicator of ARMA(p,q) model.
-</p></li>
-</ul>
-<pre class="r"><code>ARMA &lt;- arima.sim(model = list(ar = 0.65, ma = -0.4), n  = 200)
-acf2(ARMA)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<strong>2- Estimation:</strong> The estimation of the of the model parameters involves using numerical method to minimize the error terms.
-</p>
-<pre class="r"><code>x &lt;- arima.sim(list(order = c(1, 0, 1), ar = 0.9, ma = -0.4), n = 200)
-fit_x &lt;- sarima(x, p = 1, d = 0, q = 1)</code></pre>
-<p><img src="/post/2018-12-19-simple-introduction-to-time-series-analysis_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p style="text-align: justify;">
-<strong>3- Diagnostic Checking:</strong> Assessing whether the model overfits the data. This means that the model is more complex than it needs to be and captures radnom noise in the data.
-</p>
-<p><strong>AIC/BIC:</strong> measures the errors and penalizes for adding parameters and help us choosing the suitable model.</p>
-<p><span class="math display">\[(observed - predicted)^2 + k (p + q)\]</span></p>
-<p>Where:</p>
-<p>AIC has k = 2 and BIC has k = log(k)</p>
-<p style="text-align: justify;">
-In addition to compute the value of AIC and BIC, we should also check the residuals against the following assumptions:
-</p>
-<p>1- Residuals should be uncorrelated.</p>
-<p>2- Residuals should have zero mean.</p>
-<p>3- Residuals should have constant variance.</p>
-<p>4- Residuals should be normally distibuted.</p>
-</div>
+<pre class="r"><code>brent &lt;- read.csv(&quot;C:/Users/Rami/Desktop/brent.csv&quot;)
+head(brent)</code></pre>
+<pre><code>##         Date Price
+## 1 15/05/1987 18.58
+## 2 15/06/1987 18.86
+## 3 15/07/1987 19.86
+## 4 15/08/1987 18.98
+## 5 15/09/1987 18.31
+## 6 15/10/1987 18.76</code></pre>
 </div>
 
 
@@ -257,13 +123,9 @@ In addition to compute the value of AIC and BIC, we should also check the residu
     <ul>
         
         <li>
-            <a href="/post/estimation-of-the-consumption-equation-linear-regression-analysis/"><i class="fa fa-chevron-circle-left"></i> Estimation of the Consumption Equation: Linear Regression Analysis</a>
+            <a href="/post/forecasting-of-brent-crude-oil-price-arima-modelling/"><i class="fa fa-chevron-circle-left"></i> Simple Introduction to Time Series Analysis</a>
         </li>
         
-        
-        <li>
-            <a href="/post/forecasting-of-brent-crude-oil-price-arima-modelling/">Forecasting of Brent Crude Oil Price: ARIMA Modelling  <i class="fa fa-chevron-circle-right"></i> </a>
-        </li>
         
     </ul>
 </section>
