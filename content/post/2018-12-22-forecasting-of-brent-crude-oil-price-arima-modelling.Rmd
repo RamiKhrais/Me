@@ -73,9 +73,12 @@ adf.test(brent_ts)
 
 <p style='text-align: justify;'>The p-value is larger than 0.05 and thus we fail to reject the null hypothesis which states that the time series includes a unit root. This indicates that the time series should be differenced in order to transform it into a stationary process. </p>
 
-
 ```{r}
 diff_series <- diff(brent_ts)
+```
+
+
+```{r}
 layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE))
 a <- ts.plot(diff_series)
 b <- acf(diff_series)
@@ -83,3 +86,9 @@ c <- pacf(diff_series)
 
 ```
  
+<p style='text-align: justify;'>We can see from the graphs above that the series istelf and ACF look smilar to a plot for the white noise process. The ACF drops to zero much faster comparing to the one for non-stationary series. The plots also show that only two autocorrelations lie outside 95% confidence limits. </p>
+
+```{r warning=FALSE}
+adf.test(diff_series)
+```
+
