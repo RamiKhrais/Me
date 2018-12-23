@@ -22,6 +22,7 @@ library(readxl)
 library(urca)
 library(tseries)
 library(astsa)
+library(forecast)
 ```
  
 
@@ -88,7 +89,60 @@ c <- pacf(diff_series)
  
 <p style='text-align: justify;'>We can see from the graphs above that the series istelf and ACF look smilar to a plot for the white noise process. The ACF drops to zero much faster comparing to the one for non-stationary series. The plots also show that only two autocorrelations lie outside 95% confidence limits. </p>
 
-```{r warning=FALSE}
+```{r warning=FALSE, message=FALSE}
 adf.test(diff_series)
+```
+
+<p style='text-align: justify;'>And when we apply Augmented Dickey-Fuller Test on the differenced series, we got p-value of 0.01, which suggests that the series is stationary. </p>
+
+
+**2- Modelling:**
+
+<p style='text-align: justify;'>The plots for ACF and PACF suggests that the sutiable model for fitting the data could be ARIMA(1,1,0), however, for the purpose of this project, I'm going to simulate several models with different orders of p and q. I will also leave the task offitting one of the models for R by using **auto.arima()** functiion. I will then compare AICs for the model and pick up two or three of them for forecasting. </p>
+
+<p style='text-align: justify;'>Before start fitting the models, I will split my data into training set and test set where the latter includes only the observations of the last 12 months. Splitting the data into training and test sest is one of the widely used practices when it comes to constructing predictive models. Using this technique will help us evaluating the accuracy of forecasting power by measuring how well the model is likely to forecast on new data that has not been part of fitting the model. </p>
+
+
+```{r}
+training <- subset(brent_ts, end = 367)
+test <- subset(brent_ts, end = 368)
+```
+
+
+
+**- Model1: ARIMA(1, 1, 1)**
+
+```{r}
+Model1 <- Arima(training, order = c(1,1,1), include.drift = TRUE)
+summary(Model1)
+```
+
+**- Model2: ARIMA(1,1,0)**
+
+```{r}
+Model2 <- Arima(training, order = c(1,1,0), include.drift = TRUE)
+summary(Model2)
+```
+
+
+**-Model3: ARIMA(2,1,2)**
+
+```{r}
+Model3 <- Arima(training, order = c(2,1,2), include.drift = TRUE)
+summary(Model3)
+```
+
+**Model4: ARIMA(2,1,0)**
+
+```{r}
+Model4 <- Arima(training, order = c(2,1,0), include.drift = TRUE)
+summary(Model4)
+```
+
+**Model5: Auto Arima**
+
+```{r}
+Model5 <- auto.arima(training)
+summary(Model5)
 ```
 

@@ -21,7 +21,13 @@ Crude oil is almost the most important commodities in the world. It is widely co
 library(readxl)
 library(urca)
 library(tseries)
-library(astsa)</code></pre>
+library(astsa)
+library(forecast)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;forecast&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:astsa&#39;:
+## 
+##     gas</code></pre>
 </div>
 </div>
 <div id="methodology" class="section level2">
@@ -93,4 +99,111 @@ We can see from the graphs above that the series istelf and ACF look smilar to a
 ## data:  diff_series
 ## Dickey-Fuller = -7.7406, Lag order = 7, p-value = 0.01
 ## alternative hypothesis: stationary</code></pre>
+<p style="text-align: justify;">
+And when we apply Augmented Dickey-Fuller Test on the differenced series, we got p-value of 0.01, which suggests that the series is stationary.
+</p>
+<p><strong>2- Modelling:</strong></p>
+<p style="text-align: justify;">
+The plots for ACF and PACF suggests that the sutiable model for fitting the data could be ARIMA(1,1,0), however, for the purpose of this project, I’m going to simulate several models with different orders of p and q. I will also leave the task offitting one of the models for R by using <strong>auto.arima()</strong> functiion. I will then compare AICs for the model and pick up two or three of them for forecasting.
+</p>
+<p style="text-align: justify;">
+Before start fitting the models, I will split my data into training set and test set where the latter includes only the observations of the last 12 months. Splitting the data into training and test sest is one of the widely used practices when it comes to constructing predictive models. Using this technique will help us evaluating the accuracy of forecasting power by measuring how well the model is likely to forecast on new data that has not been part of fitting the model.
+</p>
+<pre class="r"><code>training &lt;- subset(brent_ts, end = 367)
+test &lt;- subset(brent_ts, end = 368)</code></pre>
+<p><strong>- Model1: ARIMA(1, 1, 1)</strong></p>
+<pre class="r"><code>Model1 &lt;- Arima(training, order = c(1,1,1), include.drift = TRUE)
+summary(Model1)</code></pre>
+<pre><code>## Series: training 
+## ARIMA(1,1,1) with drift 
+## 
+## Coefficients:
+##          ar1      ma1   drift
+##       0.3948  -0.0215  0.1288
+## s.e.  0.1117   0.1187  0.3489
+## 
+## sigma^2 estimated as 17.24:  log likelihood=-1038.95
+## AIC=2085.91   AICc=2086.02   BIC=2101.52
+## 
+## Training set error measures:
+##                        ME     RMSE      MAE        MPE     MAPE      MASE
+## Training set 0.0002437218 4.129523 2.838451 -0.2315886 6.742997 0.2409493
+##                      ACF1
+## Training set 0.0004837868</code></pre>
+<p><strong>- Model2: ARIMA(1,1,0)</strong></p>
+<pre class="r"><code>Model2 &lt;- Arima(training, order = c(1,1,0), include.drift = TRUE)
+summary(Model2)</code></pre>
+<pre><code>## Series: training 
+## ARIMA(1,1,0) with drift 
+## 
+## Coefficients:
+##          ar1   drift
+##       0.3763  0.1284
+## s.e.  0.0484  0.3460
+## 
+## sigma^2 estimated as 17.19:  log likelihood=-1038.97
+## AIC=2083.94   AICc=2084.01   BIC=2095.65
+## 
+## Training set error measures:
+##                       ME   RMSE      MAE        MPE     MAPE      MASE
+## Training set 0.000365657 4.1297 2.836782 -0.2352411 6.738997 0.2408077
+##                      ACF1
+## Training set -0.002996357</code></pre>
+<p><strong>-Model3: ARIMA(2,1,2)</strong></p>
+<pre class="r"><code>Model3 &lt;- Arima(training, order = c(2,1,2), include.drift = TRUE)
+summary(Model3)</code></pre>
+<pre><code>## Series: training 
+## ARIMA(2,1,2) with drift 
+## 
+## Coefficients:
+##          ar1      ar2      ma1     ma2   drift
+##       1.4048  -0.5487  -1.0483  0.2030  0.1174
+## s.e.  0.1203   0.1115   0.1377  0.1387  0.2317
+## 
+## sigma^2 estimated as 17.02:  log likelihood=-1035.62
+## AIC=2083.24   AICc=2083.47   BIC=2106.65
+## 
+## Training set error measures:
+##                        ME     RMSE      MAE        MPE     MAPE      MASE
+## Training set -0.001586251 4.091538 2.830133 -0.3881241 6.705963 0.2402433
+##                     ACF1
+## Training set 0.001115057</code></pre>
+<p><strong>Model4: ARIMA(2,1,0)</strong></p>
+<pre class="r"><code>Model4 &lt;- Arima(training, order = c(2,1,0), include.drift = TRUE)
+summary(Model4)</code></pre>
+<pre><code>## Series: training 
+## ARIMA(2,1,0) with drift 
+## 
+## Coefficients:
+##          ar1     ar2   drift
+##       0.3723  0.0107  0.1295
+## s.e.  0.0523  0.0522  0.3497
+## 
+## sigma^2 estimated as 17.24:  log likelihood=-1038.95
+## AIC=2085.9   AICc=2086.01   BIC=2101.51
+## 
+## Training set error measures:
+##                         ME     RMSE      MAE        MPE    MAPE      MASE
+## Training set -0.0001757545 4.129462 2.838979 -0.2319836 6.74433 0.2409942
+##                     ACF1
+## Training set 0.001734294</code></pre>
+<p><strong>Model5: Auto Arima</strong></p>
+<pre class="r"><code>Model5 &lt;- auto.arima(training)
+summary(Model5)</code></pre>
+<pre><code>## Series: training 
+## ARIMA(1,1,0)(0,0,2)[12] 
+## 
+## Coefficients:
+##          ar1    sma1     sma2
+##       0.3942  0.0778  -0.1522
+## s.e.  0.0483  0.0522   0.0514
+## 
+## sigma^2 estimated as 16.7:  log likelihood=-1033.5
+## AIC=2075.01   AICc=2075.12   BIC=2090.62
+## 
+## Training set error measures:
+##                      ME     RMSE      MAE        MPE     MAPE      MASE
+## Training set 0.08280644 4.064694 2.796978 0.07071734 6.686554 0.2374287
+##                      ACF1
+## Training set -0.006713012</code></pre>
 </div>
