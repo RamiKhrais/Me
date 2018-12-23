@@ -150,7 +150,7 @@ summary(Model5)
 <p style='text-align: justify;'>**Note:** When we apply **auto.arima()** function on data, it chooses the best model to be ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component. </p>
 
 | Model | ARIMA(1,1,1) | ARIMA(1,1,0) | ARIMA(2,1,2) | ARIMA(2,1,0) | ARIMA(1,1,0)(0,0,2) |
-|-------|--------------|--------------|--------------|--------------|---------------------|
+|:-----:|:------------:|:------------:|:------------:|:------------:|:-------------------:|
 |  AIC  |    2086.02   |    2084.01   |    2083.47   |    2086.01   |       2075.12       |
 
 <p style='text-align: justify;'>We can see in table above that the model which has been chosen by auto.arima() has the lowest AIC. Moreover, models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).</p>
@@ -179,4 +179,18 @@ checkresiduals(Model4)
 ```{r}
 checkresiduals(Model5)
 ```
+
+
+<p style='text-align: justify;'>The plots indicate that except for the seasonal model ARIMA (1,1,0)(0,0,2), the models residuals include autocorrelations at more than two lags (look in particular at spikes in lags 6, 7, 24 and 33). The plots also suggest that the residuals are normally distributed though with some skewness to the left. Though the residual analysis confirm the previous conclusion that the seasonal model is the best-fit model, we are going to pick ARIMA (1,1,0) and ARIMA (2,1,2) along with it for forecasting process as well. </p>
+
+
+**4- Forecasting:**
+
+
+
+
+
+
+
+
 

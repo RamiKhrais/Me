@@ -284,22 +284,22 @@ summary(Model5)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th>Model</th>
-<th>ARIMA(1,1,1)</th>
-<th>ARIMA(1,1,0)</th>
-<th>ARIMA(2,1,2)</th>
-<th>ARIMA(2,1,0)</th>
-<th>ARIMA(1,1,0)(0,0,2)</th>
+<th align="center">Model</th>
+<th align="center">ARIMA(1,1,1)</th>
+<th align="center">ARIMA(1,1,0)</th>
+<th align="center">ARIMA(2,1,2)</th>
+<th align="center">ARIMA(2,1,0)</th>
+<th align="center">ARIMA(1,1,0)(0,0,2)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>AIC</td>
-<td>2086.02</td>
-<td>2084.01</td>
-<td>2083.47</td>
-<td>2086.01</td>
-<td>2075.12</td>
+<td align="center">AIC</td>
+<td align="center">2086.02</td>
+<td align="center">2084.01</td>
+<td align="center">2083.47</td>
+<td align="center">2086.01</td>
+<td align="center">2075.12</td>
 </tr>
 </tbody>
 </table>
@@ -355,6 +355,10 @@ In addition to the comparison of AICs for our models, we need to make sure that 
 ## Q* = 30.429, df = 21, p-value = 0.08369
 ## 
 ## Model df: 3.   Total lags used: 24</code></pre>
+<p style="text-align: justify;">
+The plots indicate that except for the seasonal model ARIMA (1,1,0)(0,0,2), the models residuals include autocorrelations at more than two lags (look in particular at spikes in lags 6, 7, 24 and 33). The plots also suggest that the residuals are normally distributed though with some skewness to the left. Though the residual analysis confirm the previous conclusion that the seasonal model is the best-fit model, we are going to pick ARIMA (1,1,0) and ARIMA (2,1,2) along with it for forecasting process as well.
+</p>
+<p><strong>4- Forecasting:</strong></p>
 </div>
 
 
@@ -365,7 +369,7 @@ In addition to the comparison of AICs for our models, we need to make sure that 
     <ul>
         
         <li>
-            <a href="/post/forecasting-of-brent-crude-oil-price-arima-modelling/"><i class="fa fa-chevron-circle-left"></i> Forecasting of Brent Crude Oil Price: ARIMA Modelling </a>
+            <a href="/post/forecasting-of-brent-crude-oil-price-arima-modelling/"><i class="fa fa-chevron-circle-left"></i> Simple Introduction to Time Series Analysis</a>
         </li>
         
         
