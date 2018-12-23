@@ -78,10 +78,9 @@ Though the series looks non-stationary, it might be a good idea to conduct Augme
 The p-value is larger than 0.05 and thus we fail to reject the null hypothesis which states that the time series includes a unit root. This indicates that the time series should be differenced in order to transform it into a stationary process.
 </p>
 <pre class="r"><code>diff_series &lt;- diff(brent_ts)
-acf(diff_series)</code></pre>
+layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE))
+a &lt;- ts.plot(diff_series)
+b &lt;- acf(diff_series)
+c &lt;- pacf(diff_series)</code></pre>
 <p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>pacf(diff_series)</code></pre>
-<p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
-<pre class="r"><code>ts.plot(diff_series)</code></pre>
-<p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
 </div>
