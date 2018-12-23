@@ -58,17 +58,17 @@ Let us then plot our series in order to capture its main charachteristics.
 <pre class="r"><code>ts.plot(brent_ts)</code></pre>
 <p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p style="text-align: justify;">
-As we can see, our time series is far from being stationary. It has a positive trend in general, however, it includes vloatile periods as well. The price of crude oil has been relatively stable during 1980s and 1990s before increasing drastically starting from 2000 onward. The price has then experienced a remarkable slumps in 2009 as a result of the financal crisis. It then took an upward trend before sliding again in 2015 as a result of OPEC policy to restore its market share from shale oil producers.
+As we can see, our time series is far from being stationary. It has a positive trend in general, however, it includes vloatile periods as well. The price of crude oil has been relatively stable during 1980s and 1990s before increasing drastically starting from 2000 onward. The price has then experienced a remarkable slump in 2009 as a result of the financal crisis. It then took an upward trend before sliding again in 2015 as a result of OPEC policy to restore its market share from shale oil producers.
 </p>
 <p style="text-align: justify;">
-Let us check the autocorrelation plots for the series.
+Let us check the autocorrelation plot for the series.
 </p>
 <pre class="r"><code>par(mfrow = c(2,1))
 acf(brent_ts)
 pacf(brent_ts)</code></pre>
 <p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p style="text-align: justify;">
-The series is apparently non-stationar and this is confirmed by the plots of ACf -as if oil price was stationary, the ACF would decay to zero much faster. The ACF plot above suggests a strong persistence across all lags, that is, a small shock at one lag period will influence the the future predictions of the time series for a long time.
+The series is apparently non-stationarY and this is confirmed by the plots of ACf -as if oil price was stationary, the ACF would decay to zero much faster. The ACF plot above suggests a strong persistence across all lags, that is, a small shock at one lag period will influence the the future predictions of the time series for a long time.
 </p>
 <p style="text-align: justify;">
 Though the series looks non-stationary, it might be a good idea to conduct Augmented Dickey-Fuller Test in order to prove our “visual” conclusion.
@@ -85,12 +85,12 @@ The p-value is larger than 0.05 and thus we fail to reject the null hypothesis w
 </p>
 <pre class="r"><code>diff_series &lt;- diff(brent_ts)</code></pre>
 <pre class="r"><code>layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE))
-a &lt;- ts.plot(diff_series)
 b &lt;- acf(diff_series)
-c &lt;- pacf(diff_series)</code></pre>
+c &lt;- pacf(diff_series)
+a &lt;- ts.plot(diff_series)</code></pre>
 <p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p style="text-align: justify;">
-We can see from the graphs above that the series istelf and ACF look smilar to a plot for the white noise process. The ACF drops to zero much faster comparing to the one for non-stationary series. The plots also show that only two autocorrelations lie outside 95% confidence limits.
+We can see from the plot above that the series istelf and ACF look similar to a plot for the white noise process. The ACF drops to zero much faster comparing to the one for non-stationary series. The plot also shows that only two autocorrelations lie outside 95% confidence limits.
 </p>
 <pre class="r"><code>adf.test(diff_series)</code></pre>
 <pre><code>## 
@@ -104,10 +104,10 @@ And when we apply Augmented Dickey-Fuller Test on the differenced series, we got
 </p>
 <p><strong>2- Modelling:</strong></p>
 <p style="text-align: justify;">
-The plots for ACF and PACF suggests that the sutiable model for fitting the data could be ARIMA(1,1,0), however, for the purpose of this project, I’m going to simulate several models with different orders of p and q. I will also leave the task offitting one of the models for R by using <strong>auto.arima()</strong> function. I will then compare AICs for the models and pick up two or three of them for forecasting.
+The plots for ACF and PACF suggests that the sutiable model for fitting the data could be ARIMA(1,1,0), however, for the purpose of this project, I’m going to simulate several models with different orders of p and q. I will also leave the task of fitting one of the models for R by using <strong>auto.arima()</strong> function. I will then compare AICs for the models and pick up two or three of them for forecasting.
 </p>
 <p style="text-align: justify;">
-Before start fitting the models, I will split my data into training set and test set where the latter includes only the observations of the last 12 months. Splitting the data into training and test sest is one of the widely used practices when it comes to constructing predictive models. Using this technique will help us evaluating the accuracy of forecasting power by measuring how well the model is likely to forecast on new data that has not been part of fitting the model.
+Before start fitting the models, I will split my data into training set and test set where the latter includes only the observations for the last 12 months. Splitting the data into training and test sets is one of the widely used practices when it comes to constructing predictive models. Using this technique will help us evaluating the accuracy of forecasting power by measuring how well the model is likely to forecast on new data that has not been part of fitting the model.
 </p>
 <pre class="r"><code>training &lt;- subset(brent_ts, end = 367)
 test &lt;- subset(brent_ts, end = 368)</code></pre>
@@ -207,17 +207,9 @@ summary(Model5)</code></pre>
 ##                      ACF1
 ## Training set -0.006713012</code></pre>
 <p style="text-align: justify;">
-<strong>Note:</strong> When we apply <strong>auto.arima()</strong> function on data, we received ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component.
+<strong>Note:</strong> When we apply <strong>auto.arima()</strong> function on data, it chooses the best model to be ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component.
 </p>
 <table>
-<colgroup>
-<col width="8%" />
-<col width="15%" />
-<col width="15%" />
-<col width="15%" />
-<col width="15%" />
-<col width="27%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>Model</th>
@@ -225,7 +217,7 @@ summary(Model5)</code></pre>
 <th>ARIMA(1,1,0)</th>
 <th>ARIMA(2,1,2)</th>
 <th>ARIMA(2,1,0)</th>
-<th>ARIMA(1,1,0)(0,0,2)[12]</th>
+<th>ARIMA(1,1,0)(0,0,2)</th>
 </tr>
 </thead>
 <tbody>
@@ -240,11 +232,11 @@ summary(Model5)</code></pre>
 </tbody>
 </table>
 <p style="text-align: justify;">
-We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).
+We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Moreover, models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).
 </p>
 <p><strong>3- Residual Analysis:</strong></p>
 <p style="text-align: justify;">
-In addition to the comparison of AIC for our models, we need to make sure that the residuals of each one meet the assumptions of randomness, normal distribution and uncorrelation.
+In addition to the comparison of AICs for our models, we need to make sure that the residuals of each one meet the assumptions of randomness, normal distribution and uncorrelation.
 </p>
 <pre class="r"><code>checkresiduals(Model1)</code></pre>
 <p><img src="/post/2018-12-22-forecasting-of-brent-crude-oil-price-arima-modelling_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>

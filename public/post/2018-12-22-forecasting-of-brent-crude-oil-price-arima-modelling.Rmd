@@ -52,10 +52,10 @@ brent_ts <- ts(brent[,2], start = c(1987,5), frequency = 12)
 ts.plot(brent_ts)
 ```
 
-<p style='text-align: justify;'>As we can see, our time series is far from being stationary. It has a positive trend in general, however, it includes vloatile periods as well. The price of crude oil has been relatively stable during 1980s and 1990s before increasing drastically starting from 2000 onward. The price has then experienced a remarkable slumps in 2009 as a result of the financal crisis. It then took an upward trend before sliding again in 2015 as a result of OPEC policy to restore its market share from shale oil producers.</p>
+<p style='text-align: justify;'>As we can see, our time series is far from being stationary. It has a positive trend in general, however, it includes vloatile periods as well. The price of crude oil has been relatively stable during 1980s and 1990s before increasing drastically starting from 2000 onward. The price has then experienced a remarkable slump in 2009 as a result of the financal crisis. It then took an upward trend before sliding again in 2015 as a result of OPEC policy to restore its market share from shale oil producers.</p>
 
 
-<p style='text-align: justify;'>Let us check the autocorrelation plots for the series. </p>
+<p style='text-align: justify;'>Let us check the autocorrelation plot for the series. </p>
 
 ```{r}
 par(mfrow = c(2,1))
@@ -63,7 +63,7 @@ acf(brent_ts)
 pacf(brent_ts)
 ```
 
-<p style='text-align: justify;'>The series is apparently non-stationar and this is confirmed by the plots of ACf -as if oil price was stationary, the ACF would decay to zero much faster. The ACF plot above suggests a strong persistence across all lags, that is, a small shock at one lag period will influence the the future predictions of the time series for a long time. </p>
+<p style='text-align: justify;'>The series is apparently non-stationarY and this is confirmed by the plots of ACf -as if oil price was stationary, the ACF would decay to zero much faster. The ACF plot above suggests a strong persistence across all lags, that is, a small shock at one lag period will influence the the future predictions of the time series for a long time. </p>
 
 
 <p style='text-align: justify;'>Though the series looks non-stationary, it might be a good idea to conduct Augmented Dickey-Fuller Test in order to prove our "visual" conclusion. </p>
@@ -81,13 +81,12 @@ diff_series <- diff(brent_ts)
 
 ```{r}
 layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE))
-a <- ts.plot(diff_series)
 b <- acf(diff_series)
 c <- pacf(diff_series)
-
+a <- ts.plot(diff_series)
 ```
  
-<p style='text-align: justify;'>We can see from the graphs above that the series istelf and ACF look smilar to a plot for the white noise process. The ACF drops to zero much faster comparing to the one for non-stationary series. The plots also show that only two autocorrelations lie outside 95% confidence limits. </p>
+<p style='text-align: justify;'>We can see from the plot above that the series istelf and ACF look similar to a plot for the white noise process. The ACF drops to zero much faster comparing to the one for non-stationary series. The plot also shows that only two autocorrelations lie outside 95% confidence limits. </p>
 
 ```{r warning=FALSE, message=FALSE}
 adf.test(diff_series)
@@ -98,9 +97,9 @@ adf.test(diff_series)
 
 **2- Modelling:**
 
-<p style='text-align: justify;'>The plots for ACF and PACF suggests that the sutiable model for fitting the data could be ARIMA(1,1,0), however, for the purpose of this project, I'm going to simulate several models with different orders of p and q. I will also leave the task offitting one of the models for R by using **auto.arima()** function. I will then compare AICs for the models and pick up two or three of them for forecasting. </p>
+<p style='text-align: justify;'>The plots for ACF and PACF suggests that the sutiable model for fitting the data could be ARIMA(1,1,0), however, for the purpose of this project, I'm going to simulate several models with different orders of p and q. I will also leave the task of fitting one of the models for R by using **auto.arima()** function. I will then compare AICs for the models and pick up two or three of them for forecasting. </p>
 
-<p style='text-align: justify;'>Before start fitting the models, I will split my data into training set and test set where the latter includes only the observations of the last 12 months. Splitting the data into training and test sest is one of the widely used practices when it comes to constructing predictive models. Using this technique will help us evaluating the accuracy of forecasting power by measuring how well the model is likely to forecast on new data that has not been part of fitting the model. </p>
+<p style='text-align: justify;'>Before start fitting the models, I will split my data into training set and test set where the latter includes only the observations for the last 12 months. Splitting the data into training and test sets is one of the widely used practices when it comes to constructing predictive models. Using this technique will help us evaluating the accuracy of forecasting power by measuring how well the model is likely to forecast on new data that has not been part of fitting the model. </p>
 
 
 ```{r}
@@ -147,20 +146,19 @@ summary(Model5)
 ```
 
 
-<p style='text-align: justify;'>**Note:** When we apply **auto.arima()** function on data, we received ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component. </p>
+<p style='text-align: justify;'>**Note:** When we apply **auto.arima()** function on data, it chooses the best model to be ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component. </p>
 
-| Model | ARIMA(1,1,1) | ARIMA(1,1,0) | ARIMA(2,1,2) | ARIMA(2,1,0) | ARIMA(1,1,0)(0,0,2)[12] |
-|-------|--------------|--------------|--------------|--------------|-------------------------|
-| AIC   |    2086.02   |    2084.01   |    2083.47   |    2086.01   |         2075.12         |
+| Model | ARIMA(1,1,1) | ARIMA(1,1,0) | ARIMA(2,1,2) | ARIMA(2,1,0) | ARIMA(1,1,0)(0,0,2) |
+|-------|--------------|--------------|--------------|--------------|---------------------|
+| AIC   |      2086.02 |      2084.01 |      2083.47 |      2086.01 |             2075.12 |
 
 
-
-<p style='text-align: justify;'>We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).</p>
+<p style='text-align: justify;'>We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Moreover, models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).</p>
 
 
 **3- Residual Analysis:**
 
-<p style='text-align: justify;'>In addition to the comparison of AIC for our models, we need to make sure that the residuals of each one meet the assumptions of randomness, normal distribution and uncorrelation. </p>
+<p style='text-align: justify;'>In addition to the comparison of AICs for our models, we need to make sure that the residuals of each one meet the assumptions of randomness, normal distribution and uncorrelation. </p>
 
 ```{r}
 checkresiduals(Model1)
