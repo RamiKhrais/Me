@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Rami Kh</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright &amp;copy; 2017 - Author Name</copyright>
-    <lastBuildDate>Sat, 22 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Forecasting Brent Crude Oil Price: Box-Jenkins Method</title>
+      <link>/post/forecasting-brent-crude-oil-price-box-jenkins-method/</link>
+      <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/post/forecasting-brent-crude-oil-price-box-jenkins-method/</guid>
+      <description>Introduction:Crude oil is almost the most important commodities in the world. It is widely considered to be the lifeblood of our modern life and the crucial driver behind the radical transformations in the global economy over the last decades.</description>
+    </item>
     
     <item>
       <title>Forecasting of Brent Crude Oil Price: ARIMA Modelling </title>

@@ -202,3 +202,4 @@ checkresiduals(Model4)
 checkresiduals(Model5)
 ```
 
+ 

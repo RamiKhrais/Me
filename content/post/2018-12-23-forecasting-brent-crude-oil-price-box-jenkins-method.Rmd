@@ -1,0 +1,182 @@
+---
+title: 'Forecasting Brent Crude Oil Price: Box-Jenkins Method'
+author: Rami Kh
+date: '2018-12-23'
+slug: forecasting-brent-crude-oil-price-box-jenkins-method
+categories:
+  - Time Series Analysis
+tags: []
+---
+
+
+##Introduction:
+
+<p style='text-align: justify;'>Crude oil is almost the most important commodities in the world. It is widely considered to be the lifeblood of our modern life and the crucial driver behind the radical transformations in the global economy over the last decades. The crude oil and its products are almost used in every single industry ranging from aviation to petrochemical. The world currently produces approximately 93 million barrels per day. The market of crude is bigger than all raw metal markets combined at approximate value of 1.7 trillion dollar a year. Given this exceptional importance, the price of crude oil is one of the key determinant of the global economic activity, the international trade, the stock prices, and the macroeconomic policies adopted by the countries worldwide. It has therefore been a subject of a great deal of research. An enormous number of governmental and international agencies, consultancies, hedge funds and think-tanks are always busy designing and evaluating the best approaches to forecast the crude oil prices and to capture its volatile trends. In this project, I will build an econometric model in order to study the dynamics of monthly Brent oil prices for the period from 1987 to 2018 using the [Box-Jenkins Method](https://ramikh.netlify.com/post/forecasting-of-brent-crude-oil-price-arima-modelling/). I will use several ARIMA models in order to assess their forecasting performances using the relevant statistical tests and techniques. The data for this project is obtained from the Energy Information Administration (EIA) for the spot price of Brent crude in Europe in American Dollar for the mentioned period. </p>
+
+ 
+###Packages used in Modelling and Forecasting
+
+```{r}
+library(ggplot2)
+library(readxl)
+library(urca)
+library(tseries)
+library(astsa)
+library(forecast)
+library(knitr)
+```
+ 
+
+##Methodology
+
+
+**1- Identification:**
+
+<p style='text-align: justify;'>Following the Box-Jenkins method, the first step in building our econometric model should be started with the assessment of the stationarity of the time series under consideration. If the time series proves to be non-stationary, it should be differenced until it becomes stationary. </p>
+
+<p style='text-align: justify;'>Let us first import our data. </p>
+
+```{r}
+brent <- read.csv("C:/Users/Rami/Desktop/brent.csv")
+head(brent)
+```
+
+<p style='text-align: justify;'>Since we are going to conduct a time series analysis, we need to transform the dataframe into a time series object first. </p>
+
+```{r}
+brent_ts <- ts(brent[,2], start = c(1987,5), frequency = 12)
+```
+
+<p style='text-align: justify;'>Let us then plot our series in order to capture its main charachteristics. </p>
+
+```{r}
+ts.plot(brent_ts)
+```
+
+<p style='text-align: justify;'>As we can see, our time series is far from being stationary. It has a positive trend in general, however, it includes volatile periods as well. The price of crude oil has been relatively stable during 1980s and 1990s before increasing drastically starting from 2000 onward. The price has then experienced a remarkable slump in 2009 as a result of the financial crisis. It then took an upward trend before sliding again in 2015 as a result of OPEC policy to restore its market share from shale oil producers.</p>
+
+
+<p style='text-align: justify;'>Let us check the autocorrelation plot for the series. </p>
+
+```{r}
+par(mfrow = c(2,1))
+acf(brent_ts)
+pacf(brent_ts)
+```
+
+<p style='text-align: justify;'>The series is apparently non-stationary and this is confirmed by the plots of ACf -as if oil price was stationary, the ACF would decay to zero much faster. The ACF plot above suggests a strong persistence across all lags, that is, a small shock at one lag period will influence the the future predictions of the time series for a long time. </p>
+
+
+<p style='text-align: justify;'>Though the series looks non-stationary, it might be a good idea to conduct Augmented Dickey-Fuller Test in order to prove our "visual" conclusion. </p>
+
+```{r}
+adf.test(brent_ts)
+```
+
+<p style='text-align: justify;'>The p-value is larger than 0.05 and thus we fail to reject the null hypothesis which states that the time series includes a unit root. This indicates that the time series should be differenced in order to transform it into a stationary process. </p>
+
+```{r}
+diff_series <- diff(brent_ts)
+```
+
+
+```{r}
+layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE))
+b <- acf(diff_series)
+c <- pacf(diff_series)
+a <- ts.plot(diff_series)
+```
+ 
+<p style='text-align: justify;'>We can see from the plot above that the series istelf and ACF look similar to a plot for the white noise process. The ACF drops to zero much faster comparing to the one for non-stationary series. The plot also shows that only two autocorrelations lie outside 95% confidence limits. </p>
+
+```{r warning=FALSE, message=FALSE}
+adf.test(diff_series)
+```
+
+<p style='text-align: justify;'>And when we apply Augmented Dickey-Fuller Test on the differenced series, we got p-value of 0.01, which suggests that the series is stationary. </p>
+
+
+**2- Modelling:**
+
+<p style='text-align: justify;'>The plots for ACF and PACF suggests that the suitable model for fitting the data could be ARIMA(1,1,0), however, for the purpose of this project, I'm going to simulate several models with different orders of p and q. I will also leave the task of fitting one of the models for R by using **auto.arima()** function. I will then compare AICs for the models and pick up two or three of them for forecasting. </p>
+
+<p style='text-align: justify;'>Before start fitting the models, I will split my data into training set and test set where the latter includes only the observations for the last 12 months. Splitting the data into training and test sets is one of the widely used practices when it comes to constructing predictive models. Using this technique will help us evaluating the accuracy of forecasting power by measuring how well the model is likely to forecast on new data that has not been part of fitting the model. </p>
+
+
+```{r}
+training <- subset(brent_ts, end = 367)
+test <- subset(brent_ts, end = 368)
+```
+
+
+
+**- Model1: ARIMA (1, 1, 1)**
+
+```{r}
+Model1 <- Arima(training, order = c(1,1,1), include.drift = TRUE)
+summary(Model1)
+```
+
+**- Model2: ARIMA (1,1,0)**
+
+```{r}
+Model2 <- Arima(training, order = c(1,1,0), include.drift = TRUE)
+summary(Model2)
+```
+
+
+**- Model3: ARIMA (2,1,2)**
+
+```{r}
+Model3 <- Arima(training, order = c(2,1,2), include.drift = TRUE)
+summary(Model3)
+```
+
+**- Model4: ARIMA (2,1,0)**
+
+```{r}
+Model4 <- Arima(training, order = c(2,1,0), include.drift = TRUE)
+summary(Model4)
+```
+
+**- Model5: Auto Arima**
+
+```{r}
+Model5 <- auto.arima(training)
+summary(Model5)
+```
+
+
+<p style='text-align: justify;'>**Note:** When we apply **auto.arima()** function on data, it chooses the best model to be ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component. </p>
+
+| Model | ARIMA(1,1,1) | ARIMA(1,1,0) | ARIMA(2,1,2) | ARIMA(2,1,0) | ARIMA(1,1,0)(0,0,2) |
+|-------|--------------|--------------|--------------|--------------|---------------------|
+|  AIC  |    2086.02   |    2084.01   |    2083.47   |    2086.01   |       2075.12       |
+
+<p style='text-align: justify;'>We can see in table above that the model which has been chosen by auto.arima() has the lowest AIC. Moreover, models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).</p>
+
+
+**3- Residual Analysis:**
+
+<p style='text-align: justify;'>In addition to the comparison of AICs for our models, we need to make sure that the residuals of each one meet the assumptions of randomness, normal distribution and uncorrelation. </p>
+
+```{r}
+checkresiduals(Model1)
+```
+
+```{r}
+checkresiduals(Model2)
+```
+
+```{r}
+checkresiduals(Model3)
+```
+
+```{r}
+checkresiduals(Model4)
+```
+
+```{r}
+checkresiduals(Model5)
+```
+
