@@ -104,14 +104,14 @@ And when we apply Augmented Dickey-Fuller Test on the differenced series, we got
 </p>
 <p><strong>2- Modelling:</strong></p>
 <p style="text-align: justify;">
-The plots for ACF and PACF suggests that the sutiable model for fitting the data could be ARIMA(1,1,0), however, for the purpose of this project, I’m going to simulate several models with different orders of p and q. I will also leave the task offitting one of the models for R by using <strong>auto.arima()</strong> functiion. I will then compare AICs for the model and pick up two or three of them for forecasting.
+The plots for ACF and PACF suggests that the sutiable model for fitting the data could be ARIMA(1,1,0), however, for the purpose of this project, I’m going to simulate several models with different orders of p and q. I will also leave the task offitting one of the models for R by using <strong>auto.arima()</strong> function. I will then compare AICs for the models and pick up two or three of them for forecasting.
 </p>
 <p style="text-align: justify;">
 Before start fitting the models, I will split my data into training set and test set where the latter includes only the observations of the last 12 months. Splitting the data into training and test sest is one of the widely used practices when it comes to constructing predictive models. Using this technique will help us evaluating the accuracy of forecasting power by measuring how well the model is likely to forecast on new data that has not been part of fitting the model.
 </p>
 <pre class="r"><code>training &lt;- subset(brent_ts, end = 367)
 test &lt;- subset(brent_ts, end = 368)</code></pre>
-<p><strong>- Model1: ARIMA(1, 1, 1)</strong></p>
+<p><strong>- Model1: ARIMA (1, 1, 1)</strong></p>
 <pre class="r"><code>Model1 &lt;- Arima(training, order = c(1,1,1), include.drift = TRUE)
 summary(Model1)</code></pre>
 <pre><code>## Series: training 
@@ -130,7 +130,7 @@ summary(Model1)</code></pre>
 ## Training set 0.0002437218 4.129523 2.838451 -0.2315886 6.742997 0.2409493
 ##                      ACF1
 ## Training set 0.0004837868</code></pre>
-<p><strong>- Model2: ARIMA(1,1,0)</strong></p>
+<p><strong>- Model2: ARIMA (1,1,0)</strong></p>
 <pre class="r"><code>Model2 &lt;- Arima(training, order = c(1,1,0), include.drift = TRUE)
 summary(Model2)</code></pre>
 <pre><code>## Series: training 
@@ -149,7 +149,7 @@ summary(Model2)</code></pre>
 ## Training set 0.000365657 4.1297 2.836782 -0.2352411 6.738997 0.2408077
 ##                      ACF1
 ## Training set -0.002996357</code></pre>
-<p><strong>-Model3: ARIMA(2,1,2)</strong></p>
+<p><strong>- Model3: ARIMA (2,1,2)</strong></p>
 <pre class="r"><code>Model3 &lt;- Arima(training, order = c(2,1,2), include.drift = TRUE)
 summary(Model3)</code></pre>
 <pre><code>## Series: training 
@@ -168,7 +168,7 @@ summary(Model3)</code></pre>
 ## Training set -0.001586251 4.091538 2.830133 -0.3881241 6.705963 0.2402433
 ##                     ACF1
 ## Training set 0.001115057</code></pre>
-<p><strong>Model4: ARIMA(2,1,0)</strong></p>
+<p><strong>- Model4: ARIMA (2,1,0)</strong></p>
 <pre class="r"><code>Model4 &lt;- Arima(training, order = c(2,1,0), include.drift = TRUE)
 summary(Model4)</code></pre>
 <pre><code>## Series: training 
@@ -187,7 +187,7 @@ summary(Model4)</code></pre>
 ## Training set -0.0001757545 4.129462 2.838979 -0.2319836 6.74433 0.2409942
 ##                     ACF1
 ## Training set 0.001734294</code></pre>
-<p><strong>Model5: Auto Arima</strong></p>
+<p><strong>- Model5: Auto Arima</strong></p>
 <pre class="r"><code>Model5 &lt;- auto.arima(training)
 summary(Model5)</code></pre>
 <pre><code>## Series: training 
@@ -206,4 +206,37 @@ summary(Model5)</code></pre>
 ## Training set 0.08280644 4.064694 2.796978 0.07071734 6.686554 0.2374287
 ##                      ACF1
 ## Training set -0.006713012</code></pre>
+<p style="text-align: justify;">
+<strong>Note:</strong> When we apply <strong>auto.arima()</strong> function on data, we received ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price include seasonal component.
+</p>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>ARIMA(1,1,1)</th>
+<th>ARIMA(1,1,0)</th>
+<th>ARIMA(2,1,2)</th>
+<th>ARIMA(2,1,0)</th>
+<th>ARIMA(1,1,0)(0,0,2)[12]</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AIC</td>
+<td>2086.02</td>
+<td>2084.01</td>
+<td>2083.47</td>
+<td>2086.01</td>
+<td>2075.12</td>
+</tr>
+</tbody>
+</table>
 </div>
