@@ -209,27 +209,30 @@ summary(Model5)</code></pre>
 <p style="text-align: justify;">
 <strong>Note:</strong> When we apply <strong>auto.arima()</strong> function on data, it chooses the best model to be ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component.
 </p>
-<table>
-<thead>
-<tr class="header">
-<th>Model</th>
-<th>ARIMA(1,1,1)</th>
-<th>ARIMA(1,1,0)</th>
-<th>ARIMA(2,1,2)</th>
-<th>ARIMA(2,1,0)</th>
-<th>ARIMA(1,1,0)(0,0,2)</th>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<tr>
+<pre><code>&lt;th class=&quot;tg-0pky&quot;&gt;Model&lt;/th&gt;
+&lt;th class=&quot;tg-0pky&quot;&gt;ARIMA(1,1,1)&lt;/th&gt;
+&lt;th class=&quot;tg-0pky&quot;&gt;ARIMA(1,1,0)&lt;/th&gt;
+&lt;th class=&quot;tg-0pky&quot;&gt;ARIMA(2,1,2)&lt;/th&gt;
+&lt;th class=&quot;tg-0pky&quot;&gt;ARIMA(2,1,0)&lt;/th&gt;
+&lt;th class=&quot;tg-0pky&quot;&gt;ARIMA(1,1,0)(0,0,2)&lt;/th&gt;</code></pre>
 </tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>AIC</td>
-<td>2086.02</td>
-<td>2084.01</td>
-<td>2083.47</td>
-<td>2086.01</td>
-<td>2075.12</td>
+<tr>
+<pre><code>&lt;td class=&quot;tg-0pky&quot;&gt;AIC&lt;/td&gt;
+&lt;td class=&quot;tg-c3ow&quot;&gt;2086.02&lt;/td&gt;
+&lt;td class=&quot;tg-c3ow&quot;&gt;2084.01&lt;/td&gt;
+&lt;td class=&quot;tg-c3ow&quot;&gt;2083.47&lt;/td&gt;
+&lt;td class=&quot;tg-c3ow&quot;&gt;2086.01&lt;/td&gt;
+&lt;td class=&quot;tg-c3ow&quot;&gt;2075.12&lt;/td&gt;</code></pre>
 </tr>
-</tbody>
 </table>
 <p style="text-align: justify;">
 We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Moreover, models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).

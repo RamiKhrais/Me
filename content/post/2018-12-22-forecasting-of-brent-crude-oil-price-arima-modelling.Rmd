@@ -148,9 +148,31 @@ summary(Model5)
 
 <p style='text-align: justify;'>**Note:** When we apply **auto.arima()** function on data, it chooses the best model to be ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component. </p>
 
-| Model | ARIMA(1,1,1) | ARIMA(1,1,0) | ARIMA(2,1,2) | ARIMA(2,1,0) | ARIMA(1,1,0)(0,0,2) |
-|-------|--------------|--------------|--------------|--------------|---------------------|
-| AIC   |      2086.02 |      2084.01 |      2083.47 |      2086.01 |             2075.12 |
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-0pky">Model</th>
+    <th class="tg-0pky">ARIMA(1,1,1)</th>
+    <th class="tg-0pky">ARIMA(1,1,0)</th>
+    <th class="tg-0pky">ARIMA(2,1,2)</th>
+    <th class="tg-0pky">ARIMA(2,1,0)</th>
+    <th class="tg-0pky">ARIMA(1,1,0)(0,0,2)</th>
+  </tr>
+  <tr>
+    <td class="tg-0pky">AIC</td>
+    <td class="tg-c3ow">2086.02</td>
+    <td class="tg-c3ow">2084.01</td>
+    <td class="tg-c3ow">2083.47</td>
+    <td class="tg-c3ow">2086.01</td>
+    <td class="tg-c3ow">2075.12</td>
+  </tr>
+</table>
 
 
 <p style='text-align: justify;'>We can see in table above that the model which has been choosen by auto.arima() has the lowest AIC. Moreover, models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).</p>
