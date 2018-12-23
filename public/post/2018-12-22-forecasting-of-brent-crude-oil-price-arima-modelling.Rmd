@@ -39,7 +39,7 @@ brent <- read.csv("C:/Users/Rami/Desktop/brent.csv")
 head(brent)
 ```
 
-<p style='text-align: justify;'>Since we are going to conduct a time series analysis, we need to transform the dataframe into time series object. </p>
+<p style='text-align: justify;'>Since we are going to conduct a time series analysis, we need to transform the dataframe into a time series object first. </p>
 
 ```{r}
 brent_ts <- ts(brent[,2], start = c(1987,5), frequency = 12)
@@ -51,7 +51,35 @@ brent_ts <- ts(brent[,2], start = c(1987,5), frequency = 12)
 ts.plot(brent_ts)
 ```
 
-<p style='text-align: justify;'>As we can see, our time series is far from being stationary. It has a positive trend in general, however, it includes vloatile periods as well. The price of crude oil has been relatively stable during 1980s and 1990s before increasing drastically starting from 2000 onward. The price has then experienced a remarkable slumps in 2009 as a result of the financal crisis. It then took an upward trend before sliding agains in 2015 as a result of OPEC policy to restore its market share after shale oil glut. </p>
+<p style='text-align: justify;'>As we can see, our time series is far from being stationary. It has a positive trend in general, however, it includes vloatile periods as well. The price of crude oil has been relatively stable during 1980s and 1990s before increasing drastically starting from 2000 onward. The price has then experienced a remarkable slumps in 2009 as a result of the financal crisis. It then took an upward trend before sliding again in 2015 as a result of OPEC policy to restore its market share from shale oil producers.</p>
 
 
-As we can see, our time series is far from being stationary. It has a positive trend in general, however, 
+<p style='text-align: justify;'>Let us check the autocorrelation plots for the series. </p>
+
+```{r}
+par(mfrow = c(2,1))
+acf(brent_ts)
+pacf(brent_ts)
+```
+
+<p style='text-align: justify;'>The series is apparently non-stationar and this is confirmed by the plots of ACf -as if oil price was stationary, the ACF would decay to zero much faster. The ACF plot above suggests a strong persistence across all lags, that is, a small shock at one lag period will influence the the future predictions of the time series for a long time. </p>
+
+
+<p style='text-align: justify;'>Though the series looks non-stationary, it might be a good idea to conduct Augmented Dickey-Fuller Test in order to prove our "visual" conclusion. </p>
+
+```{r}
+adf.test(brent_ts)
+```
+
+<p style='text-align: justify;'>The p-value is larger than 0.05 and thus we fail to reject the null hypothesis which states that the time series includes a unit root. This indicates that the time series should be differenced in order to transform it into a stationary process. </p>
+
+
+```{r}
+diff_series <- diff(brent_ts)
+acf(diff_series)
+pacf(diff_series)
+ts.plot(diff_series)
+```
+
+
+
