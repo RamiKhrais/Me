@@ -73,7 +73,7 @@
 
         
 
-        <li>8 min read</li>
+        <li>9 min read</li>
     </ul>
 </aside>
     
@@ -84,7 +84,7 @@
 <div id="introduction" class="section level2">
 <h2>Introduction:</h2>
 <p style="text-align: justify;">
-Crude oil is almost the most important commodities in the world. It is widely considered to be the lifeblood of our modern life and the crucial driver behind the radical transformations in the global economy over the last decades. The crude oil and its products are almost used in every single industry ranging from aviation to petrochemical. The world currently produces approximately 93 million barrels per day. The market of crude is bigger than all raw metal markets combined at approximate value of 1.7 trillion dollar a year. Given this exceptional importance, the price of crude oil is one of the key determinant of the global economic activity, the international trade, the stock prices, and the macroeconomic policies adopted by the countries worldwide. It has therefore been a subject of a great deal of research. An enormous number of governmental and international agencies, consultancies, hedge funds and think-tanks are always busy designing and evaluating the best approaches to forecast the crude oil prices and to capture its volatile trends. In this project, I will build an econometric model in order to study the dynamics of monthly Brent oil prices for the period from 1987 to 2018 using the <a href="https://ramikh.netlify.com/post/forecasting-of-brent-crude-oil-price-arima-modelling/">Box-Jenkins Method</a>. I will use several ARIMA models in order to assess their forecasting performances using the relevant statistical tests and techniques. The data for this project is obtained from the Energy Information Administration (EIA) for the spot price of Brent crude in Europe in American Dollar for the mentioned period.
+Crude oil is almost the most important commodity in the world. It is widely considered to be the lifeblood of our modern life and the crucial driver behind the radical transformations in the global economy over the last decades. The crude oil and its products are almost used in every single industry ranging from aviation to petrochemical. The world currently produces approximately 93 million barrels per day. The market of crude is bigger than all raw metal markets combined at approximate value of 1.7 trillion dollar a year. Given this exceptional importance, the price of crude oil is one of the key determinant of the global economic activity, the international trade, the stock prices, and the macroeconomic policies adopted by the countries worldwide. It has therefore been a subject of a great deal of research. An enormous number of governmental and international agencies, consultancies, hedge funds and think-tanks are always busy designing and evaluating the best approaches to forecast the crude oil prices and to capture its volatile trends. In this project, I will build an econometric model in order to study the dynamics of monthly Brent oil prices for the period from 1987 to 2018 using the <a href="https://ramikh.netlify.com/post/forecasting-of-brent-crude-oil-price-arima-modelling/">Box-Jenkins Method</a>. I will use several ARIMA models in order to assess their forecasting performances using the relevant statistical tests and techniques. The data for this project is obtained from the Energy Information Administration (EIA) for the spot price of Brent crude in Europe in American Dollar for the mentioned period.
 </p>
 <div id="packages-used-in-modelling-and-forecasting" class="section level3">
 <h3>Packages used in Modelling and Forecasting</h3>
@@ -285,7 +285,7 @@ summary(Model5)</code></pre>
 <thead>
 <tr class="header">
 <th align="center">Model</th>
-<th align="center">ARIMA(1,1,1)</th>
+<th align="center">Arima(1,1,1)</th>
 <th align="center">ARIMA(1,1,0)</th>
 <th align="center">ARIMA(2,1,2)</th>
 <th align="center">ARIMA(2,1,0)</th>
@@ -356,9 +356,36 @@ In addition to the comparison of AICs for our models, we need to make sure that 
 ## 
 ## Model df: 3.   Total lags used: 24</code></pre>
 <p style="text-align: justify;">
-The plots indicate that except for the seasonal model ARIMA (1,1,0)(0,0,2), the models residuals include autocorrelations at more than two lags (look in particular at spikes in lags 6, 7, 24 and 33). The plots also suggest that the residuals are normally distributed though with some skewness to the left. Though the residual analysis confirm the previous conclusion that the seasonal model is the best-fit model, we are going to pick ARIMA (1,1,0) and ARIMA (2,1,2) along with it for forecasting process as well.
+The plots indicate that except for the seasonal model ARIMA (1,1,0)(0,0,2), the models residuals include autocorrelations at more than two lags (look in particular at spikes in lags 6, 7, 24 and 33). The plots also suggest that the residuals are normally distributed though with some skewness to the left. Although the residual analysis confirms the previous conclusion that the seasonal model is the best-fit model, we are going to pick ARIMA (1,1,0) and ARIMA (2,1,2) for forecasting process as well.
 </p>
 <p><strong>4- Forecasting:</strong></p>
+<p style="text-align: justify;">
+I’m going now to conduct the forecasting process using the three models mentioned above. The accuracy of forecasts will be assessed upon Root Mean Square Error (RMSE) on test set for each model for a period of 12 months. The most accurate model will be then used to forecast crude oil price for the next six months.
+</p>
+<pre class="r"><code>Forecast1 &lt;- forecast(Model2, h =12) #ARIMA(1,1,0)
+accuracy(Forecast1, test)</code></pre>
+<pre><code>##                        ME      RMSE       MAE        MPE      MAPE
+## Training set  0.000365657 4.1296996 2.8367824 -0.2352411 6.7389966
+## Test set     -0.376924107 0.3769241 0.3769241 -0.5855587 0.5855587
+##                    MASE         ACF1
+## Training set 0.24080769 -0.002996357
+## Test set     0.03199619           NA</code></pre>
+<pre class="r"><code>Forecast2 &lt;- forecast(Model3, h = 12) #ARIMA(2,1,2)
+accuracy(Forecast2, test)</code></pre>
+<pre><code>##                        ME       RMSE        MAE         MPE       MAPE
+## Training set -0.001586251 4.09153753 2.83013323 -0.38812413 6.70596266
+## Test set     -0.049810447 0.04981045 0.04981045 -0.07738146 0.07738146
+##                    MASE        ACF1
+## Training set 0.24024326 0.001115057
+## Test set     0.00422829          NA</code></pre>
+<pre class="r"><code>Forecast3 &lt;- forecast(Model5, h = 12) #ARIMA(1,1,0)(0,0,2)[12]
+accuracy(Forecast3, test)</code></pre>
+<pre><code>##                       ME     RMSE      MAE         MPE     MAPE      MASE
+## Training set  0.08280644 4.064694 2.796978  0.07071734 6.686554 0.2374287
+## Test set     -1.54005720 1.540057 1.540057 -2.39250768 2.392508 0.1307318
+##                      ACF1
+## Training set -0.006713012
+## Test set               NA</code></pre>
 </div>
 
 

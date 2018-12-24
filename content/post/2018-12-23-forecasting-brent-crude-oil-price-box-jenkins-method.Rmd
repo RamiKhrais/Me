@@ -11,7 +11,7 @@ tags: []
 
 ##Introduction:
 
-<p style='text-align: justify;'>Crude oil is almost the most important commodities in the world. It is widely considered to be the lifeblood of our modern life and the crucial driver behind the radical transformations in the global economy over the last decades. The crude oil and its products are almost used in every single industry ranging from aviation to petrochemical. The world currently produces approximately 93 million barrels per day. The market of crude is bigger than all raw metal markets combined at approximate value of 1.7 trillion dollar a year. Given this exceptional importance, the price of crude oil is one of the key determinant of the global economic activity, the international trade, the stock prices, and the macroeconomic policies adopted by the countries worldwide. It has therefore been a subject of a great deal of research. An enormous number of governmental and international agencies, consultancies, hedge funds and think-tanks are always busy designing and evaluating the best approaches to forecast the crude oil prices and to capture its volatile trends. In this project, I will build an econometric model in order to study the dynamics of monthly Brent oil prices for the period from 1987 to 2018 using the [Box-Jenkins Method](https://ramikh.netlify.com/post/forecasting-of-brent-crude-oil-price-arima-modelling/). I will use several ARIMA models in order to assess their forecasting performances using the relevant statistical tests and techniques. The data for this project is obtained from the Energy Information Administration (EIA) for the spot price of Brent crude in Europe in American Dollar for the mentioned period. </p>
+<p style='text-align: justify;'>Crude oil is almost the most important commodity in the world. It is widely considered to be the lifeblood of our modern life and the crucial driver behind the radical transformations in the global economy over the last decades. The crude oil and its products are almost used in every single industry ranging from aviation to petrochemical. The world currently produces approximately 93 million barrels per day. The market of crude is bigger than all raw metal markets combined at approximate value of 1.7 trillion dollar a year. Given this exceptional importance, the price of crude oil is one of the key determinant of the global economic activity, the international trade, the stock prices, and the macroeconomic policies adopted by the countries worldwide. It has therefore been a subject of a great deal of research. An enormous number of governmental and international agencies, consultancies, hedge funds and think-tanks are always busy designing and evaluating the best approaches to forecast the crude oil prices and to capture its volatile trends. In this project, I will build an econometric model in order to study the dynamics of monthly Brent oil prices for the period from 1987 to 2018 using the [Box-Jenkins Method](https://ramikh.netlify.com/post/forecasting-of-brent-crude-oil-price-arima-modelling/). I will use several ARIMA models in order to assess their forecasting performances using the relevant statistical tests and techniques. The data for this project is obtained from the Energy Information Administration (EIA) for the spot price of Brent crude in Europe in American Dollar for the mentioned period. </p>
 
  
 ###Packages used in Modelling and Forecasting
@@ -149,9 +149,9 @@ summary(Model5)
 
 <p style='text-align: justify;'>**Note:** When we apply **auto.arima()** function on data, it chooses the best model to be ARIMA(1,1,0)(0,0,2)[12], which means that the function believes that the series of crude oil price includes a seasonal component. </p>
 
-| Model | ARIMA(1,1,1) | ARIMA(1,1,0) | ARIMA(2,1,2) | ARIMA(2,1,0) | ARIMA(1,1,0)(0,0,2) |
-|:-----:|:------------:|:------------:|:------------:|:------------:|:-------------------:|
-|  AIC  |    2086.02   |    2084.01   |    2083.47   |    2086.01   |       2075.12       |
+| Model |  Arima(1,1,1)    | ARIMA(1,1,0)    | ARIMA(2,1,2)    | ARIMA(2,1,0)    | ARIMA(1,1,0)(0,0,2)    |
+|:-----:|:----------------:|:---------------:|:---------------:|:---------------:|:----------------------:|
+|  AIC  |      2086.02     |     2084.01     |     2083.47     |     2086.01     |         2075.12        |
 
 <p style='text-align: justify;'>We can see in table above that the model which has been chosen by auto.arima() has the lowest AIC. Moreover, models ARIMA (1,1,0) and ARIMA (2,1,2) have lower AIC comparing to ARIMA (1,1,1) and ARIMA (2,1,0).</p>
 
@@ -181,16 +181,27 @@ checkresiduals(Model5)
 ```
 
 
-<p style='text-align: justify;'>The plots indicate that except for the seasonal model ARIMA (1,1,0)(0,0,2), the models residuals include autocorrelations at more than two lags (look in particular at spikes in lags 6, 7, 24 and 33). The plots also suggest that the residuals are normally distributed though with some skewness to the left. Though the residual analysis confirm the previous conclusion that the seasonal model is the best-fit model, we are going to pick ARIMA (1,1,0) and ARIMA (2,1,2) along with it for forecasting process as well. </p>
+<p style='text-align: justify;'>The plots indicate that except for the seasonal model ARIMA (1,1,0)(0,0,2), the models residuals include autocorrelations at more than two lags (look in particular at spikes in lags 6, 7, 24 and 33). The plots also suggest that the residuals are normally distributed though with some skewness to the left. Although the residual analysis confirms the previous conclusion that the seasonal model is the best-fit model, we are going to pick ARIMA (1,1,0) and ARIMA (2,1,2) for forecasting process as well.</p>
 
 
 **4- Forecasting:**
 
+<p style='text-align: justify;'>I'm going now to conduct the forecasting process using the three models mentioned above. The accuracy of forecasts will be assessed upon Root Mean Square Error (RMSE) on test set for each model for a period of 12 months. The most accurate model will be then used to forecast crude oil price for the next six months. </p>
+
+```{r}
+Forecast1 <- forecast(Model2, h =12) #ARIMA(1,1,0)
+accuracy(Forecast1, test)
+
+```
 
 
+```{r}
+Forecast2 <- forecast(Model3, h = 12) #ARIMA(2,1,2)
+accuracy(Forecast2, test)
+```
 
 
-
-
-
-
+```{r}
+Forecast3 <- forecast(Model5, h = 12) #ARIMA(1,1,0)(0,0,2)[12]
+accuracy(Forecast3, test)
+```
