@@ -335,13 +335,105 @@ The table above summarizes the values of RMSE for each model. The model ARIMA (1
 plot(Forecast)
 lines(test, col = &quot;red&quot;)</code></pre>
 <p><img src="/post/2018-12-23-forecasting-brent-crude-oil-price-box-jenkins-method_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<pre class="r"><code>Forecast$mean</code></pre>
-<pre><code>##           Jan      Feb      Mar      Apr      May      Jun      Jul
-## 2017                                                               
-## 2018 65.59352 65.99218 66.22227 66.38893 66.53171 66.66551 66.79593
-## 2019 67.56743 67.69581 67.82419 67.95257 68.08095                  
-##           Aug      Sep      Oct      Nov      Dec
-## 2017                                     64.74692
-## 2018 66.92507 67.05374 67.18223 67.31065 67.43904
-## 2019</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Month/Year</th>
+<th align="center">Actual Value</th>
+<th align="center">Forecasted Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Dec-2017</td>
+<td align="center">64.37</td>
+<td align="center">64.74</td>
+</tr>
+<tr class="even">
+<td align="center">Jan-2018</td>
+<td align="center">69.08</td>
+<td align="center">65.59</td>
+</tr>
+<tr class="odd">
+<td align="center">Feb-2018</td>
+<td align="center">65.32</td>
+<td align="center">65.99</td>
+</tr>
+<tr class="even">
+<td align="center">Mar-2018</td>
+<td align="center">66.02</td>
+<td align="center">66.22</td>
+</tr>
+<tr class="odd">
+<td align="center">Apr-2018</td>
+<td align="center">72.11</td>
+<td align="center">66.38</td>
+</tr>
+<tr class="even">
+<td align="center">May-2018</td>
+<td align="center">76.98</td>
+<td align="center">66.53</td>
+</tr>
+<tr class="odd">
+<td align="center">Jun-2018</td>
+<td align="center">74.41</td>
+<td align="center">66.66</td>
+</tr>
+<tr class="even">
+<td align="center">Jul-2018</td>
+<td align="center">74.25</td>
+<td align="center">66.79</td>
+</tr>
+<tr class="odd">
+<td align="center">Aug-2018</td>
+<td align="center">72.53</td>
+<td align="center">66.92</td>
+</tr>
+<tr class="even">
+<td align="center">Sep-2018</td>
+<td align="center">78.89</td>
+<td align="center">67.05</td>
+</tr>
+<tr class="odd">
+<td align="center">Oct-2018</td>
+<td align="center">81.03</td>
+<td align="center">67.18</td>
+</tr>
+<tr class="even">
+<td align="center">Nov-2018</td>
+<td align="center">64.75</td>
+<td align="center">67.31</td>
+</tr>
+<tr class="odd">
+<td align="center">Dec-2018</td>
+<td align="center"></td>
+<td align="center">67.43</td>
+</tr>
+<tr class="even">
+<td align="center">Jan-2019</td>
+<td align="center"></td>
+<td align="center">67.56</td>
+</tr>
+<tr class="odd">
+<td align="center">Feb-2019</td>
+<td align="center"></td>
+<td align="center">67.69</td>
+</tr>
+<tr class="even">
+<td align="center">Mar-2019</td>
+<td align="center"></td>
+<td align="center">67.82</td>
+</tr>
+<tr class="odd">
+<td align="center">Apr-2019</td>
+<td align="center"></td>
+<td align="center">67.95</td>
+</tr>
+<tr class="even">
+<td align="center">May-2019</td>
+<td align="center"></td>
+<td align="center">68.08</td>
+</tr>
+</tbody>
+</table>
 </div>
