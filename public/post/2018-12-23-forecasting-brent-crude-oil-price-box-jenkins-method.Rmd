@@ -207,5 +207,20 @@ accuracy(Forecast3, test)
 
 **RMSE:**
 
- 
+| Model |  Arima (1,1,0)    | ARIMA (2,1,2)    | ARIMA (1,1,0)(0,0,2)   |
+|:-----:|:-----------------:|:----------------:|:----------------------:|
+|  RMSE |      7.303298     |     10.693751    |        8.032547        |
+
+
+<p style='text-align: justify;'>The table above summarizes the values of RMSE for each model. The model ARIMA (1,1,0) has the lowest value of RMSE and thus it outpermfors the other two model in forecasting new data. The RMSE of test set is much higher than RMSE of training set for all models which could be deemed as a sign of overfitting (though the difference is relatively small). We can notice also that althoug the seasonal model ARIMA (1,1,0)(0,0,2) has been the "best" model in fitting data, it failed to outperform ARIMA (1,1,0) when it comes to forecasting. </p>
+
+```{r}
+Forecast <- forecast(Model2, h = 18)
+plot(Forecast)
+lines(test, col = "red")
+```
+
+```{r}
+Forecast$mean
+```
 
