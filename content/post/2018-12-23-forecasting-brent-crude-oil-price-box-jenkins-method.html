@@ -23,12 +23,6 @@ library(urca)
 library(tseries)
 library(astsa)
 library(forecast)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;forecast&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:astsa&#39;:
-## 
-##     gas</code></pre>
-<pre class="r"><code>library(knitr)</code></pre>
 </div>
 </div>
 <div id="methodology" class="section level2">
@@ -111,7 +105,7 @@ The plots for ACF and PACF suggests that the suitable model for fitting the data
 Before start fitting the models, I will split my data into training set and test set where the latter includes only the observations for the last 12 months. Splitting the data into training and test sets is one of the widely used practices when it comes to constructing predictive models. Using this technique will help us evaluating the accuracy of forecasting power by measuring how well the model is likely to forecast on new data that has not been part of fitting the model.
 </p>
 <pre class="r"><code>training &lt;- subset(brent_ts, end = 367)
-test &lt;- subset(brent_ts, end = 368)</code></pre>
+test &lt;- subset(brent_ts, start = 368)</code></pre>
 <p><strong>- Model1: ARIMA (1, 1, 1)</strong></p>
 <pre class="r"><code>Model1 &lt;- Arima(training, order = c(1,1,1), include.drift = TRUE)
 summary(Model1)</code></pre>
@@ -293,26 +287,27 @@ I’m going now to conduct the forecasting process using the three models mentio
 </p>
 <pre class="r"><code>Forecast1 &lt;- forecast(Model2, h =12) #ARIMA(1,1,0)
 accuracy(Forecast1, test)</code></pre>
-<pre><code>##                        ME      RMSE       MAE        MPE      MAPE
-## Training set  0.000365657 4.1296996 2.8367824 -0.2352411 6.7389966
-## Test set     -0.376924107 0.3769241 0.3769241 -0.5855587 0.5855587
-##                    MASE         ACF1
-## Training set 0.24080769 -0.002996357
-## Test set     0.03199619           NA</code></pre>
+<pre><code>##                       ME     RMSE      MAE        MPE     MAPE      MASE
+## Training set 0.000365657 4.129700 2.836782 -0.2352411 6.738997 0.2408077
+## Test set     5.194276793 7.303298 5.829615  6.7454842 7.724763 0.4948621
+##                      ACF1 Theil&#39;s U
+## Training set -0.002996357        NA
+## Test set      0.203303549  1.268862</code></pre>
 <pre class="r"><code>Forecast2 &lt;- forecast(Model3, h = 12) #ARIMA(2,1,2)
 accuracy(Forecast2, test)</code></pre>
-<pre><code>##                        ME       RMSE        MAE         MPE       MAPE
-## Training set -0.001586251 4.09153753 2.83013323 -0.38812413 6.70596266
-## Test set     -0.049810447 0.04981045 0.04981045 -0.07738146 0.07738146
-##                    MASE        ACF1
-## Training set 0.24024326 0.001115057
-## Test set     0.00422829          NA</code></pre>
+<pre><code>##                        ME      RMSE      MAE        MPE      MAPE
+## Training set -0.001586251  4.091538 2.830133 -0.3881241  6.705963
+## Test set      8.625578801 10.693751 8.633881 11.4392016 11.452099
+##                   MASE        ACF1 Theil&#39;s U
+## Training set 0.2402433 0.001115057        NA
+## Test set     0.7329095 0.438766194  1.859437</code></pre>
 <pre class="r"><code>Forecast3 &lt;- forecast(Model5, h = 12) #ARIMA(1,1,0)(0,0,2)[12]
 accuracy(Forecast3, test)</code></pre>
-<pre><code>##                       ME     RMSE      MAE         MPE     MAPE      MASE
-## Training set  0.08280644 4.064694 2.796978  0.07071734 6.686554 0.2374287
-## Test set     -1.54005720 1.540057 1.540057 -2.39250768 2.392508 0.1307318
-##                      ACF1
-## Training set -0.006713012
-## Test set               NA</code></pre>
+<pre><code>##                      ME     RMSE      MAE        MPE     MAPE      MASE
+## Training set 0.08280644 4.064694 2.796978 0.07071734 6.686554 0.2374287
+## Test set     5.27117099 8.032547 6.534277 6.75393412 8.696906 0.5546792
+##                      ACF1 Theil&#39;s U
+## Training set -0.006713012        NA
+## Test set      0.357278045  1.388365</code></pre>
+<p><strong>RMSE:</strong></p>
 </div>

@@ -16,14 +16,13 @@ tags: []
  
 ###Packages used in Modelling and Forecasting
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(ggplot2)
 library(readxl)
 library(urca)
 library(tseries)
 library(astsa)
 library(forecast)
-library(knitr)
 ```
  
 
@@ -105,7 +104,7 @@ adf.test(diff_series)
 
 ```{r}
 training <- subset(brent_ts, end = 367)
-test <- subset(brent_ts, end = 368)
+test <- subset(brent_ts, start = 368)
 ```
 
 
@@ -205,3 +204,8 @@ accuracy(Forecast2, test)
 Forecast3 <- forecast(Model5, h = 12) #ARIMA(1,1,0)(0,0,2)[12]
 accuracy(Forecast3, test)
 ```
+
+**RMSE:**
+
+ 
+
