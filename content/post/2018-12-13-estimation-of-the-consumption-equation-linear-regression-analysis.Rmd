@@ -1,5 +1,5 @@
 ---
-title: 'Estimation of the Consumption Equation: Linear Regression Analysis'
+title: 'Estimation of the Aggregate Consumption Equation: Linear Regression Analysis'
 author: Rami Kh
 date: '2018-12-13'
 slug: estimation-of-the-consumption-equation-linear-regression-analysis
@@ -40,15 +40,15 @@ tags: []
 
 Where: 
 
-Y represents the dependent (response) variable.
+Y  represents the dependent (response) variable.
 
-X represents the independent (predictor) variable.
+X  represents the independent (predictor) variable.
 
 **${\beta}_0$** represents the intercept (the value of Y when X = Zero).
 
 **${\beta}_1$** is the coefficient (slope term) representing the linear relationship.
 
-**$\epsilon$** represents the error term (Normally distribured/Constant Variance).
+**$\epsilon$** represents the error term (Normally distributed/Constant Variance).
 
 
 
@@ -152,7 +152,7 @@ $\hat{y}$ refers to the mean value of $Y$ for a given value of $X$
 
 ![](/images/model.png)
 
-<p style='text-align: justify;'>Using the image above, **Least Squares Method** is a mathemtical technique through which we can find the value of ${\beta}_0$ (intercept) and ${\beta}_1 (slope)$ in order to draw a line that fits the data in a way minimizing the squared distances between the observed $y$ and the predicted $\hat{y}$, namely the squared distances between the the red points and the blue line(squared errors). </p> 
+<p style='text-align: justify;'>Using the image above, **Least Squares Method** is a mathemtical technique through which we can find the value of ${\beta}_0$ (intercept) and ${\beta}_1 (slope)$ in order to draw a line that fits the data in a way minimizing the squared distances between the observed $y$ and the predicted $\hat{y}$, namely the squared distances between the the red points and the blue line (squared errors). </p> 
 
 
 $$
@@ -240,7 +240,7 @@ chart.Correlation(consumption[, c("GNDIPC", "ConsumptionPC")])
 
 ##Building the Linear Model
 
-<p style='text-align: justify;'>We can build our model using 'lm' function in R which stands for "Linear Model". This function will produce the best-fit linear relationship by minimizing the least squares. In other words, the 'lm' funtion will enable us to estimate the value of coefficents (Slope and Intercept) in addition to the fitted values of $y$ for each value of $x$.</p>
+<p style='text-align: justify;'>We can build our model using **'lm'** function in R which stands for "Linear Model". This function will produce the best-fit linear relationship by minimizing the least squares. In other words, the **'lm'** funtion will enable us to estimate the value of coefficents (Slope and Intercept) in addition to the fitted values of $y$ for each value of $x$.</p>
 
 
 ```{r}
@@ -258,7 +258,7 @@ summary(model)
 
 $$Y = 539 + 0.656X + e$$
 
-<p style='text-align: justify;'>And we can get a tidy version of our model by using function 'tidy' from 'broom' package. </p>
+<p style='text-align: justify;'>And we can get a tidy version of our model by using function "tidy" from broom package. </p>
 
 ```{r}
 tidy(model)
@@ -303,12 +303,12 @@ sigma(model)/mean(consumption$ConsumptionPC)
 ```
 
 
-<p style='text-align: justify;'>We got a percentage error of 6.1% when we compare the RSE to the mean of the response variable. This percentage suggests that our model fits the data well as the deviation of the response variable from the regression line is not large. </p>
+<p style='text-align: justify;'>We got a percentage error of 6.1% when we compare the RSE to the mean of the response variable. This percentage suggests that our model fits the data well as the deviation of the response variable from the regression line is not so big. </p>
 
 
-<p style='text-align: justify;'>**R-Squared ($R^2$)**: expresses the proportion of the variance in the depdendent variable (response ) that is "explained" by the model. That is, the variation in aggregate consumption per capita due to the changes in the gross national disposable income per capita. In order to fully understand the logic behind $R^2$, let us first introduce three important formulas.</p>
+<p style='text-align: justify;'>**R-Squared ($R^2$)**: expresses the proportion of the variance in the depdendent variable (response ) that is "explained" by the model. That is, the variation in aggregate consumption per capita due to the changes in the gross national disposable income per capita. In order to fully understand the logic behind $R^2$, let us first introduce three important formulas. </p>
 
-<p style='text-align: justify;'>**1- Sum of Squares Total**: refers the **total** variation of the observed values of $y$</p>
+<p style='text-align: justify;'>**1- Sum of Squares Total**: refers to the **total** variation of the observed values of $y$</p>
 
 $$\text{SST} = \sum_{i=1}^{n}(y_i - \bar{y})^2$$
 
@@ -330,14 +330,14 @@ $$R^2 =  \frac{SSR}{SST}= \frac{\sum^n_{i=1}(y_i-\hat{y}_i)^2}{\sum^n_{i=1}(y_i-
 ##Residual Analysis
 
 
-<p style='text-align: justify;'>Only part of the variance in the dependent variable will be explained by the values of the independent variable SSR/SST (which is equal to 0.61 in our model). The variance left unexplained is due to the error SSE/SST and this is why we should also conduct an analysis on the residuals of our model. The main issue here is to make sure that the residuals are following the assumptions of the linear regression. The residuals analysis can be made three 4-plots grid in R.</p> 
+<p style='text-align: justify;'>Only part of the variation in the dependent variable will be explained by the values of the independent variable SSR/SST (which is equal to 0.61 in our model). The variation left unexplained is due to the error SSE/SST, and this is why we should also conduct an analysis on the residuals of our model. The main issue here is to make sure that the residuals are following the assumptions of the linear regression. The residuals analysis can be made through 4-plots grid in R.</p> 
 
 
 <p style='text-align: justify;'>**Residuals Vs. Fitted Values**: This plot shows if the residuals have a non-linear pattern. If the residuals spread around the horizontal lines without showing specific patter, this can be deemed as a sign of the model's linearity. </p>
 
-<p style='text-align: justify;'>**Normal Q-Q**: This plot is concerned with the normal distribution of the residuals. If the residuals follow a straight line and do not deviate far from the line, this shoughl be a good indication that the residulas are normally distributed. </p>
+<p style='text-align: justify;'>**Normal Q-Q**: This plot is concerned with the normal distribution of the residuals. If the residuals follow a straight line and do not deviate far from the line, this should be a good indication that the residulas are normally distributed. </p>
 
-<p style='text-align: justify;'>**Scale-Location**: This plot shows if the residuals are spread equally along with the fitted values. This plot enable us to make sure that the assumaption of homoscedasticity (equall variance of residuals). If the residuals are randomly spread, this should be a good sign that the residuals have the same variance for all values of the predictor variable. </p>
+<p style='text-align: justify;'>**Scale-Location**: This plot shows if the residuals are spread equally along with the fitted values. This plot enables us to make sure that the assumption of homoscedasticity (equall variance of residuals). If the residuals are randomly spread, this should be a good sign that the residuals have the same variance for all values of the predictor variable. </p>
 
 <p style='text-align: justify;'>**Residuals Vs. Leverage**: This plot enables us to detect the influential cases. The data might include extreme values, however; these values can be with no influential impact on our regression line. On the other hand, some values that lay wihtin the range of the data might be very influential. If the cases are outside of the Cook’s distance (namely outside of a dashed line), the cases  are influential to the regression results. </p>
 
@@ -346,7 +346,7 @@ par(mfrow = c(2, 2))
 plot(model)
 ```
 
-<p style='text-align: justify;'>The four plots for our model shows that the residuals almost shows no specific pattern around the horizontal line suggesting that the relationship between the response and the predictor variables is linear. The plots also show that most residuals fall on the Q-Q line suggesting that the residuals are normally distributed. However, Residuals Vs. Leverage plot clearly shows that data point No. 15 is an outlier that has a large impact on our model. This can be seen in all other three plots where point 15 deviates far from the other data points. </p>
+<p style='text-align: justify;'>The four plots of our model show that the residuals almost have no specific pattern around the horizontal line, suggesting that the relationship between the response and the predictor variables is linear. The plots also indicate that most residuals fall on the Q-Q line, suggesting that the residuals are normally distributed. However, Residuals Vs. Leverage plot clearly shows that data point No. 15 is an outlier that has a large impact on our model. This can be seen in all other three plots where point 15 deviates far from the other data points. </p>
 
 <p style='text-align: justify;'>Let us dig deeper in our data to see how point 15 had such impact on our model. I'm going to extract the observed and fitted values of response variable in addition to the residuals. </p>
 
@@ -356,6 +356,62 @@ as.data.frame(consumption$ConsumptionPC)
 (model$residuals)
 ```
 
-<p style='text-align: justify;'>As we can see, though the obsererved value of response variable at point 15 equals to 1728.48 (which lies within a reasonale range of our data), it's fitted value equals to 2031.257. That is, 1728.48 (observed) - 2031.257 (fitted) = -302.777345 (residual) whcih looks high comparing to other residuals for other fitted values in our model. This confirms the wisdom that some values that look "reasonable" wihtin the range of the data might be very influential after fitting the model. </p>
+<p style='text-align: justify;'>As we can see, though the obsererved value of response variable at point 15 equals to 1728.48 (which lies within a reasonable range of our data), it's fitted value equals to 2031.257. That is, 1728.48 (observed) - 2031.257 (fitted) = -302.777345 (residual) whcih looks high comparing to other residuals for other fitted values in our model. This confirms the wisdom that some values that look "reasonable" wihtin the range of the data might be very influential after fitting the model. </p>
 
 
+##Excluding the Outlier
+
+<p style='text-align: justify;'>Excluding the outlier from the model might not be the best approach to deal with its impact, however, for the purpose of this project, I'm going to ommit the outlier from the data in order to examine how this step can aggect the model's quality. </p>
+
+<p style='text-align: justify;'>Let us import our new data without outlier. </p>
+
+```{r}
+consumption_new <- read_excel("C:/Users/Rami/Desktop/pcon.xlsx")
+```
+
+```{r}
+#Transforming the variables into integers
+
+consumption_new$`GNDI PC` <- as.integer(consumption_new$GNDIPC)
+consumption_new$`Consumption PC` <- as.integer(consumption_new$ConsumptionPC)
+```
+
+```{r}
+chart.Correlation(consumption_new[, c("GNDIPC", "ConsumptionPC")])
+```
+
+<p style='text-align: justify;'>We can notice that the exclusion of the outlier results in increasing the correlation between the independent and the dependent variables from 0.78 to 0.89. In other words, omiting the impact of the outlier makes the positive relationship between the two variables much stronger. </p>
+
+<p style='text-align: justify;'>Let us now build a new model and assess the coefficients and the godness of fit. </p>
+
+```{r}
+model2 <- lm(consumption_new$ConsumptionPC ~ consumption_new$GNDIPC)
+summary(model2)
+```
+
+<p style='text-align: justify;'>The new model after excluding the outlier is the following: </p>
+
+$$Y = 237 + 0.829X + e$$
+
+<p style='text-align: justify;'>We can see that the slope of the regression line has been increased from 0.656 to 0.829, which means that for every increase of one dollar in gross national disposable income per capita, we expect the aggregate consumption per capita to increase by $0.829, on average. </p>
+
+```{r}
+sigma(model2)
+sigma(model2)/mean(consumption_new$ConsumptionPC)
+```
+
+<p style='text-align: justify;'>Omitting the outlier has also resulted in decreasing the Residual Standard Error from 112.60 in the previous model to 85.68 in the current one. $R^2$ has also increased to 0.78, suggesting that the model without outlier has much stronger explantory power. </p>
+
+
+##Residual Analysis
+
+
+<p style='text-align: justify;'>We will now examine how the residuals behave after the exclusion of the outlier from the model using the grid of 4-plots used previously. </p>
+
+```{r}
+par(mfrow = c(2, 2))
+plot(model2)
+```
+
+
+<p style='text-align: justify;'>We can clearly see from the plots above that the exclusion of the outiler has improved the performance of the residuals. The horizontal line in the plot for Residuals Vs. Fitted 
